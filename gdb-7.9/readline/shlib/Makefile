@@ -32,7 +32,7 @@ datarootdir = ${prefix}/share
 srcdir = .
 VPATH = ..
 topdir = ..
-BUILD_DIR = /nfs/projects/zephyr/deadzone/ArmoredSoftware/ws/measurer/gdb-7.9/readline
+BUILD_DIR = /nfs/projects/zephyr/deadzone/ArmoredSoftware/measurer-pulldown/measurer/gdb-7.9/readline
 
 INSTALL = /bin/install -c
 INSTALL_PROGRAM = /bin/install -c
