@@ -28,7 +28,8 @@ extern void ME_CG_print_encoded(int, char *);
 extern struct ME_CG * ME_CG_decode_h(int *, int);
 extern void ME_CG_decode(char *, struct ME_CG **);
 
-extern struct ME_FT * ME_FT_create(char *);
+extern struct ME_FT * ME_FT_create_entry(char *);
+extern struct ME_FT * ME_FT_create();
 extern void ME_FT_delete(struct ME_FT *);
 extern int ME_FT_add(struct ME_FT *, char *);
 extern void ME_FT_print(struct ME_FT *);

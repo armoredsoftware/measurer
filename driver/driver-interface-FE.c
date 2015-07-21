@@ -58,7 +58,7 @@ DI_init_measurer (void)
 }
 
 
-void DI_send_request(int sockfd, char * request)
+ME_measurement * DI_send_request(int sockfd, char * request)
 {
   //build JSON and send
   json_t *root, *result;
@@ -84,8 +84,11 @@ void DI_send_request(int sockfd, char * request)
 
   root = json_loads(response, 0, &error);
   result = json_object_get(root,"result"); 
-  
-  printf("Result = %s\n",json_string_value(result));
+
+  //printf("Result = %s\n",json_string_value(result));
+
+  return ME_measurement_fromJSON(result);
+
 }
 
 

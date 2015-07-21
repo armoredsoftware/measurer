@@ -1,17 +1,11 @@
 
-build: build-test1 build-test2
+build: build-driver1 build-app1
  
-build-test1:
-	gcc -g test1.c -o test1.o
+build-driver1:
+	gcc -g driver1.c -o driver1.o -ljansson -lreadline
 
-build-test2:
-	gcc -g test2.c -o test2.o
-
-run-test1:
-	./test1.o
-
-run-test2:
-	./test2.o
+build-app1:
+	gcc -g app1.c -o app1.o
 
 clean:
 	rm -rf *.o

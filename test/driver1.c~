@@ -1,0 +1,89 @@
+#include "../gdb-7.9/gdb/ME_common.c"
+#include "../driver/driver-interface-FE.c"
+
+#include <unistd.h>
+#include <sys/types.h>
+#include <signal.h>
+
+FILE *f;
+int test_assert_i=0;
+int test_assert_passed=0;
+int test_assert_failed=0;
+
+void log_init() {
+  char name;
+  int  number;
+  f = fopen("test_out", "w");
+}
+void log_close() {
+  char message[64];
+  sprintf(message,"\nran\t%d\npassed\t%d\nfailed\t%d",test_assert_i,test_assert_passed,test_assert_failed);
+  log_write(message);
+  fclose(f);
+}
+void log_write(char * text) {
+  fprintf(f, "%s", text);
+}
+void test_assert(int value) {
+  test_assert_i++;
+  char message[64];
+  if (value) {
+    sprintf(message,"Assert %d: passed\n",test_assert_i);
+    test_assert_passed++;
+  }
+  else
+  {
+    test_assert_failed++;
+    sprintf(message,"Assert %d: failed\n",test_assert_i);
+  }
+  log_write(message);
+}
+
+void main(int argc, char *argv[]) {
+  log_init();
+  
+  int sockfd = DI_init_measurer();
+  char line[256];
+  ME_measurement * msa;
+  ME_measurement * mse;
+  
+  sprintf(line, "(set_target %s)",argv[1]);
+  DI_send_request(sockfd, line);
+  
+  sprintf(line, "(measure (var \"a\"))");
+  msa = DI_send_request(sockfd, line);
+  mse= ME_measurement_create(ME_MEASUREMENT_STRING);
+  mse->data.string_val = "45";
+  test_assert(ME_measurement_equal(msa,mse));
+  
+  sprintf(line, "(measure (var \"b\"))");
+  msa = DI_send_request(sockfd, line);
+  mse= ME_measurement_create(ME_MEASUREMENT_STRING);
+  mse->data.string_val = "2";
+  test_assert(ME_measurement_equal(msa,mse));
+  
+  sprintf(line, "(gdb \"set test_stop=0\")");
+  DI_send_request(sockfd, line);
+  
+  sprintf(line, "(measure (var \"a\"))");
+  msa = DI_send_request(sockfd, line);
+  mse= ME_measurement_create(ME_MEASUREMENT_STRING);
+  mse->data.string_val = "46";
+  test_assert(ME_measurement_equal(msa,mse));
+  
+  sprintf(line, "(measure (var \"b\"))");
+  msa = DI_send_request(sockfd, line);
+  mse= ME_measurement_create(ME_MEASUREMENT_STRING);
+  mse->data.string_val = "2";
+  test_assert(ME_measurement_equal(msa,mse));
+  
+  sprintf(line, "(quit)");
+  DI_send_request(sockfd, line);
+
+  //Confirm results
+  printf("done!");
+  //  exit(0);
+
+  //kill(application_pid, SIGKILL);
+  log_close();  
+}

@@ -130,7 +130,7 @@ int ME_sock_recv(int sockfd, char * message)
 
   n = read(sockfd, recvBuff, sizeof(recvBuff));
 
-  if (n < 0)
+  if (n <= 0)
     {
       //printf("\n Error: Read error!\n");
       return n;
@@ -458,8 +458,8 @@ typedef struct ME_FT
 }
   ME_FT;
 
-ME_FT* ME_FT_create(char * name)
-{
+ME_FT* ME_FT_create_entry(char * name)
+{  
   ME_FT* ft = (ME_FT*)malloc(sizeof(ME_FT));
   ft->next = NULL;
   
@@ -467,6 +467,10 @@ ME_FT* ME_FT_create(char * name)
   memcpy(ft->name,name, (strlen(name)+1)*sizeof(char));
   
   return ft;
+}
+
+ME_FT* ME_FT_create() {
+  return ME_FT_create_entry("root");
 }
 
 void ME_FT_delete(struct ME_FT * ft)
@@ -493,7 +497,7 @@ int ME_FT_add(ME_FT * ft, char * name) {
   }
   i++;
 
-  new_entry = ME_FT_create(name);
+  new_entry = ME_FT_create_entry(name);
   curr->next = new_entry;
   return i;
 }
@@ -584,7 +588,7 @@ void ME_FT_decode(char * ft_encoded, ME_FT ** ft)
   char** names;
   int i;
 
-  (*ft) = ME_FT_create("root");
+  (*ft) = ME_FT_create();
     
   names = str_split(ft_encoded, ' ');
 
@@ -634,6 +638,42 @@ typedef struct ME_measurement
 }
 ME_measurement;
 
+int ME_measurement_equal(ME_measurement * ms1, ME_measurement * ms2) {
+  if (!ms1 || !ms2) return !ms1 && !ms2;
+  
+  if (ms1->type != ms2->type) return false;
+  if (ms1->type == ME_MEASUREMENT_CALLSTACK) {
+    //to do...
+    return false;
+  } else if (ms1->type == ME_MEASUREMENT_STRING) {
+    if (strcmp(ms1->data.string_val,ms2->data.string_val)!=0)
+      return false;
+  }
+  return ME_measurement_equal(ms1->next, ms2->next);
+}
+
+ME_CG * ME_CG_fromJSON(json_t * json_cg, struct ME_FT * ft) {
+  json_t * json_symbol = json_object_get(json_cg, "symbol");
+  int sym_i = ME_FT_add(ft, json_string_value(json_symbol));
+  struct ME_CG * cg = ME_CG_create(sym_i);
+  
+  json_t * json_children = json_object_get(json_cg, "json_children");
+  int i;
+  for (i=0; i<json_array_size(json_children); i++) {
+    ME_CG_add_child(cg, ME_CG_fromJSON(json_array_get(json_children,i),ft));    
+  }
+  return cg;
+}
+
+ME_CG_AND_FT ME_CGFT_fromJSON(json_t * json_cg) {
+  ME_CG_AND_FT cgft;
+  struct ME_FT * ft = ME_FT_create();
+  struct ME_CG * cg = ME_CG_fromJSON(json_cg, ft);
+  cgft.ft = ft;
+  cgft.cg = cg;
+  return cgft;
+}
+
 json_t * ME_measurement_toJSON(struct ME_measurement *ms) {
   if (!ms) return json_null();
 
@@ -652,23 +692,26 @@ json_t * ME_measurement_toJSON(struct ME_measurement *ms) {
   
   return json_ms;
 }
+
 ME_measurement * ME_measurement_fromJSON(json_t * json_ms) {
+  if (json_is_null(json_ms)) return NULL;
+  
   ME_measurement* ms = (ME_measurement*)malloc(sizeof(ME_measurement));
   //get type
   json_t * json_type = json_object_get(json_ms, "type");
+  json_t * json_data = json_object_get(json_ms, "data");
   char * type = json_string_value(json_type);
   if (strcmp(type, "callstack")==0) {
     ms->type = ME_MEASUREMENT_CALLSTACK;
+    ms->data.cgft = ME_CGFT_fromJSON(json_data);
   } else if (strcmp(type, "string")==0) {
     ms->type = ME_MEASUREMENT_STRING;
+    ms->data.string_val = json_string_value(json_data);
   }
-  //get data
-  //TODO ...
 
-  //TODO next
+  ms->next = ME_measurement_fromJSON(json_object_get(json_ms, "next"));
   
   return ms;
-
   
 }
 
@@ -687,6 +730,15 @@ ME_measurement * ME_measurement_create(ME_measurement_type type)
   ms->next = NULL;
   return ms;
 }
+
+ME_measurement * ME_measurement_create_string(char * string_val)
+{
+  ME_measurement* ms = ME_measurement_create(ME_MEASUREMENT_STRING);
+  ms->data.string_val = malloc((strlen(string_val)+1)*sizeof(char));
+  memcpy(ms->data.string_val,string_val,((strlen(string_val)+1)*sizeof(char)));
+  return ms;
+}
+
 
 void ME_measurement_delete(struct ME_measurement * ms)
 {

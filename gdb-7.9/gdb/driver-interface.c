@@ -116,7 +116,7 @@ BE_Context * BE_context_create(void)
   the_context.CG_tracking = false;
   the_context.CG_lasttime = 0;
   the_context.CG = NULL;
-  the_context.FT = ME_FT_create("root");
+  the_context.FT = ME_FT_create();
   
   return &the_context;
   
@@ -139,6 +139,8 @@ bool startsWith(const char *pre, const char *str)
   return lenstr < lenpre ? false : strncmp(pre, str, lenpre) == 0;
 }
 
+int quitting = 0;
+
 void BE_get_request()
 {
  
@@ -156,7 +158,7 @@ void BE_get_request()
   params = json_object_get(root,"params");
   char * RLI_expr = json_string_value(params);
   
-  ME_RLI_IR_value value_result= BE_rhandler_dispatch(RLI_expr);
+  ME_RLI_IR_value value_result = BE_rhandler_dispatch(RLI_expr);
 
   json_decref(root);
 
@@ -179,7 +181,9 @@ void BE_get_request()
   
   ME_sock_send(the_context.driverfd, response);
   
-  json_decref(root);  
+  json_decref(root);
+
+  if (quitting) exit(-1);
 
 }
 
@@ -364,7 +368,7 @@ void BE_ehandler_measure_callstack(BE_hook * ev)
   }
   
   struct ME_CG * stack;
-  struct ME_FT * ft = ME_FT_create("root");
+  struct ME_FT * ft = ME_FT_create();
   printf("before\n");
   BE_get_call_stack_as_CG(NULL, 0, 0, 1, &stack, ft);
   printf("after\n");
@@ -437,8 +441,7 @@ void ME_API_quit()
   if (the_context.attached) {
     ME_API_detach();
   }
-    
-  exit(-1);
+  quitting = 1;
 }
 
 void ME_API_print_context()
@@ -467,7 +470,7 @@ ME_measurement * ME_API_measure_callstack()
   //Measure Callstack
   printf("getting callstack\n");
   struct ME_CG * stack;
-  struct ME_FT * ft = ME_FT_create("root");
+  struct ME_FT * ft = ME_FT_create();
   printf("before\n");
   BE_get_call_stack_as_CG(NULL, 0, 0, 1, &stack, ft);
   printf("after\n");
@@ -507,7 +510,7 @@ ME_measurement * ME_API_measure(ME_feature * feature)
   if (feature->type == ME_FEATURE_CALLSTACK) {
     printf("getting callstack\n");
     struct ME_CG * stack;
-    struct ME_FT * ft = ME_FT_create("root");
+    struct ME_FT * ft = ME_FT_create();
     printf("before\n");
     BE_get_call_stack_as_CG(NULL, 0, 0, 1, &stack, ft);
     printf("after\n");
@@ -647,5 +650,27 @@ ME_feature * ME_API_mem(char * address, char * format) {
 }
 
 void ME_API_gdb(char * command) {
-  return execute_command(command, 1);
+  ME_measurement * ms;
+  
+  if (!the_context.attached) {
+    printf("Not attached to a process!\n");
+    return NULL;
+  }
+
+  bool stopped_here = false;
+  if (!the_context.stopped) {
+    //Interrupt Inferior
+    execute_command("interrupt",0);
+    wait_for_inferior(); 
+    normal_stop();
+    stopped_here = true;
+  }
+ 
+  execute_command(command, 1);
+
+  if (stopped_here) {
+    //Continue Inferior
+    continue_command_JG();
+  }
+
 }

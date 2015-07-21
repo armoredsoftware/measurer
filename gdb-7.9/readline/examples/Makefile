@@ -32,7 +32,7 @@ datadir = ${datarootdir}
 
 top_srcdir = ..
 #BUILD_DIR = .
-BUILD_DIR = /nfs/projects/zephyr/deadzone/ArmoredSoftware/ws/protocol/measurer/gdb-7.9/readline
+BUILD_DIR = /nfs/projects/zephyr/deadzone/ArmoredSoftware/ws/measurer/gdb-7.9/readline
 installdir = $(datadir)/readline
 
 INSTALL = /bin/install -c

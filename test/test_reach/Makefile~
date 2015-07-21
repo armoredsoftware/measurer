@@ -1,0 +1,11 @@
+
+build: build-driver1 build-app1
+ 
+build-driver1:
+	gcc -g driver1.c -o driver1.o -ljansson -lreadline
+
+build-app1:
+	gcc -g app1.c -o app1.o
+
+clean:
+	rm -rf *.o

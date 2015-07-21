@@ -1,0 +1,16 @@
+Connect socket...
+Connected to measurer!
+Sending:{"method": "eval", "jsonrpc": "2.0", "params": "(set_target 17019)", "id": "1"}
+Recieved:{"jsonrpc": "2.0", "result": null, "id": "1"}
+Sending:{"method": "eval", "jsonrpc": "2.0", "params": "(measure (var \"a\"))", "id": "1"}
+Recieved:{"jsonrpc": "2.0", "result": {"type": "string", "data": "45", "next": null}, "id": "1"}
+Sending:{"method": "eval", "jsonrpc": "2.0", "params": "(measure (var \"b\"))", "id": "1"}
+Recieved:{"jsonrpc": "2.0", "result": {"type": "string", "data": "2", "next": null}, "id": "1"}
+Sending:{"method": "eval", "jsonrpc": "2.0", "params": "(gdb \"set test_stop=0\")", "id": "1"}
+Recieved:{"jsonrpc": "2.0", "result": null, "id": "1"}
+Sending:{"method": "eval", "jsonrpc": "2.0", "params": "(measure (var \"a\"))", "id": "1"}
+Recieved:{"jsonrpc": "2.0", "result": {"type": "string", "data": "46", "next": null}, "id": "1"}
+Sending:{"method": "eval", "jsonrpc": "2.0", "params": "(measure (var \"b\"))", "id": "1"}
+Recieved:{"jsonrpc": "2.0", "result": {"type": "string", "data": "2", "next": null}, "id": "1"}
+Sending:{"method": "eval", "jsonrpc": "2.0", "params": "(quit)", "id": "1"}
+Recieved:{"jsonrpc": "2.0", "result": null, "id": "1"}
