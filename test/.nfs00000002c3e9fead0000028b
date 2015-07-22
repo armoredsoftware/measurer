@@ -1,7 +1,0 @@
-echo "Launching application."
-./app1.o &
-APP_PID=$!
-echo $APP_PID
-echo "Launching driver."
-./driver1.o > driver_out
-kill -9 $APP_PID

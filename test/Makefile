@@ -1,11 +1,7 @@
+dirs = $(shell ls -d */)
 
-build: build-driver1 build-app1
- 
-build-driver1:
-	gcc -g driver1.c -o driver1.o -ljansson -lreadline
+build-all:
+	@$(foreach dir,$(dirs),cd $(dir);make)
 
-build-app1:
-	gcc -g app1.c -o app1.o
-
-clean:
-	rm -rf *.o
+run-all:
+	@$(foreach dir,$(dirs),cd $(dir);./run.sh)

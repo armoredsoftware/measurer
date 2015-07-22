@@ -1,0 +1,111 @@
+GNU gdb (GDB) 7.9
+Copyright (C) 2015 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-unknown-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word".
+(gdb) 
+
+=====================================
+	APPLICATION MEASURER
+=====================================
+Listening for client...
+Connected to client!
+Recieved 1024 bytes:"{"jsonrpc": "2.0", "params": "(set_target 12959)", "method": "eval", "id": "1"}"
+
+Handling (set_target 12959) request!
+ME_API_set_target(12959)
+Attaching to process 12959
+Reading symbols from /nfs/projects/zephyr/deadzone/ArmoredSoftware/ws/measurer/test/test_reach/app.o...done.
+Reading symbols from /lib64/libc.so.6...(no debugging symbols found)...done.
+Reading symbols from /lib64/ld-linux-x86-64.so.2...(no debugging symbols found)...done.
+0x0000000000400505 in main () at app.c:6
+6	  for(test_stop=1;test_stop;) {}
+(gdb) Continuing.
+result = VOID
+Sending:{"result": null, "jsonrpc": "2.0", "id": "1"}
+Recieved 1024 bytes:"{"jsonrpc": "2.0", "params": "(hook (reach \"app.c\" 12 0) '(store 1 (measure (var \"a\"))))", "method": "eval", "id": "1"}"
+
+Handling (hook (reach "app.c" 12 0) '(store 1 (measure (var "a")))) request!
+
+Program received signal SIGINT, Interrupt.
+0x0000000000400505 in main () at app.c:6
+6	  for(test_stop=1;test_stop;) {}
+Breakpoint 1 at 0x400532: file app.c, line 12.
+Continuing.
+result = INT:0
+Sending:{"result": null, "jsonrpc": "2.0", "id": "1"}
+Recieved 1024 bytes:"{"jsonrpc": "2.0", "params": "(hook (reach \"app.c\" 14 0) '(store 2 (measure (var \"a\"))))", "method": "eval", "id": "1"}"
+
+Handling (hook (reach "app.c" 14 0) '(store 2 (measure (var "a")))) request!
+
+Program received signal SIGINT, Interrupt.
+0x0000000000400505 in main () at app.c:6
+6	  for(test_stop=1;test_stop;) {}
+Breakpoint 2 at 0x400540: file app.c, line 14.
+Continuing.
+result = INT:1
+Sending:{"result": null, "jsonrpc": "2.0", "id": "1"}
+Recieved 1024 bytes:"{"jsonrpc": "2.0", "params": "(gdb \"set test_stop=0\")", "method": "eval", "id": "1"}"
+
+Handling (gdb "set test_stop=0") request!
+
+Program received signal SIGINT, Interrupt.
+0x0000000000400505 in main () at app.c:6
+6	  for(test_stop=1;test_stop;) {}
+Continuing.
+result = VOID
+Sending:{"result": null, "jsonrpc": "2.0", "id": "1"}
+
+Breakpoint 1, main () at app.c:12
+12	  a=6;
+filename=app.c
+line=12
+Stop caught at app.c:12 !
+At the breakpoint for this event!
+getting var
+Entered: BE_get_variable
+Value of result = "5"
+Exited: BE_get_variable
+Event handled
+Continuing.
+
+Breakpoint 2, main () at app.c:14
+14	  a=8;
+filename=app.c
+line=14
+Stop caught at app.c:14 !
+At the breakpoint for this event!
+getting var
+Entered: BE_get_variable
+Value of result = "7"
+Exited: BE_get_variable
+Event handled
+Continuing.
+Recieved 1024 bytes:"{"jsonrpc": "2.0", "params": "(load 1)", "method": "eval", "id": "1"}"
+
+Handling (load 1) request!
+result = MEASUREMENT:M{type=1, measured=0, string_val="5", next=
+NULL
+}
+Sending:{"result": {"data": "5", "type": "string", "next": null}, "jsonrpc": "2.0", "id": "1"}
+Recieved 1024 bytes:"{"jsonrpc": "2.0", "params": "(load 2)", "method": "eval", "id": "1"}"
+
+Handling (load 2) request!
+result = MEASUREMENT:M{type=1, measured=0, string_val="7", next=
+NULL
+}
+Sending:{"result": {"data": "7", "type": "string", "next": null}, "jsonrpc": "2.0", "id": "1"}
+Recieved 1024 bytes:"{"jsonrpc": "2.0", "params": "(quit)", "method": "eval", "id": "1"}"
+
+Handling (quit) request!
+result = VOID
+Sending:{"result": null, "jsonrpc": "2.0", "id": "1"}

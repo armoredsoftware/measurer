@@ -1,5 +1,0 @@
-./app1.o &
-APP_PID=$!
-echo Hey
-echo $APP_PID
-kill -9 $APP_PID

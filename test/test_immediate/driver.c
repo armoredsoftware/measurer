@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <signal.h>
-#include "ME_test.c"
+#include "../ME_test.c"
 
 void main(int argc, char *argv[]) {
   test_init();
@@ -28,5 +28,7 @@ void main(int argc, char *argv[]) {
   
   DI_send_request(sockfd, "(quit)");
 
+  close(sockfd);
+  
   test_close();  
 }
