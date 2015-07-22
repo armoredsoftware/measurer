@@ -147,9 +147,9 @@ void BE_get_request()
   char request[1024];
 
   int n = ME_sock_recv(the_context.driverfd, request);
-
+ 
   if (n <= 0 || !(*request))
-    return;
+    return 1;
   
   //Parse out JSON
   json_t *root, *params;

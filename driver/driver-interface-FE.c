@@ -14,6 +14,8 @@
 #define clock history_clock
 #include <readline/history.h>
 
+#include <signal.h>
+
 int
 DI_init_measurer (void)
 {
@@ -150,8 +152,18 @@ void DI_get_measurer_response(int sockfd)
   free(message_type);
 }
 
+int sockfd_copy;
+void intHandler(int dummy) {
+  printf("Caught SIGINT!\n");
+  close(sockfd_copy);
+  exit(-1);
+}
+
 void DI_interactive_mode(int sockfd)
 {
+  signal(SIGINT, intHandler);
+  sockfd_copy = sockfd;
+  
   rl_bind_key('\t',rl_abort); //disable auto-complete
   
   char* line=0;

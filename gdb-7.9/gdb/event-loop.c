@@ -337,7 +337,7 @@ start_event_loop (void)
   BE_start_session(bec);
   
   while(1) {
-    BE_get_request(bec);
+    BE_get_request();
     BE_do_continuous(bec);
   }
 

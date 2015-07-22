@@ -46,7 +46,7 @@ RM = rm -f
 INSTALL = /bin/install -c
 INSTALL_DATA = /bin/install -c -m 644
 
-BUILD_DIR = /nfs/projects/zephyr/deadzone/ArmoredSoftware/measurer-pulldown/measurer/gdb-7.9/readline
+BUILD_DIR = /nfs/projects/zephyr/deadzone/ArmoredSoftware/ws/measurer/gdb-7.9/readline
 TEXINPUTDIR = $(srcdir)
 
 MAKEINFO    = LANGUAGE= makeinfo

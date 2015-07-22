@@ -100,18 +100,31 @@ int ME_sock_server_connect(void)
   printf("Listening for client...\n");
 
   listenfd = socket(AF_INET, SOCK_STREAM, 0);
+  if (listenfd < 0)
+  {
+    printf("ERROR: Could not create server socket!\n");
+    exit(1);
+  }
   memset(&serv_addr, '0', sizeof(serv_addr));
 
   serv_addr.sin_family = AF_INET;
   serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
   serv_addr.sin_port = htons(5000);
 
-  bind(listenfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr));
+  if (bind(listenfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr))) {
+    printf("ERROR: Could not bind server socket!\n");
+    exit(-1);
+  }
 
   listen(listenfd, 10);
-
+  
   connfd = accept(listenfd, (struct sockaddr*)NULL, NULL);
 
+  if (connfd < 0) {
+    printf("ERROR: Could not accept client!\n");
+    exit(-1);
+  }
+  
   printf("Connected to client!\n");
 
   fcntl(connfd, F_SETFL, O_NONBLOCK);
@@ -127,17 +140,22 @@ int ME_sock_recv(int sockfd, char * message)
   int n;
 
   memset(recvBuff, 0, sizeof(recvBuff));
-
+  
   n = read(sockfd, recvBuff, sizeof(recvBuff));
 
-  if (n <= 0)
-    {
-      //printf("\n Error: Read error!\n");
-      return n;
-    }
-
-  //printf("Recieved %d bytes:\"%s\"\n",n,message);
-
+  
+  if (n < 0) {
+    if (errno==EAGAIN) return n;
+    printf("\n Error: Read error [%d]!\n",errno);
+    exit(-1);
+  }
+  if (n == 0) {
+    printf("\n Driver closed!\n");
+    close(sockfd);
+    exit(-1);
+  }
+  printf("Recieved %d bytes:\"%s\"\n",n,recvBuff);
+      
   //recvBuff[strlen(recvBuff)-1] = 0;
 
   strcpy(message,recvBuff);
