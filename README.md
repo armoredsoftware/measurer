@@ -40,7 +40,7 @@ Launch the interactive driver:
 make build-measurer
 make run-driver
 ```
-Requests that can be issued to the measurer using the driver are described in the RLI documentation.
+Requests that can be issued to the measurer using the driver are described in the [RLI documentation](https://github.com/armoredsoftware/measurer/wiki/Measurer-RLI)
 
   Running the Unit Tests
 ----------------------------
