@@ -45,4 +45,12 @@ Requests that can be issued to the measurer using the client are described in th
   Running the Unit Tests
 ----------------------------
 
-Tests are in the test directory. Run instructions coming soon.
+Build the tests:
+```bash
+make build-test
+```
+
+Run the tests:
+```bash
+make run-test
+```
