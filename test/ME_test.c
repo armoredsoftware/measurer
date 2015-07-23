@@ -9,7 +9,7 @@ int test_assert_failed=0;
 void test_init() {
   char name;
   int  number;
-  f = fopen("test_out", "w");
+  f = fopen("test.out", "w");
 }
 void test_close() {
   char message[64];
