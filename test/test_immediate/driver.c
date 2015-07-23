@@ -8,11 +8,13 @@
 
 void main(int argc, char *argv[]) {
   test_init();
+
+  int port = atoi(argv[1]);
   
-  int sockfd = DI_init_measurer();
+  int sockfd = DI_init_measurer(port);
   char line[256];
   
-  sprintf(line, "(set_target %s)",argv[1]);
+  sprintf(line, "(set_target %s)",argv[2]);
   DI_send_request(sockfd, line);
   
   test_measurement(sockfd, "(measure (var \"a\"))", ME_measurement_create_string("45"));

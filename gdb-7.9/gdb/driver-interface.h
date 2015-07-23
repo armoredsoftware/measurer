@@ -3,6 +3,8 @@
 #include "ME_RLI_IR.h"
 #include "ME_common.h"
 
+int BE_port;
+
 struct BE_hook_array;
 typedef struct BE_hook_array {
   struct BE_hook * hooks[64]; //MAX hook array size???
@@ -37,7 +39,7 @@ extern void BE_hook_array_init();
 extern int BE_hook_array_add(struct BE_hook *);
 extern struct BE_hook * BE_hook_array_get(int);
 extern void BE_hook_array_handle(int, char *, int, int);
-  
+
 extern void BE_start_session();
 
 extern struct BE_Context * BE_context_create(void);

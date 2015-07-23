@@ -1,7 +1,7 @@
 extern char** str_split(char*, const char);
 extern void free_str_split(char**);
 
-extern int ME_sock_server_connect (void);
+extern int ME_sock_server_connect (int);
 extern int ME_sock_recv(int,char *);
 extern void ME_sock_send(int, char *);
 extern void ME_sock_recv_dynamic(int, int *, char **);

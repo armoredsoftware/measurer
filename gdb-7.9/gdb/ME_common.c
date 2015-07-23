@@ -92,7 +92,7 @@ void free_str_split(char **tokens) {
 SOCKET STUFF
 ======================================================*/
 
-int ME_sock_server_connect(void)
+int ME_sock_server_connect(int port)
 {
   int listenfd = 0, connfd = 0;
   struct sockaddr_in serv_addr;
@@ -109,7 +109,7 @@ int ME_sock_server_connect(void)
 
   serv_addr.sin_family = AF_INET;
   serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-  serv_addr.sin_port = htons(5000);
+  serv_addr.sin_port = htons(port);
 
   if (bind(listenfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr))) {
     printf("ERROR: Could not bind server socket!\n");

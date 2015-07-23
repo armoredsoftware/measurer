@@ -1,5 +1,11 @@
 echo "TEST: Launching measurer."
-../../gdb-7.9/gdb/gdb > measurer_out &
+PORT=$1
+if [ -z "$1" ]
+then
+    PORT=3000
+fi
+echo $PORT
+../../gdb-7.9/gdb/gdb --port=$PORT > measurer_out &
 GDB_PID=$!
 echo "TEST: Launching application."
 screen -d -m ./app.o > app_out &
@@ -8,7 +14,7 @@ do
     APP_PID=`pidof app.o`
 done
 echo "TEST: Launching attester."
-./driver.o $APP_PID > driver_out #&
+./driver.o $PORT $APP_PID > driver_out #&
 echo "TEST: Driver terminated"
 echo "TEST: Killing Application and Measurer"
 kill -9 $APP_PID

@@ -1,3 +1,4 @@
+
 echo "TEST: Launching measurer."
 PORT=$1
 if [ -z "$1" ]

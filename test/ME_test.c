@@ -1,5 +1,5 @@
 #include "../gdb-7.9/gdb/ME_common.c"
-#include "../driver/driver-interface-FE.c" 
+#include "../client/driver-interface-FE.c" 
 
 FILE *f;
 int test_assert_i=0;

@@ -18,4 +18,96 @@ Type "apropos word" to search for commands related to "word".
 	APPLICATION MEASURER
 =====================================
 Listening for client...
-ERROR: Could not bind server socket!
+Connected to client!
+Recieved 1024 bytes:"{"params": "(set_target 13208)", "method": "eval", "jsonrpc": "2.0", "id": "1"}"
+
+Handling (set_target 13208) request!
+ME_API_set_target(13208)
+Attaching to process 13208
+Reading symbols from /nfs/projects/zephyr/deadzone/ArmoredSoftware/ws/measurer/test/test_immediate/app.o...done.
+Reading symbols from /lib64/libc.so.6...(no debugging symbols found)...done.
+Reading symbols from /lib64/ld-linux-x86-64.so.2...(no debugging symbols found)...done.
+0x0000000000400513 in main () at app.c:8
+8	  for(test_stop=1;test_stop;) {}
+(gdb) Continuing.
+result = VOID
+Sending:{"jsonrpc": "2.0", "result": null, "id": "1"}
+Recieved 1024 bytes:"{"params": "(measure (var \"a\"))", "method": "eval", "jsonrpc": "2.0", "id": "1"}"
+
+Handling (measure (var "a")) request!
+
+Program received signal SIGINT, Interrupt.
+0x0000000000400513 in main () at app.c:8
+8	  for(test_stop=1;test_stop;) {}
+getting var
+Entered: BE_get_variable
+Value of result = "45"
+Exited: BE_get_variable
+Continuing.
+result = MEASUREMENT:M{type=1, measured=0, string_val="45", next=
+NULL
+}
+Sending:{"jsonrpc": "2.0", "result": {"type": "string", "data": "45", "next": null}, "id": "1"}
+Recieved 1024 bytes:"{"params": "(measure (var \"b\"))", "method": "eval", "jsonrpc": "2.0", "id": "1"}"
+
+Handling (measure (var "b")) request!
+
+Program received signal SIGINT, Interrupt.
+0x0000000000400513 in main () at app.c:8
+8	  for(test_stop=1;test_stop;) {}
+getting var
+Entered: BE_get_variable
+Value of result = "2"
+Exited: BE_get_variable
+Continuing.
+result = MEASUREMENT:M{type=1, measured=0, string_val="2", next=
+NULL
+}
+Sending:{"jsonrpc": "2.0", "result": {"type": "string", "data": "2", "next": null}, "id": "1"}
+Recieved 1024 bytes:"{"params": "(gdb \"set test_stop=0\")", "method": "eval", "jsonrpc": "2.0", "id": "1"}"
+
+Handling (gdb "set test_stop=0") request!
+
+Program received signal SIGINT, Interrupt.
+0x0000000000400513 in main () at app.c:8
+8	  for(test_stop=1;test_stop;) {}
+Continuing.
+result = VOID
+Sending:{"jsonrpc": "2.0", "result": null, "id": "1"}
+Recieved 1024 bytes:"{"params": "(measure (var \"a\"))", "method": "eval", "jsonrpc": "2.0", "id": "1"}"
+
+Handling (measure (var "a")) request!
+
+Program received signal SIGINT, Interrupt.
+0x000000000040052c in main () at app.c:10
+10	  for(test_stop=1;test_stop;) {}
+getting var
+Entered: BE_get_variable
+Value of result = "46"
+Exited: BE_get_variable
+Continuing.
+result = MEASUREMENT:M{type=1, measured=0, string_val="46", next=
+NULL
+}
+Sending:{"jsonrpc": "2.0", "result": {"type": "string", "data": "46", "next": null}, "id": "1"}
+Recieved 1024 bytes:"{"params": "(measure (var \"b\"))", "method": "eval", "jsonrpc": "2.0", "id": "1"}"
+
+Handling (measure (var "b")) request!
+
+Program received signal SIGINT, Interrupt.
+0x000000000040052c in main () at app.c:10
+10	  for(test_stop=1;test_stop;) {}
+getting var
+Entered: BE_get_variable
+Value of result = "2"
+Exited: BE_get_variable
+Continuing.
+result = MEASUREMENT:M{type=1, measured=0, string_val="2", next=
+NULL
+}
+Sending:{"jsonrpc": "2.0", "result": {"type": "string", "data": "2", "next": null}, "id": "1"}
+Recieved 1024 bytes:"{"params": "(quit)", "method": "eval", "jsonrpc": "2.0", "id": "1"}"
+
+Handling (quit) request!
+result = VOID
+Sending:{"jsonrpc": "2.0", "result": null, "id": "1"}

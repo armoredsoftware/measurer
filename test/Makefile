@@ -4,4 +4,4 @@ build-all:
 	@$(foreach dir,$(dirs),cd $(dir);make)
 
 run-all:
-	@$(foreach dir,$(dirs),cd $(dir);./run.sh)
+	@port=3000;$(foreach dir,$(dirs),cd $(dir);./run.sh $$port;let "port+=1")

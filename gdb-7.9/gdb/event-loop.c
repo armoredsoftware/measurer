@@ -334,7 +334,7 @@ start_event_loop (void)
   
   struct BE_Context * bec = BE_context_create();
   execute_command("set pagination off",0);
-  BE_start_session(bec);
+  BE_start_session();
   
   while(1) {
     BE_get_request();

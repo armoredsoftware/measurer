@@ -14,7 +14,7 @@ void main(int argc, char *argv[]) {
   int sockfd = DI_init_measurer(port);
   char line[256];
   
-  sprintf(line, "(set_target %s)",argv[2]);
+  sprintf(line, "(set_target %s)",argv[1]);
   DI_send_request(sockfd, line);
 
   DI_send_request(sockfd, "(hook (reach \"app.c\" 12 0) '(store 1 (measure (var \"a\"))))");

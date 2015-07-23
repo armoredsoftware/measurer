@@ -45,6 +45,8 @@
 #include "event-top.h"
 #include "infrun.h"
 
+#include "driver-interface.h"
+
 /* The selected interpreter.  This will be used as a set command
    variable, so it should always be malloc'ed - since
    do_setshow_command will free it.  */
@@ -439,6 +441,7 @@ captured_main (void *data)
   char *symarg = NULL;
   char *execarg = NULL;
   char *pidarg = NULL;
+  char *portarg = NULL;
   char *corearg = NULL;
   char *pid_or_core_arg = NULL;
   char *cdarg = NULL;
@@ -614,6 +617,8 @@ captured_main (void *data)
       {"c", required_argument, 0, 'c'},
       {"pid", required_argument, 0, 'p'},
       {"p", required_argument, 0, 'p'},
+      {"port", required_argument, 0, 'o'},
+      {"o", required_argument, 0, 'o'},
       {"command", required_argument, 0, 'x'},
       {"eval-command", required_argument, 0, 'X'},
       {"version", no_argument, &print_version, 1},
@@ -723,6 +728,9 @@ captured_main (void *data)
 	    break;
 	  case 'p':
 	    pidarg = optarg;
+	    break;
+	  case 'o':
+	    portarg = optarg;
 	    break;
 	  case 'x':
 	    {
@@ -1056,6 +1064,15 @@ captured_main (void *data)
     error (_("Can't attach to process and specify "
 	     "a core file at the same time."));
 
+  if (portarg) {
+    //set the port arg
+    BE_port = atoi(portarg);
+  }
+  else {
+    printf("ERROR: No port specified for measurer!\n");
+    exit(-1);
+  }
+  
   if (corearg != NULL)
     catch_command_errors (core_file_command, corearg,
 			  !batch_flag, RETURN_MASK_ALL);

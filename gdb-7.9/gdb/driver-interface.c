@@ -104,7 +104,7 @@ void BE_start_session()
     printf("Session already started!\n");
     exit(-1);
   }
-  the_context.driverfd = ME_sock_server_connect();
+  the_context.driverfd = ME_sock_server_connect(BE_port);
 }
 
 BE_Context * BE_context_create(void)
@@ -183,7 +183,10 @@ void BE_get_request()
   
   json_decref(root);
 
-  if (quitting) exit(-1);
+  if (quitting) {
+    close(the_context.driverfd);
+    exit(-1);
+  }
 
 }
 

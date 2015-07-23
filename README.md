@@ -31,16 +31,16 @@ make build-measurer
 
 Launch the Measurer:
 ```bash
-make run-measurer
+make run-measurer PORT=<port>
 ```
-A new measurer will wait for a driver to initiate communication and begin sending measurement requests.
+A new measurer will wait for a client to initiate communication and begin sending measurement requests.
 
-Launch the interactive driver:
+Launch the interactive client:
 ```bash
-make build-measurer
-make run-driver
+make build-client
+make run-client PORT=<port>
 ```
-Requests that can be issued to the measurer using the driver are described in the [RLI documentation](https://github.com/armoredsoftware/measurer/wiki/Measurer-RLI)
+Requests that can be issued to the measurer using the client are described in the [RLI documentation](https://github.com/armoredsoftware/measurer/wiki/Measurer-RLI)
 
   Running the Unit Tests
 ----------------------------

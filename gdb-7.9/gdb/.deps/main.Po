@@ -21,7 +21,7 @@ main.o: main.c defs.h common/common-defs.h config.h build-gnulib/config.h \
  event-loop.h interps.h main.h source.h cli/cli-cmds.h objfiles.h \
  gdb_obstack.h ../include/obstack.h gdb_bfd.h auto-load.h maint.h \
  ../include/filenames.h ../include/hashtab.h common/filestuff.h \
- event-top.h infrun.h
+ event-top.h infrun.h driver-interface.h ME_RLI_IR.h ME_common.h
 
 defs.h:
 
@@ -208,3 +208,9 @@ common/filestuff.h:
 event-top.h:
 
 infrun.h:
+
+driver-interface.h:
+
+ME_RLI_IR.h:
+
+ME_common.h:
