@@ -1,6 +1,6 @@
 current_dir = $(shell pwd)
 
-all: build-measurer build-test build-driver
+all: build-measurer build-test build-client
 
 configure-measurer:
 	cd gdb-7.9; make clean; ./configure
@@ -12,33 +12,28 @@ syscall-measurer:
 build-measurer:
 	cd gdb-7.9; make
 
-build-driver:
-	cd driver; make
+build-client:
+	cd client; make
 
 build-test:
 	cd test; make
 
 run-measurer:
-	./gdb-7.9/gdb/gdb
+	./gdb-7.9/gdb/gdb --port=${PORT}
 
-run-driver:
-	cd driver; make run-driver1
+run-client:
+	./client/client.o ${PORT}
 
-run-test:
-	cd test; make run-test2
+make run-test:
+	cd test; make run-all
 
-run-all:
-	gnome-terminal --hide-menubar --title="Measurer" -x bash -c "make run-measurer; echo \"JOBS DONE.\"; read"
-	gnome-terminal --hide-menubar --title="Application" -x bash -c "make run-test; echo \"JOBS DONE.\"; read"
-	gnome-terminal --hide-menubar --title="Driver" -x bash -c "echo \"pidof test2\"; pidof test2; make run-driver; echo \"JOBS DONE.\"; read"
-
-clean: clean-measurer clean-driver clean-test
+clean: clean-measurer clean-client clean-test
 
 clean-measurer:
 	cd gdb-7.9; make clean
 
-clean-driver:
-	cd driver; make clean
+clean-client:
+	cd client; make clean
 
 clean-test:
 	cd test; make clean
