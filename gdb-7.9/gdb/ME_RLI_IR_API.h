@@ -1,3 +1,6 @@
+#ifndef _ME_RLI_IR_API_
+#define _ME_RLI_IR_API_
+
 #include "ME_RLI_IR.h"
 
 typedef struct ME_RLI_IR_value (*ME_RLI_API_func)(struct ME_RLI_IR_value *, int);
@@ -30,3 +33,4 @@ extern struct ME_RLI_IR_value ME_RLI_IR_API_gdb(struct ME_RLI_IR_value *, int);
 extern struct ME_RLI_IR_value ME_RLI_IR_API_check_args(enum ME_RLI_IR_value_type *, int, struct ME_RLI_IR_value *, int);
 extern ME_RLI_API_func ME_RLI_API_func_look_up(char *);
 
+#endif
