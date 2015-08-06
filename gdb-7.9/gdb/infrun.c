@@ -3333,25 +3333,30 @@ fetch_inferior_event_JG (char ** filename, int * line, int * bp_id)
       //bpstat_print (tp->control.stop_bpstat, ecs->ws.kind);  
       //print_stack_frame (get_selected_frame (NULL), 0, SRC_AND_LOC, 1); 
       //print_frame_JG(get_selected_frame(NULL));
-      BE_get_file_and_line(get_selected_frame(NULL), filename, line); //TODO - not necessary anymore
-      struct thread_info *tp = inferior_thread();
-      bpstat bs = tp->control.stop_bpstat;
-      struct breakpoint *b = bs->breakpoint_at;
-      (*bp_id) = b->number; 
-      ret = 1;
+
+	if (!target_has_execution || ecs->ws.kind == TARGET_WAITKIND_EXITED) 
+	  ret = 2;
+	else {
+	  BE_get_file_and_line(get_selected_frame(NULL), filename, line); //TODO - not necessary anymore
+	  struct thread_info *tp = inferior_thread();
+	  bpstat bs = tp->control.stop_bpstat;
+	  struct breakpoint *b = bs->breakpoint_at;
+	  (*bp_id) = b->number; 
+	  ret = 1;
+	}
       
       if (target_has_execution
 	  && ecs->ws.kind != TARGET_WAITKIND_NO_RESUMED
 	  && ecs->ws.kind != TARGET_WAITKIND_EXITED
 	  && ecs->ws.kind != TARGET_WAITKIND_SIGNALLED
 	  && ecs->event_thread->step_multi
-	  && ecs->event_thread->control.stop_step)
+	  && ecs->event_thread->control.stop_step) {
+    
 	inferior_event_handler (INF_EXEC_CONTINUE, NULL);
-      else
-	{
-	  inferior_event_handler (INF_EXEC_COMPLETE, NULL);
-	  cmd_done = 1;
-	}
+      } else {
+	inferior_event_handler (INF_EXEC_COMPLETE, NULL);
+	cmd_done = 1;
+      }
     }
 
   /* No error, don't finish the thread states yet.  */

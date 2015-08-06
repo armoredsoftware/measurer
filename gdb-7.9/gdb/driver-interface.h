@@ -18,6 +18,7 @@ typedef struct BE_Context
 {
   bool attached;
   bool stopped;
+  bool exited;
   int PID;
   int driverfd;
   bool CG_tracking;

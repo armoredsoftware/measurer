@@ -82,21 +82,6 @@ BE_hook * BE_hook_array_get(int i) {
   CONTEXT STUFF
   ====================================================*/
 
-/*typedef struct BE_Context
-{
-  bool attached;
-  bool stopped;
-  char * PID;
-  int driverfd;
-  bool CG_tracking;
-  clock_t CG_lasttime;
-  ME_CG * CG;
-  ME_FT * FT;
-
-  BE_hook * et;
-}
-BE_Context;*/
-
 void BE_start_session()
 {
   if (the_context.driverfd!=-1)
@@ -111,6 +96,7 @@ BE_Context * BE_context_create(void)
 {
   the_context.attached = false;
   the_context.stopped = false;
+  the_context.exited = false;
   the_context.PID = -1;
   the_context.driverfd = -1;
   the_context.CG_tracking = false;
@@ -219,7 +205,7 @@ void BE_update_callgraph()
 void BE_do_continuous()
 {
   
-  if (!the_context.attached) {
+  if (!the_context.attached || the_context.exited) {
     return;
   }
 
@@ -227,14 +213,18 @@ void BE_do_continuous()
   char * filename = NULL;
   int line = -1;
   int bp_id;
-  int breaked = fetch_inferior_event_JG(&filename, &line, &bp_id);
-  if (breaked) {
+  int exec_state = fetch_inferior_event_JG(&filename, &line, &bp_id);
+  if (exec_state == 1) {
     the_context.stopped = true;
     printf("Stop caught at %s:%d !\n", filename, line);
+  } else if (exec_state == 2) {
+      printf("Stop exit caught!\n", filename, line);
+      the_context.exited = true;
+      return;
   }
 
   //Check events
-  BE_hook_array_handle(breaked, filename, line, bp_id);
+  BE_hook_array_handle(exec_state, filename, line, bp_id);
 
   if (the_context.stopped) {
     continue_command_JG();
@@ -441,7 +431,7 @@ void ME_API_detach()
 
 void ME_API_quit()
 {
-  if (the_context.attached) {
+  if (the_context.attached && !the_context.exited) {
     ME_API_detach();
   }
   quitting = 1;
@@ -452,51 +442,15 @@ void ME_API_print_context()
   BE_context_print(&the_context);
 }
 
-ME_measurement * ME_API_measure_callstack()
-{
-  ME_measurement * ms = NULL;
-  
-  if (!the_context.attached) {
-    printf("Not attached to a process!\n");
-    return;
-  }
-
-  bool stopped_here = false;
-  if (!the_context.stopped) {
-    //Interrupt Inferior
-    execute_command("interrupt",0);
-    wait_for_inferior(); 
-    normal_stop();
-    stopped_here = true;
-  }
- 
-  //Measure Callstack
-  printf("getting callstack\n");
-  struct ME_CG * stack;
-  struct ME_FT * ft = ME_FT_create();
-  printf("before\n");
-  BE_get_call_stack_as_CG(NULL, 0, 0, 1, &stack, ft);
-  printf("after\n");
-
-  if (stopped_here) {
-    //Continue Inferior
-    continue_command_JG();
-  }
-    
-  //Create and return measurement
-  ms = ME_measurement_create(ME_MEASUREMENT_CALLSTACK);
-  ms->data.cgft.cg = stack;
-  ms->data.cgft.ft = ft;
-
-  return ms;
-}
-
 ME_measurement * ME_API_measure(ME_feature * feature)
 {
   ME_measurement * ms;
   
   if (!the_context.attached) {
     printf("Not attached to a process!\n");
+    return NULL;
+  } else if (the_context.exited) {
+    printf("Process has exited!\n");
     return NULL;
   }
 
@@ -618,6 +572,8 @@ BE_event * ME_API_reach_syscall(char * syscall, int repeat) {
 int ME_API_hook(struct BE_event * event, struct ME_RLI_IR_expr * action) {
   if (!the_context.attached) {
     return -1;
+  } else if (the_context.exited) {
+    return -1;
   }
 
   BE_hook * hook = (BE_hook *)malloc(sizeof(BE_hook));
@@ -657,6 +613,9 @@ void ME_API_gdb(char * command) {
   
   if (!the_context.attached) {
     printf("Not attached to a process!\n");
+    return NULL;
+  } else if (the_context.exited) {
+    printf("Process has exited!\n");
     return NULL;
   }
 
