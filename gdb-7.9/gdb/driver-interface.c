@@ -408,8 +408,17 @@ void ME_API_set_target(int target_PID)
   //Attach to process
 
   char PID_str[64];
-  sprintf(PID_str, "%d", target_PID);  
-  attach_command(PID_str,1);
+  sprintf(PID_str, "%d", target_PID);
+
+  volatile struct gdb_exception ex;
+  TRY_CATCH (ex, RETURN_MASK_ERROR ) {
+    attach_command(PID_str,1);
+  }
+  if (ex.reason < 0) {
+    printf("Failed to attach to process %d!\n",target_PID);
+    return;
+  }
+  
   gdb_do_one_event ();
 
   the_context.attached = true;
