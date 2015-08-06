@@ -16,14 +16,15 @@ void main(int argc, char *argv[]) {
   
   sprintf(line, "(set_target %s)",argv[2]);
   DI_send_request(sockfd, line);
+
+  test_start(sockfd);
   
   test_measurement(sockfd, "(measure (var \"a\"))", ME_measurement_create_string("45"));
   
   test_measurement(sockfd, "(measure (var \"b\"))", ME_measurement_create_string("2"));
+
+  test_continue(sockfd);
   
-  sprintf(line, "(gdb \"set test_stop=0\")");
-  DI_send_request(sockfd, line);
-    
   test_measurement(sockfd, "(measure (var \"a\"))", ME_measurement_create_string("46"));
   
   test_measurement(sockfd, "(measure (var \"b\"))", ME_measurement_create_string("2"));

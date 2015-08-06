@@ -8,7 +8,7 @@ echo $PORT
 ../../gdb-7.9/gdb/gdb --port=$PORT > measurer.out &
 GDB_PID=$!
 echo "TEST: Launching application."
-screen -d -m ./app.o > app.out &
+screen -d -m env LD_PRELOAD=`pwd`/../../prestop/prestop.so ./app.o > app.out &
 while [ "$APP_PID" = "" ]
 do
     APP_PID=`pidof app.o`

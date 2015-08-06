@@ -17,13 +17,14 @@ void main(int argc, char *argv[]) {
   sprintf(line, "(set_target %s)",argv[2]);
   DI_send_request(sockfd, line);
 
-  DI_send_request(sockfd, "(hook (reach \"app.c\" 12 0) '(store 1 (measure (var \"a\"))))");
-  DI_send_request(sockfd, "(hook (reach \"app.c\" 14 0) '(store 2 (measure (var \"a\"))))");
+  DI_send_request(sockfd, "(hook (reach \"app.c\" 11 0) '(store 1 (measure (var \"a\"))))");
+  DI_send_request(sockfd, "(hook (reach \"app.c\" 13 0) '(store 2 (measure (var \"a\"))))");
   
-  test_continue(sockfd);
+  sprintf(line, "(gdb \"set start_stop=0\")",argv[2]);
+  DI_send_request(sockfd, line);
 
   sleep(1);
-  
+
   test_measurement(sockfd, "(load 1)", ME_measurement_create_string("5"));
   
   test_measurement(sockfd, "(load 2)", ME_measurement_create_string("7"));

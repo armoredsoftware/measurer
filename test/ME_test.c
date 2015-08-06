@@ -43,3 +43,7 @@ void test_measurement(int sockfd, char * request, ME_measurement * mse) {
 void test_continue(int sockfd) {
   DI_send_request(sockfd, "(gdb \"set test_stop=0\")"); 
 }
+
+void test_start(int sockfd) {
+  DI_send_request(sockfd, "(gdb \"set start_stop=0\")"); 
+}

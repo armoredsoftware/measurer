@@ -3,7 +3,6 @@
 int test_stop;
   
 void main() {
-  for(test_stop=1;test_stop;) {}
   int a = 1;
   a=2;
   a=3;
