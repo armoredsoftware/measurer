@@ -156,7 +156,7 @@ void BE_get_request()
   json_error_t error;
   root = json_loads(request, 0, &error);
   params = json_object_get(root,"params");
-  char * RLI_expr = json_string_value(params);
+  char * RLI_expr = json_string_value(json_array_get(params,0));
   
   ME_RLI_IR_value value_result = BE_rhandler_dispatch(RLI_expr);
 

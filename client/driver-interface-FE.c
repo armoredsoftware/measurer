@@ -68,7 +68,9 @@ ME_measurement * DI_send_request(int sockfd, char * request)
   root = json_object();
   json_object_set_new(root, "jsonrpc", json_string("2.0"));
   json_object_set_new(root, "method", json_string("eval"));
-  json_object_set_new(root, "params", json_string(request));   
+  json_t *param_array = json_array();
+  json_array_append(param_array,json_string(request));
+  json_object_set_new(root, "params", param_array);   
   json_object_set_new(root, "id", json_string("1"));
 
   char * send = json_dumps(root, 0);
