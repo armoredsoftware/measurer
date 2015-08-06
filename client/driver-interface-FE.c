@@ -82,7 +82,7 @@ ME_measurement * DI_send_request(int sockfd, char * request)
   char response[1024];
   int n = ME_sock_recv(sockfd, response);
 
-  printf("Recieved:%s\n",response);
+  printf("Received:%s\n",response);
 
   root = json_loads(response, 0, &error);
   result = json_object_get(root,"result"); 
@@ -140,7 +140,7 @@ void DI_get_measurer_response(int sockfd)
     ME_CG_delete(decoded_cg);
   }
   else if (message_type[0]==2) {
-    ME_measurement * ms = ME_measurement_recieve(sockfd);
+    ME_measurement * ms = ME_measurement_receive(sockfd);
     ME_measurement_print(ms);
     //DELETE measurement...
   }

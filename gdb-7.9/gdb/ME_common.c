@@ -154,7 +154,7 @@ int ME_sock_recv(int sockfd, char * message)
     close(sockfd);
     exit(-1);
   }
-  printf("Recieved %d bytes:\"%s\"\n",n,recvBuff);
+  printf("Received %d bytes:\"%s\"\n",n,recvBuff);
       
   //recvBuff[strlen(recvBuff)-1] = 0;
 
@@ -194,7 +194,7 @@ void ME_sock_recv_dynamic(int sockfd, int * n, char ** message)
 
   n2 = read(sockfd, (*message), sizeof(char)*(*n));
 
-  //printf("Recieved %d bytes:\"%s\"\n",(*n),(*message));
+  //printf("Received %d bytes:\"%s\"\n",(*n),(*message));
   
 }
 
@@ -846,7 +846,7 @@ void ME_measurement_send_temp(int sockfd, struct ME_measurement * ms) {
   ME_measurement_send(sockfd, ms);
 }
 
-ME_measurement * ME_measurement_recieve(int sockfd) {
+ME_measurement * ME_measurement_receive(int sockfd) {
 
   int message_type_size;
   char * message_type=NULL;   
@@ -890,10 +890,10 @@ ME_measurement * ME_measurement_recieve(int sockfd) {
   else if (ms->type == ME_MEASUREMENT_STRING) {
     ME_sock_recv_dynamic(sockfd, &string_val_count, &string_val);
     ms->data.string_val = string_val;
-    //printf("String val recieved is \"%s\"\n",string_val);
+    //printf("String val received is \"%s\"\n",string_val);
   }
   
-  ms->next = ME_measurement_recieve(sockfd);
+  ms->next = ME_measurement_receive(sockfd);
 
 }
 

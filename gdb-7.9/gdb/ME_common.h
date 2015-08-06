@@ -47,7 +47,7 @@ extern void ME_measurement_delete(struct ME_measurement *);
 extern void ME_measurement_print(struct ME_measurement *);
 extern void ME_measurement_send(int, struct ME_measurement *);
 extern void ME_measurement_send_temp(int, struct ME_measurement *);
-extern struct ME_measurement * ME_measurement_recieve(int);
+extern struct ME_measurement * ME_measurement_receive(int);
 
 enum ME_feature_type;
 struct ME_feature;
