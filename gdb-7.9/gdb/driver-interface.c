@@ -143,6 +143,7 @@ void BE_get_request()
   root = json_loads(request, 0, &error);
   params = json_object_get(root,"params");
   char * RLI_expr = json_string_value(json_array_get(params,0));
+  json_t *id_copy = json_copy(json_object_get(root,"id"));
   
   ME_RLI_IR_value value_result = BE_rhandler_dispatch(RLI_expr);
 
@@ -160,7 +161,7 @@ void BE_get_request()
   }
 
 
-  json_object_set_new(root, "id", json_string("1"));
+  json_object_set_new(root, "id", id_copy);
 
   char * response;
   response = json_dumps( root, 0 );

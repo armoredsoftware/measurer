@@ -59,7 +59,7 @@ DI_init_measurer (int port)
   return sockfd;
 }
 
-
+int request_id = 1;
 ME_measurement * DI_send_request(int sockfd, char * request)
 {
   //build JSON and send
@@ -71,8 +71,9 @@ ME_measurement * DI_send_request(int sockfd, char * request)
   json_t *param_array = json_array();
   json_array_append(param_array,json_string(request));
   json_object_set_new(root, "params", param_array);   
-  json_object_set_new(root, "id", json_string("1"));
-
+  json_object_set_new(root, "id", json_integer(request_id));
+  request_id++;
+  
   char * send = json_dumps(root, 0);
   
   ME_sock_send(sockfd, send);
