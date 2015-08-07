@@ -1254,8 +1254,9 @@ char * BE_get_variable (const char *exp, int voidprint)
     {
       expr = parse_expression (exp);
       if (!expr) {
-	result = (char*)malloc(sizeof(char) * 64); //max length?...
-	strcpy(result, "Could not parse!");	
+	//result = (char*)malloc(sizeof(char) * 64); //max length?...
+	printf("Failure to parse\n");
+	//strcpy(result, "Could not parse!");	
 	return result;
 
       }

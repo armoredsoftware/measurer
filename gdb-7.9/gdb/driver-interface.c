@@ -349,49 +349,6 @@ void BE_hook_handle(BE_hook * hook) {
   }
 }
 
-void BE_ehandler_print()
-{
-  BE_context_print();
-}
-
-void BE_ehandler_measure_callstack(BE_hook * ev)
-{  
-  if (!the_context.attached || !the_context.stopped) {
-    printf("Not attached to a process!\n");
-    return;
-  }
-  
-  struct ME_CG * stack;
-  struct ME_FT * ft = ME_FT_create();
-  printf("before\n");
-  BE_get_call_stack_as_CG(NULL, 0, 0, 1, &stack, ft);
-  printf("after\n");
-
-  ME_measurement * ms = ME_measurement_create(ME_MEASUREMENT_CALLSTACK);
-  ms->data.cgft.cg = stack;
-  ms->data.cgft.ft = ft;
-
-  //BE_hook_add_measurement(ev, ms);
-  
-}
-
-void BE_ehandler_measure_variable(BE_hook * ev)
-{
-  if (!the_context.attached || !the_context.stopped) {
-    printf("Not attached to a process!\n");
-    return;
-  }
-
-  /*char * value = BE_get_variable(ev->feature.expr, 0);
-  printf("Value of %s = %s\n", ev->feature.expr, value);
-    
-  ME_measurement * ms = ME_measurement_create(ME_MEASUREMENT_STRING);
-  ms->data.string_val = value;
-
-  BE_hook_add_measurement(ev, ms);
-  */
-}
-
 /*====================================================
   API STUFF
   ====================================================*/
@@ -487,7 +444,24 @@ ME_measurement * ME_API_measure(ME_feature * feature)
     ms->data.cgft.ft = ft;
   } else if (feature->type == ME_FEATURE_VARIABLE) {
     printf("getting var\n");
-    char * value = BE_get_variable(feature->fdata.var_name, 0);
+    char * value=NULL;
+    while (value==NULL) {
+     value = BE_get_variable(feature->fdata.var_name, 0);
+     if (value==NULL) {
+       printf("Could not find, moving up!\n");
+
+       volatile struct gdb_exception ex;
+       TRY_CATCH (ex, RETURN_MASK_ERROR ) {
+	 execute_command("up",0);
+       }
+       if (ex.reason < 0) {
+	 printf("Couldn't go up a frame!\n");
+	 value = (char*)malloc(sizeof(char) * 64); //max length?...
+	 strcpy(value, "Could not find variable!"); 
+       }
+       
+     }
+    }
     
     ms = ME_measurement_create(ME_MEASUREMENT_STRING);
     ms->data.string_val = value;
