@@ -1278,9 +1278,10 @@ char * BE_get_variable (const char *exp, int voidprint)
       
       result = (char*)malloc(sizeof(char) * 64); //max length?...
       FILE *stream;
-      stream = fmemopen (result, strlen (result), "w");
+      stream = fmemopen (result, sizeof(char)*64, "w");
       struct ui_file *temp = stdio_fileopen(stream);
       print_formatted (val, fmt.size, &opts, temp);
+      print_formatted (val, fmt.size, &opts, gdb_stdout);
       fclose(stream);
       free(temp);//free ui_file or something???
             
