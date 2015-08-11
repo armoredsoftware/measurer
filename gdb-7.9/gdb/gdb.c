@@ -23,6 +23,7 @@
 int
 main (int argc, char **argv)
 {
+  printf("=====================================\n\tAPPLICATION MEASURER\n=====================================\n");
   struct captured_main_args args;
 
   memset (&args, 0, sizeof args);

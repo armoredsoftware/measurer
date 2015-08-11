@@ -591,7 +591,7 @@ command_line_handler (char *rl)
 	 input expected to complete the command.  So, we need to
 	 print an empty prompt here.  */
       more_to_come = 1;
-      display_gdb_prompt ("");
+      //display_gdb_prompt ("");
       return;
     }
 
@@ -970,7 +970,7 @@ handle_stop_sig (int sig)
 static void
 async_stop_sig (gdb_client_data arg)
 {
-  char *prompt = get_prompt ();
+  //char *prompt = get_prompt ();
 
 #if STOP_SIGNAL == SIGTSTP
   signal (SIGTSTP, SIG_DFL);
@@ -989,7 +989,7 @@ async_stop_sig (gdb_client_data arg)
 #else
   signal (STOP_SIGNAL, handle_stop_sig);
 #endif
-  printf_unfiltered ("%s", prompt);
+  //  printf_unfiltered ("%s", prompt);
   gdb_flush (gdb_stdout);
 
   /* Forget about any previous command -- null line now will do

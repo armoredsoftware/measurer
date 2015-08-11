@@ -916,15 +916,15 @@ captured_main (void *data)
      installed.  Otherwize the help/version messages will be eaten by
      the interpreter's output handler.  */
 
-  if (print_version)
+  /*if (print_version)
     {
       print_gdb_version (gdb_stdout);
       wrap_here ("");
       printf_filtered ("\n");
       exit (0);
-    }
+      }*/
 
-  if (print_help)
+  /*if (print_help)
     {
       print_gdb_help (gdb_stdout);
       fputs_unfiltered ("\n", gdb_stdout);
@@ -937,24 +937,21 @@ captured_main (void *data)
       wrap_here ("");
       printf_filtered ("\n");
       exit (0);
-    }
+      }*/
 
   /* FIXME: cagney/2003-02-03: The big hack (part 1 of 2) that lets
      GDB retain the old MI1 interpreter startup behavior.  Output the
      copyright message before the interpreter is installed.  That way
      it isn't encapsulated in MI output.  */
-  if (!quiet && strcmp (interpreter_p, INTERP_MI1) == 0)
+  /*if (!quiet && strcmp (interpreter_p, INTERP_MI1) == 0)
     {
-      /* Print all the junk at the top, with trailing "..." if we are
-         about to read a symbol file (possibly slowly).  */
       print_gdb_version (gdb_stdout);
       if (symarg)
 	printf_filtered ("..");
       wrap_here ("");
       printf_filtered ("\n");
-      gdb_flush (gdb_stdout);	/* Force to screen during slow
-				   operations.  */
-    }
+      gdb_flush (gdb_stdout);
+   }*/
 
   /* Install the default UI.  All the interpreters should have had a
      look at things by now.  Initialize the default interpreter.  */
@@ -970,22 +967,19 @@ captured_main (void *data)
       error (_("Interpreter `%s' failed to initialize."), interpreter_p);
   }
 
-  /* FIXME: cagney/2003-02-03: The big hack (part 2 of 2) that lets
+  /* FXME: cagney/2003-02-03: The big hack (part 2 of 2) that lets
      GDB retain the old MI1 interpreter startup behavior.  Output the
      copyright message after the interpreter is installed when it is
      any sane interpreter.  */
-  if (!quiet && !current_interp_named_p (INTERP_MI1))
+  /*if (!quiet && !current_interp_named_p (INTERP_MI1))
     {
-      /* Print all the junk at the top, with trailing "..." if we are
-         about to read a symbol file (possibly slowly).  */
       print_gdb_version (gdb_stdout);
       if (symarg)
 	printf_filtered ("..");
       wrap_here ("");
       printf_filtered ("\n");
-      gdb_flush (gdb_stdout);	/* Force to screen during slow
-				   operations.  */
-    }
+      gdb_flush (gdb_stdout); 
+      }*/
 
   /* Set off error and warning messages with a blank line.  */
   xfree (warning_pre_print);

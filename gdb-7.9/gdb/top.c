@@ -76,7 +76,7 @@ extern void initialize_all_files (void);
 /* Default command line prompt.  This is overriden in some configs.  */
 
 #ifndef DEFAULT_PROMPT
-#define DEFAULT_PROMPT	"(gdb) "
+#define DEFAULT_PROMPT	""
 #endif
 
 /* Initialization file name for gdb.  This is host-dependent.  */
@@ -540,15 +540,15 @@ execute_command_to_string (char *p, int from_tty)
 
 void
 command_loop (void)
-{
+{  
   struct cleanup *old_chain;
   char *command;
   int stdin_is_tty = ISATTY (stdin);
 
   while (instream && !feof (instream))
     {
-      if (window_hook && instream == stdin)
-	(*window_hook) (instream, get_prompt ());
+      //if (window_hook && instream == stdin)
+      //(*window_hook) (instream, get_prompt ());
 
       clear_quit_flag ();
       if (instream == stdin && stdin_is_tty)
@@ -556,9 +556,9 @@ command_loop (void)
       old_chain = make_cleanup (null_cleanup, 0);
 
       /* Get a command-line.  This calls the readline package.  */
-      command = command_line_input (instream == stdin ?
-				    get_prompt () : (char *) NULL,
-				    instream == stdin, "prompt");
+      //command = command_line_input (instream == stdin ?
+      //			    get_prompt () : (char *) NULL,
+      //			    instream == stdin, "prompt");
       if (command == 0)
 	{
 	  do_cleanups (old_chain);

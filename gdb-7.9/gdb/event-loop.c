@@ -323,14 +323,8 @@ gdb_do_one_event (void)
 void
 start_event_loop (void)
 {
-  /* Loop until there is nothing to do.  This is the entry point to
-     the event loop engine.  gdb_do_one_event will process one event
-     for each invocation.  It blocks waiting for an event and then
-     processes it.  */
-
+  
   int c = 0;
-
-  printf("\n\n=====================================\n\tAPPLICATION MEASURER\n=====================================\n");
   
   struct BE_Context * bec = BE_context_create();
   execute_command("set pagination off",0);
@@ -340,74 +334,7 @@ start_event_loop (void)
     BE_get_request();
     BE_do_continuous(bec);
   }
-
-  //delete context!!!
   
-  while (1)
-    {
-      volatile struct gdb_exception ex;
-      int result = 0;
-
-      TRY_CATCH (ex, RETURN_MASK_ALL)
-	{
-	  printf("TRY_CATCH...\n");
-	  if (c==0) {
-	    attach_command("7577",1);
-	    //wait_for_inferior();
-	    //normal_stop();
-	  } else if (c==1) {
-	    result = gdb_do_one_event ();
-	  } else if (c==2) {
-	    break_command("test1.c:10",1);
-	    while (1) {
-	      printf("================\n");
-	      execute_command("c",1);
-
-	      wait_for_inferior();
-	      normal_stop();
-	    
-	      printf("-----------------\n");
-	    
-	      print_command_JG1("c",1);
-
-	      printf("================\n");
-	    
-	    }
-
-	  } else {
-	    result = gdb_do_one_event ();
-	  } 
-	  c++;
-	}
-      if (ex.reason < 0)
-	{
-	  exception_print (gdb_stderr, ex);
-
-	  /* If any exception escaped to here, we better enable
-	     stdin.  Otherwise, any command that calls async_disable_stdin,
-	     and then throws, will leave stdin inoperable.  */
-	  async_enable_stdin ();
-	  /* If we long-jumped out of do_one_event, we probably didn't
-	     get around to resetting the prompt, which leaves readline
-	     in a messed-up state.  Reset it here.  */
-	  observer_notify_command_error ();
-	  /* This call looks bizarre, but it is required.  If the user
-	     entered a command that caused an error,
-	     after_char_processing_hook won't be called from
-	     rl_callback_read_char_wrapper.  Using a cleanup there
-	     won't work, since we want this function to be called
-	     after a new prompt is printed.  */
-	  if (after_char_processing_hook)
-	    (*after_char_processing_hook) ();
-	  /* Maybe better to set a flag to be checked somewhere as to
-	     whether display the prompt or not.  */
-	}
-      if (result < 0)
-	break;
-    }
-
-  /* We are done with the event loop.  There are no more event sources
-     to listen to.  So we exit GDB.  */
   return;
 }
 
