@@ -3,14 +3,14 @@ current_dir = $(shell pwd)
 all: build-measurer build-test build-client
 
 configure-measurer:
-	cd gdb-7.9; make clean; ./configure
-	cp gdb-7.9/patch/Makefile gdb-7.9/gdb/
+	cd mssrd; make clean; ./configure
+	cp mssrd/patch/Makefile mssrd/gdb/
 
 syscall-measurer:
-	sudo ln -s `pwd`/gdb-7.9/gdb /usr/local/share/gdb
+	sudo ln -s `pwd`/mssrd/gdb /usr/local/share/gdb
 
 build-measurer:
-	cd gdb-7.9; make
+	cd mssrd; make
 
 build-client:
 	cd client; make
@@ -19,10 +19,10 @@ build-test:
 	cd test; make
 
 run-measurer:
-	./gdb-7.9/gdb/gdb --port=${PORT}
+	./mssrd/gdb/mssrd --port=${PORT}
 
 run-client:
-	./client/client.o ${PORT}
+	./mssr/mssr ${PORT}
 
 make run-test:
 	cd test; make run-all
@@ -30,10 +30,10 @@ make run-test:
 clean: clean-measurer clean-client clean-test
 
 clean-measurer:
-	cd gdb-7.9; make clean
+	cd msrrd; make clean
 
 clean-client:
-	cd client; make clean
+	cd msrr; make clean
 
 clean-test:
 	cd test; make clean

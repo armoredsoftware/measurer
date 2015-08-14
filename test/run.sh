@@ -5,7 +5,7 @@ then
     PORT=3000
 fi
 echo $PORT
-../../gdb-7.9/gdb/gdb --port=$PORT > measurer.out &
+../../msrrd/gdb/msrrd --port=$PORT > measurer.out &
 GDB_PID=$!
 echo "TEST: Launching application."
 screen -d -m env LD_PRELOAD=`pwd`/../../prestop/prestop.so ./app.o > app.out &
