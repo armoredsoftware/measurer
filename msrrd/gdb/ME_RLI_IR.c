@@ -1,65 +1,16 @@
+#ifndef JASON_CLIENT
+#include "defs.h"
+#endif
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
 
+#include <jansson.h>
+
 #include "ME_RLI_IR.h"
 #include "ME_RLI_IR_API.h"
-
-/*typedef struct ME_RLI_token {
-  char value[MAX_TOKEN_LENGTH];
-  struct ME_RLI_token * next;
-  } ME_RLI_token;*/
-
-typedef enum ME_RLI_IR_value_type {
-  ME_RLI_IR_VALUE_INT, ME_RLI_IR_VALUE_STRING, ME_RLI_IR_VALUE_VOID, ME_RLI_IR_VALUE_LEXPR,
-  ME_RLI_IR_VALUE_MEASUREMENT, ME_RLI_IR_VALUE_EVENT, ME_RLI_IR_VALUE_FEATURE, ME_RLI_IR_VALUE_ERROR
-}
-ME_RLI_IR_value_type;
-
-typedef struct ME_RLI_IR_value {
-  ME_RLI_IR_value_type type; 
-  union vdata {
-    int int_val;
-    char string_val[MAX_STRING_LENGTH];
-    struct ME_RLI_IR_expr * lexpr;
-    struct ME_measurement * ms;
-    struct BE_event * event;
-    struct ME_feature * feature;
-    char error_desc[MAX_STRING_LENGTH];
-  } vdata;
-}
-ME_RLI_IR_value;
-
-typedef enum ME_RLI_IR_expr_type {
-  ME_RLI_IR_EXPR_VALUE, ME_RLI_IR_EXPR_FUNC
-}
-ME_RLI_IR_expr_type;
-
-typedef struct ME_RLI_IR_expr {
-  ME_RLI_IR_expr_type type;
-  union expr_data {
-    struct ME_RLI_IR_value * value;
-    struct ME_RLI_IR_func * func;
-  } data;
-}
-ME_RLI_IR_expr;
-
-/*typedef struct ME_RLI_IR_arg {
-  ME_RLI_IR_expr * expr;
-  struct ME_RLI_IR_arg * next;
-}
-ME_RLI_IR_arg;
-
-typedef struct ME_RLI_IR_func {
-  struct ME_RLI_IR_sym * func_name;
-  struct ME_RLI_IR_arg * args;    
-}
-ME_RLI_IR_func;*/
-
-typedef struct ME_RLI_IR_sym {
-  char value[MAX_SYM_LENGTH];
-}
-ME_RLI_IR_sym;
+#include "ME_common.h"
 
 /*====================================================
   TOKEN STUFF
@@ -162,7 +113,7 @@ ME_RLI_IR_value ME_RLI_IR_value_get_int(ME_RLI_IR_value value, int * get) {
   return ME_RLI_IR_value_create_void();
 }
 
-ME_RLI_IR_value ME_RLI_IR_value_create_string(char * string_val) {
+ME_RLI_IR_value ME_RLI_IR_value_create_string(const char * string_val) {
   struct ME_RLI_IR_value value;
   value.type = ME_RLI_IR_VALUE_STRING;
   strncpy(value.vdata.string_val, string_val,MAX_STRING_LENGTH);
@@ -177,7 +128,7 @@ ME_RLI_IR_value ME_RLI_IR_value_get_string(ME_RLI_IR_value value, char ** get) {
 }
 
 
-ME_RLI_IR_value ME_RLI_IR_value_create_error(char * error_desc) {
+ME_RLI_IR_value ME_RLI_IR_value_create_error(const char * error_desc) {
   struct ME_RLI_IR_value value;
   value.type = ME_RLI_IR_VALUE_ERROR;
   strncpy(value.vdata.error_desc, error_desc, MAX_STRING_LENGTH);
@@ -271,6 +222,69 @@ void ME_RLI_IR_value_print(ME_RLI_IR_value value) {
   }
 }
 
+json_t * ME_RLI_IR_value_toJSON(ME_RLI_IR_value value) {
+  //if (!value) return json_null();
+
+  json_t * json_val = json_object();
+
+  //set type
+  if (value.type == ME_RLI_IR_VALUE_INT) {
+    json_object_set_new(json_val,"type",json_string("INT"));
+    json_object_set_new(json_val,"data",json_integer(value.vdata.int_val));
+  } else if (value.type == ME_RLI_IR_VALUE_STRING) {
+    json_object_set_new(json_val,"type",json_string("STRING"));
+    json_object_set_new(json_val,"data",json_string(value.vdata.string_val));
+  } else if (value.type == ME_RLI_IR_VALUE_VOID) {
+    json_object_set_new(json_val,"type",json_string("VOID"));
+    json_object_set_new(json_val,"data",json_null());
+  } else if (value.type == ME_RLI_IR_VALUE_LEXPR) {
+    json_object_set_new(json_val,"type",json_string("ERROR"));
+    json_object_set_new(json_val,"data",json_string("LEXPR to/from JSON not implemented")); //TODO - implement
+    ME_RLI_IR_expr_print(value.vdata.lexpr);
+  } else if (value.type == ME_RLI_IR_VALUE_MEASUREMENT) {
+    json_object_set_new(json_val,"type",json_string("MEASUREMENT"));
+    json_object_set_new(json_val,"data",ME_measurement_toJSON(value.vdata.ms));
+    ME_measurement_print(value.vdata.ms);
+  } else if (value.type == ME_RLI_IR_VALUE_EVENT) {
+    json_object_set_new(json_val,"type",json_string("ERROR"));
+    json_object_set_new(json_val,"data",json_string("EVENT to/from JSON not implemented")); //TODO - implement
+    BE_event_print(value.vdata.event);
+  } else if (value.type == ME_RLI_IR_VALUE_FEATURE) {
+    json_object_set_new(json_val,"type",json_string("ERROR"));
+    json_object_set_new(json_val,"data",json_string("FEATURE to/from JSON not implemented")); //TODO - implement
+  } else if (value.type == ME_RLI_IR_VALUE_ERROR) {
+    json_object_set_new(json_val,"type",json_string("ERROR"));
+    json_object_set_new(json_val,"data",json_string(value.vdata.error_desc));
+  }
+  return json_val;
+}
+
+ME_RLI_IR_value ME_RLI_IR_value_fromJSON(json_t * json_val) {
+  ME_RLI_IR_value value;
+  
+  json_t * json_data = json_object_get(json_val,"data");
+  const char * type = json_string_value(json_object_get(json_val,"type"));
+  if (strcmp(type, "INT")==0) {
+    value = ME_RLI_IR_value_create_int(json_integer_value(json_data));
+  } else if (strcmp(type, "STRING")==0) {
+    value = ME_RLI_IR_value_create_string(json_string_value(json_data));
+  } else if (strcmp(type, "VOID")==0) {
+    value = ME_RLI_IR_value_create_void();
+  } else if (strcmp(type, "LEXPR")==0) {
+    //TODO - implement
+  } else if (strcmp(type, "MEASUREMENT")==0) {
+    value = ME_RLI_IR_value_create_measurement(ME_measurement_fromJSON(json_data));
+  } else if (strcmp(type, "EVENT")==0) {
+    //TODO - implement
+  } else if (strcmp(type, "FEATURE")==0) {
+    //TODO - implement
+  } else if (strcmp(type, "ERROR")==0) {
+      value = ME_RLI_IR_value_create_error(json_string_value(json_data));
+  }
+  return value;
+}
+
+
 ME_RLI_IR_value * ME_RLI_IR_value_parse(ME_RLI_token ** curr) {
   ME_RLI_IR_value * value;
   ME_RLI_IR_expr * lexpr;
@@ -348,16 +362,6 @@ ME_RLI_IR_expr * ME_RLI_IR_expr_parse(ME_RLI_token ** curr) {
   /*printf("Parser error: expected an Expression at token %s!\n",(*curr)->value);
     exit(-1);*/  
   return expr;
-}
-
-ME_RLI_IR_value ME_RLI_IR_expr_eval(ME_RLI_IR_expr * expr) {
-  if (expr->type == ME_RLI_IR_EXPR_VALUE) {
-    return (*expr->data.value);
-  }
-  else if (expr->type == ME_RLI_IR_EXPR_FUNC) {
-    return ME_RLI_IR_func_eval(expr->data.func);
-    
-  }
 }
 
 /*====================================================
@@ -460,31 +464,6 @@ struct ME_RLI_IR_func * ME_RLI_IR_func_parse(struct ME_RLI_token ** curr) {
   return func;
 }
 
-ME_RLI_IR_value ME_RLI_IR_func_eval(ME_RLI_IR_func * func) {
-  int args_count, i;
-  
-  //evaluate arguments
-  args_count = ME_RLI_IR_func_arg_count(func);
-  ME_RLI_IR_value arg_vals[args_count];
-  i = 0;
-  ME_RLI_IR_arg * arg_curr = func->args;
-  for (i = 0; i<args_count; i++) {
-    arg_vals[i] = ME_RLI_IR_expr_eval(arg_curr->expr);
-
-    //If error, return
-    if (arg_vals[i].type == ME_RLI_IR_VALUE_ERROR) {
-      return arg_vals[i];
-    }
-    
-    arg_curr = arg_curr->next;
-  }
-  //resolve function name and evaluate
-  ME_RLI_API_func f = ME_RLI_API_func_look_up(func->func_name->value);
-  if (!f) return ME_RLI_IR_value_create_error("No such function!");
-  ME_RLI_IR_value result;
-  result = (*f)(arg_vals,args_count);
-  return result;
-}
 
 /*====================================================
   SYM STUFF

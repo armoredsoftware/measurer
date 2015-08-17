@@ -1,4 +1,6 @@
-#include "../msrrd/gdb/ME_common.c"
+#include "../msrrd/gdb/ME_common.h"
+//#include "../msrrd/gdb/ME_RLI_IR_API.c"
+#include "../msrrd/gdb/ME_RLI_IR.h"
 #include "driver-interface-FE.c"
 
 int main(int arc, char **argv)  {

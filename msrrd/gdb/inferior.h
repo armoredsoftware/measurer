@@ -43,6 +43,8 @@ struct target_desc_info;
 #include "progspace.h"
 #include "registry.h"
 
+#include "ME_common.h"
+
 struct infcall_suspend_state;
 struct infcall_control_state;
 
@@ -146,6 +148,11 @@ extern char *construct_inferior_arguments (int, char **);
 extern void post_create_inferior (struct target_ops *, int);
 
 extern void attach_command (char *, int);
+
+extern void continue_command_JG(void);
+extern char * BE_get_variable(const char *, int);
+extern void BE_get_call_stack_as_CG(char *, int, int, int, struct ME_CG **, struct ME_FT *);
+extern int fetch_inferior_event_JG(char **, int *, int *);
 
 extern char *get_inferior_args (void);
 

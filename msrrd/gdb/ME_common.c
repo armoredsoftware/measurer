@@ -1,6 +1,8 @@
-#include "ME_common.h"
-#include "ME_RLI_IR.h"
+#ifndef JASON_CLIENT
+#include "defs.h"
+#endif
 
+//#include "driver-interface.h"
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <netinet/in.h>
@@ -22,6 +24,10 @@
 #include <fcntl.h>
 
 #include <jansson.h>
+
+#include "ME_common.h"
+#include "ME_RLI_IR.h"
+
 
 char** str_split(char* a_str_O, const char a_delim)
 {  
@@ -113,7 +119,7 @@ int ME_sock_recv(int sockfd, char * message)
     exit(-1);
     }*/
   if (n<=0) return n;
-  //printf("Received %d bytes:\"%s\"\n",n,recvBuff);
+  printd("Received %d bytes:\"%s\"\n",n,recvBuff);
       
   //recvBuff[strlen(recvBuff)-1] = 0;
 
@@ -130,11 +136,10 @@ void ME_sock_send(int sockfd, char * message)
   memset(sendBuff, 0 ,sizeof(sendBuff));
 
   snprintf(sendBuff, sizeof(sendBuff), "%s", message);
-  //printf("Sending:%s\n", sendBuff);
-
+  
   count = write(sockfd, sendBuff, sizeof(sendBuff)-1);
 
-  //printf("Sent %d bytes:\"%s\"\n",count,sendBuff);
+  printd("Sent %d bytes:\"%s\"\n",count,sendBuff);
 
 }
 
@@ -153,7 +158,7 @@ void ME_sock_recv_dynamic(int sockfd, int * n, char ** message)
 
   n2 = read(sockfd, (*message), sizeof(char)*(*n));
 
-  //printf("Received %d bytes:\"%s\"\n",(*n),(*message));
+  printd("Received %d bytes:\"%s\"\n",(*n),(*message));
   
 }
 
@@ -164,7 +169,7 @@ void ME_sock_send_dynamic(int sockfd, int n, char * message)
   
   count = write(sockfd, message, sizeof(char)*n);
 
-  //printf("Sent %d bytes:\"%s\"\n",count,message);
+  printd("Sent %d bytes:\"%s\"\n",count,message);
 }
 
 
@@ -172,14 +177,6 @@ void ME_sock_send_dynamic(int sockfd, int n, char * message)
 /*====================================================
 CALL GRAPH STUFF
 ======================================================*/
-
-typedef struct ME_CG
-{
-  struct ME_CG * child;
-  struct ME_CG * sibling;
-  int symbol;
-}
-ME_CG;
 
 void ME_CG_toJSON_h(struct ME_CG *cg, struct ME_FT * ft, json_t * json_siblings) {
   if (!cg) return;
@@ -426,14 +423,7 @@ void ME_CG_decode(char * encoded_cg, struct ME_CG ** decoded_cg)
 FUNC TABLE STUFF
 ======================================================*/
 
-typedef struct ME_FT
-{
-  struct ME_FT * next;
-  char * name;
-}
-  ME_FT;
-
-ME_FT* ME_FT_create_entry(char * name)
+ME_FT* ME_FT_create_entry(const char * name)
 {  
   ME_FT* ft = (ME_FT*)malloc(sizeof(ME_FT));
   ft->next = NULL;
@@ -458,7 +448,7 @@ void ME_FT_delete(struct ME_FT * ft)
   free(ft);
 }
 
-int ME_FT_add(ME_FT * ft, char * name) {
+int ME_FT_add(ME_FT * ft, const char * name) {
   if (!name) return -1;
 
   int i = 0;
@@ -585,33 +575,6 @@ void ME_FT_print_encoded(char * ft_encoded)
 MEASUREMENT STUFF
 ======================================================*/
 
-typedef enum ME_measurement_type {
-  ME_MEASUREMENT_CALLSTACK, ME_MEASUREMENT_STRING
-} ME_measurement_type;
-
-typedef struct ME_CG_AND_FT {
-  struct ME_CG * cg;
-  struct ME_FT * ft;
-} ME_CG_AND_FT;
-
-typedef union ME_measurement_data {
-  struct ME_CG_AND_FT cgft;
-  char * string_val;
-  
-} ME_measurement_data;
-  
-typedef struct ME_measurement
-{
-  //reference to command???
-  //when
-  int measured; //measurement taken?
-  ME_measurement_type type;
-  ME_measurement_data data;
-
-  struct ME_measurement * next;
-}
-ME_measurement;
-
 int ME_measurement_equal(ME_measurement * ms1, ME_measurement * ms2) {
   if (!ms1 || !ms2) return !ms1 && !ms2;
   
@@ -674,13 +637,13 @@ ME_measurement * ME_measurement_fromJSON(json_t * json_ms) {
   //get type
   json_t * json_type = json_object_get(json_ms, "type");
   json_t * json_data = json_object_get(json_ms, "data");
-  char * type = json_string_value(json_type);
+  const char * type = json_string_value(json_type);
   if (strcmp(type, "callstack")==0) {
     ms->type = ME_MEASUREMENT_CALLSTACK;
     ms->data.cgft = ME_CGFT_fromJSON(json_data);
   } else if (strcmp(type, "string")==0) {
     ms->type = ME_MEASUREMENT_STRING;
-    ms->data.string_val = json_string_value(json_data);
+    ms->data.string_val = strdup(json_string_value(json_data));
   }
 
   ms->next = ME_measurement_fromJSON(json_object_get(json_ms, "next"));
@@ -857,19 +820,6 @@ ME_measurement * ME_measurement_receive(int sockfd) {
   FEATURE STUFF
   ====================================================*/
 
-typedef enum {ME_FEATURE_CALLSTACK, ME_FEATURE_VARIABLE, ME_FEATURE_MEMORY} ME_feature_type;
-
-typedef struct ME_feature {
-  ME_feature_type type;
-  union fdata {
-    char var_name[64]; //TODO max length of var_name
-    struct ME_feature_memory {
-      char address[64];
-      char format[64];
-    } m;
-  } fdata;
-} ME_feature;
-
 ME_feature * ME_feature_create_callstack() {
   ME_feature * feature = (ME_feature*)malloc(sizeof(ME_feature));
   feature->type = ME_FEATURE_CALLSTACK;
@@ -905,32 +855,6 @@ void ME_feature_print(ME_feature * feature)
 /*====================================================
   EVENT STUFF
   ====================================================*/
-typedef enum {BE_EVENT_T, BE_EVENT_B} BE_event_type;
-
-typedef struct BE_event_t {
-  int delay; //int time when
-  clock_t start; //int time start
-} BE_event_t;
-
-typedef struct BE_event_b {
-  int bp_id;
-} BE_event_b;
-
-typedef struct BE_event {
-  BE_event_type type;
-  bool repeat;
-  union edata {
-    struct BE_event_t t;
-    struct BE_event_b b;
-  } edata;
-} BE_event;
-
-typedef struct BE_hook
-{
-  BE_event * event;
-  struct ME_RLI_IR_expr * action;
-  bool enabled;
-} BE_hook;
 
 BE_event * BE_event_t_create(int delay, int repeat) {
   BE_event * event = (BE_event*)malloc(sizeof(BE_event));

@@ -859,7 +859,7 @@ continue_command (char *args, int from_tty)
 }
 
 
-void continue_command_JG()
+void continue_command_JG(void)
 {
   continue_command("&",1);
 }

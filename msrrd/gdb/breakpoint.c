@@ -9964,7 +9964,7 @@ decode_static_tracepoint_spec (char **arg_p)
    from the internal breakpoint count.  Returns true if any breakpoint
    was created; false otherwise.  */
 
-int get_breakpoint_count() {
+int get_breakpoint_count(void) {
   return breakpoint_count;
 }
 

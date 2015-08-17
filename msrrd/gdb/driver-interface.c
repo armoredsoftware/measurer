@@ -1,13 +1,14 @@
 #include "defs.h"
 #include "driver-interface.h"
-#include "ME_common.c"
-#include "ME_RLI_IR.c"
-#include "ME_RLI_IR_API.c"
+#include "ME_common.h"
+#include "ME_RLI_IR.h"
+#include "ME_RLI_IR_eval.h"
+#include "ME_RLI_IR_API.h"
+#include "ME_to_GDB.h"
 #include "queue.h"
-#include "ME_gdb.c"
 
 //GDB includes
-#include "top.h"
+//#include "top.h"
 //#include "infrun.c"
 
 #ifdef HAVE_POLL
@@ -23,11 +24,15 @@
 #include "gdb_select.h"
 #include "observer.h"
 
+#include <netinet/in.h>
+
 #include <stdbool.h>
 
 #include <assert.h>
 
 #include <jansson.h>
+
+BE_Context the_context;  
 
 void BE_hook_disable(BE_hook * hook) {
   if (!hook) return;
@@ -45,24 +50,13 @@ void BE_hook_kill(BE_hook * hook) {
   BE_hook_disable(hook);
   
   if (hook->event->type == BE_EVENT_B) {
-    //remove breakpoint
-    //TODO What happens if there is more than one event for this breakpoint??
-    
-    //interrupt and delete breakpoint
-    execute_command("interrupt",0);
-    wait_for_inferior(); 
-    normal_stop();
-
-    char arg[15];
-    sprintf(arg, "%d", hook->event->edata.b.bp_id);
-    delete_command(arg,0);
-
-    //continue
-    continue_command_JG();
+    BE_stop_inferior();
+    BE_delete_breakpoint(hook->event->edata.b.bp_id);
+    BE_resume_inferior();
   }
 }
 
-void BE_hook_array_init()
+void BE_hook_array_init(void)
 {
   the_context.hook_array.count = 0;
 }
@@ -82,18 +76,20 @@ BE_hook * BE_hook_array_get(int i) {
   CONTEXT STUFF
   ====================================================*/
 
-void BE_main()
+void BE_main(void)
 {
   int c = 0;
 
   struct BE_Context * bec = BE_context_create();
   BE_log("Measurer started.");
-  execute_command("set pagination off",0);
+
+  BE_initial_gdb();
+  
   BE_start_session();
 
   while(1) {
     BE_get_request();
-    BE_do_continuous(bec);
+    BE_do_continuous();
   }
 
   return;
@@ -122,7 +118,8 @@ int ME_sock_server_connect(int port)
  } 
 
  BE_log("Listening for client on *:%d ...",port);
-
+ printd("Listening for client on *:%d...",port);
+ 
  listen(listenfd, 10);
 
  connfd = accept(listenfd, (struct sockaddr*)NULL, NULL);
@@ -140,16 +137,17 @@ int ME_sock_server_connect(int port)
 }
 
 
-void BE_start_session()
+void BE_start_session(void)
 {  
   if (the_context.driverfd!=-1)
   {
     BE_log("Session already started!");
-    BE_exit(-1);
+    BE_exit();
   }
   the_context.driverfd = ME_sock_server_connect(BE_port);
 
   BE_log("Client connected.");
+  printd("Client connected.");
 }
 
 BE_Context * BE_context_create(void)
@@ -166,7 +164,7 @@ BE_Context * BE_context_create(void)
   
 }
 
-void BE_context_print()
+void BE_context_print(void)
 {
   BE_log("Measurer Context {PID=%d}",the_context.PID);
 }
@@ -180,14 +178,15 @@ bool startsWith(const char *pre, const char *str)
 
 int quitting = 0;
 
-void BE_exit()
+void BE_exit(void)
 {
   BE_log("Measurer exited!");
+  printd("Measurer exited!");
   close(the_context.driverfd);
   exit(-1);
 }
 
-void BE_get_request()
+void BE_get_request(void)
 {
  
   char request[1024];
@@ -212,7 +211,7 @@ void BE_get_request()
   json_error_t error;
   root = json_loads(request, 0, &error);
   params = json_object_get(root,"params");
-  char * RLI_expr = json_string_value(json_array_get(params,0));
+  const char * RLI_expr = json_string_value(json_array_get(params,0));
   json_t *id_copy = json_copy(json_object_get(root,"id"));
 
   BE_log("Recieved request \"%s\". Servicing...",RLI_expr);
@@ -225,12 +224,13 @@ void BE_get_request()
   root = json_object();
   json_object_set_new(root, "jsonrpc", json_string("2.0"));
 
-  if (value_result.type == ME_RLI_IR_VALUE_MEASUREMENT) {
-    json_object_set_new(root, "result", ME_measurement_toJSON(value_result.vdata.ms));
-  }
-  else {
-    json_object_set_new(root, "result", json_null());
-  }
+  //if (value_result.type == ME_RLI_IR_VALUE_MEASUREMENT) {
+  //json_object_set_new(root, "result", ME_measurement_toJSON(value_result.vdata.ms));
+  //} else { //if (value_result.type == ME_RLI_IR_VALUE_toJSON) {
+    json_object_set_new(root, "result", ME_RLI_IR_value_toJSON(value_result));
+    //}/* else {
+    //json_object_set_new(root, "result", json_null());
+    //}*/
 
 
   json_object_set_new(root, "id", id_copy);
@@ -249,7 +249,7 @@ void BE_get_request()
 
 }
 
-void BE_do_continuous()
+void BE_do_continuous(void)
 {
   
   if (!the_context.attached || the_context.exited) {
@@ -260,7 +260,7 @@ void BE_do_continuous()
   char * filename = NULL;
   int line = -1;
   int bp_id;
-  int exec_state = fetch_inferior_event_JG(&filename, &line, &bp_id);
+  int exec_state = BE_fetch_inferior_event(&filename, &line, &bp_id);
   if (exec_state == 1) {
     the_context.stopped = true;
     BE_log("Stop caught at %s:%d !", filename, line);
@@ -274,25 +274,25 @@ void BE_do_continuous()
   BE_hook_array_handle(exec_state, filename, line, bp_id);
 
   if (the_context.stopped) {
-    continue_command_JG();
+    BE_resume_inferior();
     the_context.stopped = false;
   }
  
   
 }
 
-struct ME_RLI_IR_value BE_rhandler_dispatch(char * request)
+struct ME_RLI_IR_value BE_rhandler_dispatch(const char * request)
 {
   ME_RLI_token * tokens = ME_RLI_tokenize(request);
-  if (!tokens) return ME_RLI_IR_value_create_measurement(ME_measurement_create_string("Couldn't tokenize request!")); //TODO - should not actually be of type measurement
+  if (!tokens) return ME_RLI_IR_value_create_error("Couldn't tokenize request!"); //TODO - should not actually be of type measurement
   
   ME_RLI_IR_expr * expr = ME_RLI_IR_expr_parse(&tokens);
-  if (!expr)  return ME_RLI_IR_value_create_measurement(ME_measurement_create_string("Couldn't parse request!"));
+  if (!expr)  return ME_RLI_IR_value_create_error("Couldn't parse request!");
   //ME_RLI_IR_expr_print(expr);
   
   ME_RLI_IR_value result = ME_RLI_IR_expr_eval(expr);
     
-  //printf("result = ");
+  //printd("result = ");
   //ME_RLI_IR_value_print(result);
   //printf("\n");
     
@@ -316,12 +316,9 @@ void BE_hook_array_handle(int breaked, char * filename, int line, int bp_id)
 
 	  //stop if not stopped
 	  if (!the_context.stopped) {
-	    //Abstract this away
-	    execute_command("interrupt",0);
-	    wait_for_inferior(); 
-	    normal_stop();
-
-	    BE_get_file_and_line(get_selected_frame(NULL), &filename, &line); //put these in the BEC
+	    BE_stop_inferior();
+	    
+	    //BE_get_file_and_line(get_selected_frame(NULL), &filename, &line); //put these in the BEC
 
 	    the_context.stopped = true;
 	    //continue_command_JG();
@@ -357,10 +354,9 @@ void BE_hook_array_handle(int breaked, char * filename, int line, int bp_id)
 	  {
 	    BE_hook_handle(curr);
 	    if (!curr->event->repeat) {
-	      char arg[15];
-	      sprintf(arg, "%d", curr->event->edata.b.bp_id);
-	      delete_command(arg,0);
-
+	      
+	      BE_delete_breakpoint(curr->event->edata.b.bp_id);
+	      
 	      curr->enabled = 0;
 	    }
 	    
@@ -421,39 +417,28 @@ void ME_API_set_target(int target_PID)
   the_context.PID = target_PID;
   
   //Attach to process
-
-  char PID_str[64];
-  sprintf(PID_str, "%d", target_PID);
-
-  volatile struct gdb_exception ex;
-  TRY_CATCH (ex, RETURN_MASK_ERROR ) {
-    attach_command(PID_str,1);
-  }
-  if (ex.reason < 0) {
+  if (BE_attach(target_PID)) {
     BE_log("Failed to attach to process %d!",target_PID);
     return;
   }
-  
-  gdb_do_one_event ();
 
   the_context.attached = true;
-  
-  continue_command_JG();
+
 }
 
-void ME_API_detach()
+void ME_API_detach(void)
 {
   if (the_context.attached) {
     //Detach
-    execute_command("detach",0);
-
+    BE_detach();
+    
     //Update context
     the_context.attached = false;
     the_context.PID = -1;
   }
 }
 
-void ME_API_quit()
+void ME_API_quit(void)
 {
   if (the_context.attached && !the_context.exited) {
     ME_API_detach();
@@ -461,14 +446,14 @@ void ME_API_quit()
   quitting = 1;
 }
 
-void ME_API_print_context()
+void ME_API_print_context(void)
 {
-  BE_context_print(&the_context);
+  BE_context_print();
 }
 
 ME_measurement * ME_API_measure(ME_feature * feature)
 {
-  ME_measurement * ms;
+  ME_measurement * ms = NULL;
   
   if (!the_context.attached) {
     BE_log("Not attached to a process!");
@@ -480,10 +465,7 @@ ME_measurement * ME_API_measure(ME_feature * feature)
 
   bool stopped_here = false;
   if (!the_context.stopped) {
-    //Interrupt Inferior
-    execute_command("interrupt",0);
-    wait_for_inferior(); 
-    normal_stop();
+    BE_stop_inferior();
     stopped_here = true;
   }
  
@@ -491,26 +473,14 @@ ME_measurement * ME_API_measure(ME_feature * feature)
   if (feature->type == ME_FEATURE_CALLSTACK) {
     struct ME_CG * stack;
     struct ME_FT * ft = ME_FT_create();
-    BE_get_call_stack_as_CG(NULL, 0, 0, 1, &stack, ft);
+    //BE_get_call_stack_as_CG(NULL, 0, 0, 1, &stack, ft);
+    BE_get_call_stack_wrapper(&stack, ft);
     
     ms = ME_measurement_create(ME_MEASUREMENT_CALLSTACK);
     ms->data.cgft.cg = stack;
     ms->data.cgft.ft = ft;
   } else if (feature->type == ME_FEATURE_VARIABLE) {
-    char * value=NULL;
-    while (value==NULL) {
-     value = BE_get_variable(feature->fdata.var_name, 0);
-     if (value==NULL) {
-       
-       volatile struct gdb_exception ex;
-       TRY_CATCH (ex, RETURN_MASK_ERROR ) {
-	 execute_command("up",0);
-       }
-       if (ex.reason < 0) {
-	 value = (char*)malloc(sizeof(char) * 64); //max length?...
-       }       
-     }
-    }
+    char * value = BE_get_variable_wrapper(feature->fdata.var_name);
     
     ms = ME_measurement_create(ME_MEASUREMENT_STRING);
     ms->data.string_val = value;
@@ -553,15 +523,11 @@ BE_event * ME_API_reach(char * filename, int line, int repeat) {
   BE_event * event = BE_event_b_create(get_breakpoint_count()+1,repeat);
 
   //interrupt and insert breakpoint
-  execute_command("interrupt",0);
-  wait_for_inferior(); 
-  normal_stop();
+  BE_stop_inferior();
   char arg[64];
   sprintf(arg, "%s:%d", filename, line);
-  break_command(arg,0);
-
-  //continue
-  continue_command_JG();
+  BE_add_breakpoint(arg);
+  BE_resume_inferior();
       
   return event;
 }
@@ -570,13 +536,9 @@ BE_event * ME_API_reach_func(char * func_name, int repeat) {
   BE_event * event = BE_event_b_create(get_breakpoint_count()+1,repeat);
 
   //interrupt and insert breakpoint
-  execute_command("interrupt",0);
-  wait_for_inferior(); 
-  normal_stop();
-  break_command(func_name,0);
-
-  //continue
-  continue_command_JG();
+  BE_stop_inferior();
+  BE_add_breakpoint(func_name);
+  BE_resume_inferior();
       
   return event;
 }
@@ -584,20 +546,10 @@ BE_event * ME_API_reach_func(char * func_name, int repeat) {
 BE_event * ME_API_reach_syscall(char * syscall, int repeat) {
   BE_event * event = BE_event_b_create(get_breakpoint_count()+1,repeat);
 
-  //interrupt and insert breakpoint
-  execute_command("interrupt",0);
-  wait_for_inferior(); 
-  normal_stop();
-  char command[64];
-  sprintf(command, "catch syscall %s", syscall);
-  BE_log("Executing command:%s", command);
-  execute_command(command,0);
-  //catch_command(syscall,0);
-  //break_command(func_name,0);
-
-  //continue
-  continue_command_JG();
-      
+  BE_stop_inferior();
+  BE_add_syscall_catch(syscall);
+  BE_resume_inferior();
+  
   return event;
 }
 
@@ -628,7 +580,7 @@ void ME_API_disable(int i) {
   BE_hook_disable(BE_hook_array_get(i));
 } 
 
-ME_feature * ME_API_callstack() {
+ME_feature * ME_API_callstack(void) {
   return ME_feature_create_callstack();
 }
 
@@ -641,30 +593,25 @@ ME_feature * ME_API_mem(char * address, char * format) {
 }
 
 void ME_API_gdb(char * command) {
-  ME_measurement * ms;
-  
   if (!the_context.attached) {
     BE_log("Not attached to a process!");
-    return NULL;
+    return;
   } else if (the_context.exited) {
     BE_log("Process has exited!");
-    return NULL;
+    return;
   }
 
   bool stopped_here = false;
   if (!the_context.stopped) {
-    //Interrupt Inferior
-    execute_command("interrupt",0);
-    wait_for_inferior(); 
-    normal_stop();
+    BE_stop_inferior();
     stopped_here = true;
   }
  
-  execute_command(command, 1);
+  BE_execute_command(command);
 
   if (stopped_here) {
     //Continue Inferior
-    continue_command_JG();
+    BE_resume_inferior();
   }
 
 }

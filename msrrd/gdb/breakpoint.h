@@ -1274,6 +1274,8 @@ enum breakpoint_create_flags
     CREATE_BREAKPOINT_FLAGS_INSERTED = 1 << 0
   };
 
+extern int get_breakpoint_count(void);
+
 extern int create_breakpoint (struct gdbarch *gdbarch, char *arg,
 			      char *cond_string, int thread,
 			      char *extra_string,

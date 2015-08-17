@@ -1,3 +1,10 @@
+/*#define DEBUG 1
+#ifdef DEBUG
+#define printd(...) { fprintf(stdout, __VA_ARGS__); }
+#else
+#define printd
+#endif*/
+
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <netinet/in.h>
@@ -22,7 +29,7 @@ DI_init_measurer (char * ip, int port)
   //printf("Launching GDB...\n");
   //system("/projects/zephyr/deadzone/ArmoredSoftware/llvm/gdb/mod1/gdb-7.9/gdb/gdb");
 
-  //printf("Connect socket...\n");
+  printd("Connect socket... \n");
   int sockfd = 0, n = 0;
   char recvBuff[1024];
   struct sockaddr_in serv_addr;
@@ -54,7 +61,7 @@ DI_init_measurer (char * ip, int port)
 
   //fcntl(sockfd, F_SETFL, O_NONBLOCK);
   
-  //printf("Connected to measurer!\n");
+  //printd("Connected to measurer %s !\n", li);
 
   return sockfd;
 }
@@ -89,15 +96,20 @@ ME_measurement * DI_send_request(int sockfd, char * request)
   //get response
   char response[1024];
   int n = ME_sock_recv(sockfd, response);
-
-  //printf("Received:%s\n",response);
+  
+  printd("Received:%s\n",response);
 
   root = json_loads(response, 0, &error);
   result = json_object_get(root,"result"); 
 
   //printf("Result = %s\n",json_string_value(result));
-  
-  return ME_measurement_fromJSON(result);
+
+  ME_RLI_IR_value value = ME_RLI_IR_value_fromJSON(result);
+  ME_RLI_IR_value_print(value);
+//ME_measurement_print(result);
+    
+
+return NULL;//ME_measurement_fromJSON(result);
 
 }
 
@@ -133,8 +145,7 @@ void DI_interactive_mode(int sockfd)
     line = readline("\nmsrr> ");
     //curr_line_len=getline(&line, &line_buf_len, stdin);
 
-    ME_measurement * result = DI_send_request(sockfd, line);
-    ME_measurement_print(result);
+    DI_send_request(sockfd, line);
     
     //fflush(stdout);
     if (line[0]!=0)

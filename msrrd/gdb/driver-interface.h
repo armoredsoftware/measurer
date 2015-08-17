@@ -1,9 +1,13 @@
+#ifndef DRIVER_INTERFACE_H
+#define DRIVER_INTERFACE_H
+
 #define ME_STORE_SIZE 64
+
 #include <stdbool.h>
 #include "ME_RLI_IR.h"
 #include "ME_common.h"
 
-int BE_port;
+extern int BE_port;
 
 struct BE_hook_array;
 typedef struct BE_hook_array {
@@ -31,32 +35,36 @@ typedef struct BE_Context
 }
 BE_Context;
 
-BE_Context the_context;
+//BE_Context the_context;
 
-extern void BE_hook_array_init();
+extern void BE_hook_array_init(void);
 extern int BE_hook_array_add(struct BE_hook *);
 extern struct BE_hook * BE_hook_array_get(int);
 extern void BE_hook_array_handle(int, char *, int, int);
 
-extern void BE_start_session();
+extern void BE_main(void);
+extern void BE_start_session(void);
+extern void BE_exit(void);
+
+extern void BE_log(const char *, ...);
 
 extern struct BE_Context * BE_context_create(void);
-extern void BE_context_print();
-extern void BE_get_request();
+extern void BE_context_print(void);
+extern void BE_get_request(void);
 extern bool startsWith(const char *, const char *);
 
-extern void BE_update_callgraph();
-extern void BE_do_continous();
-extern struct ME_RLI_IR_value BE_rhandler_dispatch(char *);
+extern void BE_update_callgraph(void);
+extern void BE_do_continous(void);
+extern struct ME_RLI_IR_value BE_rhandler_dispatch(const char *);
 
 extern void BE_hook_handle(struct BE_hook *);
 extern void BE_hook_table_handle(struct BE_hook *, int, char *, int);
 
 extern void ME_API_set_target(int);
-extern void ME_API_detach();
-extern void ME_API_quit();
-extern void ME_API_print_context();
-extern struct ME_measurement * ME_API_measure_callstack();
+extern void ME_API_detach(void);
+extern void ME_API_quit(void);
+extern void ME_API_print_context(void);
+extern struct ME_measurement * ME_API_measure_callstack(void);
 extern struct ME_measurement * ME_API_measure(struct ME_feature *);
 extern void ME_API_store(int, struct ME_measurement *);
 extern struct ME_measurement * ME_API_load(int);
@@ -68,7 +76,9 @@ extern int ME_API_hook(struct BE_event *, struct ME_RLI_IR_expr *);
 extern void ME_API_kill(int);
 extern void ME_API_enable(int);
 extern void ME_API_disable(int);
-extern struct ME_feature * ME_API_callstack();
+extern struct ME_feature * ME_API_callstack(void);
 extern struct ME_feature * ME_API_var(char *);
 extern struct ME_feature * ME_API_mem(char *,char *);
 extern void ME_API_gdb(char *);
+
+#endif

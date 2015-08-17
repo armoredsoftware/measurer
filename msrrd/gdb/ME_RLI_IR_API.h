@@ -1,5 +1,5 @@
-#ifndef _ME_RLI_IR_API_
-#define _ME_RLI_IR_API_
+#ifndef _ME_RLI_IR_API_1
+#define _ME_RLI_IR_API_1
 
 #include "ME_RLI_IR.h"
 
