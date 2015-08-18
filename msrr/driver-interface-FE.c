@@ -1,10 +1,3 @@
-/*#define DEBUG 1
-#ifdef DEBUG
-#define printd(...) { fprintf(stdout, __VA_ARGS__); }
-#else
-#define printd
-#endif*/
-
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <netinet/in.h>
@@ -22,6 +15,8 @@
 #include <readline/history.h>
 
 #include <signal.h>
+
+#include "../msrrd/gdb/ME_RLI_IR.h"
 
 int
 DI_init_measurer (char * ip, int port)
@@ -67,7 +62,7 @@ DI_init_measurer (char * ip, int port)
 }
 
 int request_id = 1;
-ME_measurement * DI_send_request(int sockfd, char * request)
+ME_RLI_IR_value DI_send_request(int sockfd, char * request)
 {
   if (strcmp(request,"(quit)")==0) {
     close(sockfd);
@@ -109,8 +104,8 @@ ME_measurement * DI_send_request(int sockfd, char * request)
 //ME_measurement_print(result);
     
 
-return NULL;//ME_measurement_fromJSON(result);
-
+return value;
+ 
 }
 
 int sockfd_copy;

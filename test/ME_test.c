@@ -1,5 +1,6 @@
-#include "../msrrd/gdb/ME_common.c"
-#include "../msrr/driver-interface-FE.c" 
+#include "../msrrd/gdb/ME_common.c" 
+#include "../msrrd/gdb/ME_RLI_IR.h"
+#include "../msrr/driver-interface-FE.c"
 
 FILE *f;
 int test_assert_i=0;
@@ -11,6 +12,7 @@ void test_init() {
   int  number;
   f = fopen("test.out", "w");
 }
+
 void test_close() {
   char message[64];
   sprintf(message,"\nran\t%d\npassed\t%d\nfailed\t%d\n",test_assert_i,test_assert_passed,test_assert_failed);
@@ -20,6 +22,7 @@ void test_close() {
 void log_write(char * text) {
   fprintf(f, "%s", text);
 }
+
 void test_assert(int value) {
   test_assert_i++;
   char message[64];
@@ -36,7 +39,8 @@ void test_assert(int value) {
 }
 
 void test_measurement(int sockfd, char * request, ME_measurement * mse) {
-  ME_measurement * msa = DI_send_request(sockfd, request);
+  ME_RLI_IR_value value = DI_send_request(sockfd, request);
+  ME_measurement * msa = value.vdata.ms;
   test_assert(ME_measurement_equal(msa,mse));
 }
 

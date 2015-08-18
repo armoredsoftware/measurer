@@ -561,3 +561,53 @@ Handling (print_context) request!
 2015-08-17 17:18:53 - 24046 : Recieved request "(set_target 18518)". Servicing...
 2015-08-17 17:18:53 - 24046 : ME_API_set_target(18518)
 2015-08-17 17:19:01 - 24046 : Recieved request "'(measure (var "a"))". Servicing...
+2015-08-17 22:24:25 - 7216 : Measurer started.
+2015-08-17 22:24:25 - 7216 : Listening for client on *:3000 ...
+2015-08-17 22:24:42 - 7216 : Client connected.
+2015-08-17 22:25:06 - 7216 : Recieved request "(set_target 6418)". Servicing...
+2015-08-17 22:25:06 - 7216 : ME_API_set_target(6418)
+2015-08-17 22:25:13 - 7216 : Recieved request "(measure (var "a"))". Servicing...
+2015-08-17 22:25:16 - 7216 : Recieved request "(measure (var "a"))". Servicing...
+2015-08-17 22:25:17 - 7216 : Recieved request "(measure (var "a"))". Servicing...
+2015-08-17 23:23:44 - 7216 : Client disconnected!
+2015-08-17 23:23:44 - 7216 : Measurer exited!
+2015-08-17 23:23:47 - 9595 : Measurer started.
+2015-08-17 23:23:47 - 9595 : Listening for client on *:3000 ...
+2015-08-17 23:24:15 - 9595 : Client connected.
+2015-08-17 23:24:18 - 9595 : Client disconnected!
+2015-08-17 23:24:18 - 9595 : Measurer exited!
+2015-08-17 23:24:21 - 9603 : Measurer started.
+2015-08-17 23:24:21 - 9603 : Listening for client on *:3000 ...
+2015-08-17 23:24:32 - 9603 : Client connected.
+2015-08-17 23:25:16 - 9603 : Client disconnected!
+2015-08-17 23:25:16 - 9603 : Measurer exited!
+2015-08-17 23:37:14 - 10076 : Measurer started.
+2015-08-17 23:37:14 - 10076 : Listening for client on *:3000 ...
+2015-08-17 23:37:38 - 10076 : Client connected.
+2015-08-17 23:37:40 - 10076 : Client disconnected!
+2015-08-17 23:37:40 - 10076 : Measurer exited!
+2015-08-17 23:38:19 - 10184 : Measurer started.
+2015-08-17 23:38:19 - 10184 : Listening for client on *:3000 ...
+2015-08-17 23:38:29 - 10184 : Client connected.
+2015-08-17 23:38:32 - 10184 : Client disconnected!
+2015-08-17 23:38:32 - 10184 : Measurer exited!
+2015-08-17 23:42:09 - 10259 : Measurer started.
+2015-08-17 23:42:09 - 10259 : Listening for client on *:3000 ...
+2015-08-17 23:48:06 - 10259 : Client connected.
+2015-08-17 23:48:08 - 10259 : Client disconnected!
+2015-08-17 23:48:08 - 10259 : Measurer exited!
+2015-08-17 23:48:21 - 10821 : Measurer started.
+2015-08-17 23:48:21 - 10821 : Listening for client on *:3000 ...
+2015-08-17 23:48:25 - 10821 : Client connected.
+2015-08-17 23:48:27 - 10821 : Client disconnected!
+2015-08-17 23:48:27 - 10821 : Measurer exited!
+2015-08-17 23:48:32 - 10824 : Measurer started.
+2015-08-17 23:48:32 - 10824 : Listening for client on *:3001 ...
+2015-08-17 23:48:37 - 10824 : Client connected.
+2015-08-17 23:48:39 - 10824 : Client disconnected!
+2015-08-17 23:48:39 - 10824 : Measurer exited!
+2015-08-18 00:30:19 - 14083 : Measurer started.
+2015-08-18 00:30:19 - 14083 : Listening for client on *:3001 ...
+2015-08-18 00:30:21 - 14083 : Client connected.
+2015-08-18 00:30:22 - 14083 : Client disconnected!
+2015-08-18 00:30:22 - 14083 : Measurer exited!

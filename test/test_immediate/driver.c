@@ -11,7 +11,7 @@ void main(int argc, char *argv[]) {
 
   int port = atoi(argv[1]);
   
-  int sockfd = DI_init_measurer(port);
+  int sockfd = DI_init_measurer("127.0.0.1",port);
   char line[256];
   
   sprintf(line, "(set_target %s)",argv[2]);
@@ -29,9 +29,7 @@ void main(int argc, char *argv[]) {
   
   test_measurement(sockfd, "(measure (var \"b\"))", ME_measurement_create_string("2"));
   
-  DI_send_request(sockfd, "(quit)");
-
-  close(sockfd);
-  
   test_close();  
+
+  DI_send_request(sockfd, "(quit)");
 }

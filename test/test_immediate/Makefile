@@ -1,7 +1,8 @@
+
 build: build-driver build-app
 
 build-driver:
-	gcc -g driver.c -o driver.o -ljansson -lreadline
+	gcc -DJASON_CLIENT -g driver.c ../../msrrd/gdb/ME_RLI_IR.c -o driver.o -ljansson -lreadline
 
 build-app:
 	gcc -g app.c -o app.o

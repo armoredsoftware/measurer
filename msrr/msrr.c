@@ -1,20 +1,56 @@
 #include "../msrrd/gdb/ME_common.h"
-//#include "../msrrd/gdb/ME_RLI_IR_API.c"
 #include "../msrrd/gdb/ME_RLI_IR.h"
 #include "driver-interface-FE.c"
 
-int main(int arc, char **argv)  {
-  char * iparg = argv[1];  //TODO - proper input validation
-  char * portarg = argv[2];
+int main(int argc, char **argv)  {
+  int dflag = 0;
+  int pflag = 0;
+  char * pvalue = NULL;
+  int index;
+  int c;
+  static char usage[] = "usage: msrr [-d] [-p port] hostname \n";
+  static int default_port = 3000;
   
-  if (!portarg) {
-    printf("Failed to specify port as first argument!\n");
-    exit(-1);
+  opterr = 0;
+  while ((c = getopt (argc, argv, "dp:")) != -1)
+    switch (c) {
+    case 'd':
+      dflag = 1;
+      break;
+    case 'p':
+      pflag = 1;
+      pvalue = optarg;
+      break;
+    case '?':
+      if (optopt == 'p') {
+	fprintf(stderr, "option requires an argument -- %c\n", optopt);
+      } else if (isprint (optopt)) {
+	  fprintf (stderr, "unknown option -- %c\n", optopt);
+      } else {
+	  fprintf (stderr, "unknown option character `\\x%x'.\n", optopt);
+      }
+      fprintf(stderr, usage);
+      return 1;
+    default:
+      abort();
+    }
+
+  char * address = NULL;
+    
+  for (index = optind; index < argc; index++) {
+    address = argv[index];
+    break;
   }
   
-  int port = atoi(portarg);
+  if (!address) {
+    fprintf(stderr, "Failed to specify hostname.\n");
+    fprintf(stderr, usage);
+    return 1;
+  }
   
-  int sockfd = DI_init_measurer(iparg,port);
+  int port = (pvalue ? atoi(pvalue) : default_port);
+  
+  int sockfd = DI_init_measurer(address,port);
 
   DI_interactive_mode(sockfd); 
   
