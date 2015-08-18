@@ -28,6 +28,7 @@
 #include "ME_common.h"
 #include "ME_RLI_IR.h"
 
+int ME_DEBUG = 0;
 
 char** str_split(char* a_str_O, const char a_delim)
 {  

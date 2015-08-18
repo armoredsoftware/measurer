@@ -20,11 +20,8 @@
 
 int
 DI_init_measurer (char * ip, int port)
-{
-  //printf("Launching GDB...\n");
-  //system("/projects/zephyr/deadzone/ArmoredSoftware/llvm/gdb/mod1/gdb-7.9/gdb/gdb");
-
-  printd("Connect socket... \n");
+{  
+  printd("connecting to server...\n");
   int sockfd = 0, n = 0;
   char recvBuff[1024];
   struct sockaddr_in serv_addr;
@@ -32,8 +29,8 @@ DI_init_measurer (char * ip, int port)
   memset(recvBuff, '0',sizeof(recvBuff));
   if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
     {
-      printf("\n Error : Could not create socket \n");
-      return 1;
+      fprintf(stderr,"could not create socket\n");
+      exit(-1);
     }
 
   memset(&serv_addr, '0', sizeof(serv_addr));
@@ -43,21 +40,18 @@ DI_init_measurer (char * ip, int port)
   
   if(inet_pton(AF_INET, ip, &serv_addr.sin_addr)<=0)
   {
-    printf("\n inet_pton error occured\n");
-    return 1;
+    fprintf(stderr,"inet_pton error occured\n");
+    exit(-1);
   }
 
   if( connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
   {
-    printf("\n Error : Connect Failed \n");
+    fprintf(stderr,"could not connect to %s:%d\n",ip,port);
     exit(-1);
-    //return 1;
   }
 
-  //fcntl(sockfd, F_SETFL, O_NONBLOCK);
+  printd("connected to server");
   
-  //printd("Connected to measurer %s !\n", li);
-
   return sockfd;
 }
 

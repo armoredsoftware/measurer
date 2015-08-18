@@ -43,12 +43,19 @@ int main(int argc, char **argv)  {
   }
   
   if (!address) {
-    fprintf(stderr, "Failed to specify hostname.\n");
+    fprintf(stderr, "failed to specify hostname\n");
     fprintf(stderr, usage);
     return 1;
   }
   
   int port = (pvalue ? atoi(pvalue) : default_port);
+  if (!port) {
+    fprintf(stderr,"option requires integer argument -- p\n");
+    fprintf(stderr, usage);
+    return 1;
+  }
+
+  ME_DEBUG = dflag;
   
   int sockfd = DI_init_measurer(address,port);
 

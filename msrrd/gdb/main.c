@@ -435,6 +435,7 @@ captured_main (void *data)
   int argc = context->argc;
   char **argv = context->argv;
   static int quiet = 0;
+  static int debugarg = 0;
   static int set_args = 0;
   static int inhibit_home_gdbinit = 0;
 
@@ -568,287 +569,34 @@ captured_main (void *data)
      the application.  */
   interpreter_p = xstrdup (context->interpreter_p);
 
+  static char usage[] = "usage: msrrd [-d] [-p port]\n";
+
   /* Parse arguments and options.  */
   {
     int c;
-    /* When var field is 0, use flag field to record the equivalent
-       short option (or arbitrary numbers starting at 10 for those
-       with no equivalent).  */
-    enum {
-      OPT_SE = 10,
-      OPT_CD,
-      OPT_ANNOTATE,
-      OPT_STATISTICS,
-      OPT_TUI,
-      OPT_NOWINDOWS,
-      OPT_WINDOWS,
-      OPT_IX,
-      OPT_IEX
-    };
-    static struct option long_options[] =
-    {
-      {"tui", no_argument, 0, OPT_TUI},
-      {"xdb", no_argument, &xdb_commands, 1},
-      {"dbx", no_argument, &dbx_commands, 1},
-      {"readnow", no_argument, &readnow_symbol_files, 1},
-      {"r", no_argument, &readnow_symbol_files, 1},
-      {"quiet", no_argument, &quiet, 1},
-      {"q", no_argument, &quiet, 1},
-      {"silent", no_argument, &quiet, 1},
-      {"nh", no_argument, &inhibit_home_gdbinit, 1},
-      {"nx", no_argument, &inhibit_gdbinit, 1},
-      {"n", no_argument, &inhibit_gdbinit, 1},
-      {"batch-silent", no_argument, 0, 'B'},
-      {"batch", no_argument, &batch_flag, 1},
-
-    /* This is a synonym for "--annotate=1".  --annotate is now
-       preferred, but keep this here for a long time because people
-       will be running emacses which use --fullname.  */
-      {"fullname", no_argument, 0, 'f'},
-      {"f", no_argument, 0, 'f'},
-
-      {"annotate", required_argument, 0, OPT_ANNOTATE},
-      {"help", no_argument, &print_help, 1},
-      {"se", required_argument, 0, OPT_SE},
-      {"symbols", required_argument, 0, 's'},
-      {"s", required_argument, 0, 's'},
-      {"exec", required_argument, 0, 'e'},
-      {"e", required_argument, 0, 'e'},
-      {"core", required_argument, 0, 'c'},
-      {"c", required_argument, 0, 'c'},
-      {"pid", required_argument, 0, 'p'},
-      {"p", required_argument, 0, 'p'},
-      {"port", required_argument, 0, 'o'},
-      {"o", required_argument, 0, 'o'},
-      {"command", required_argument, 0, 'x'},
-      {"eval-command", required_argument, 0, 'X'},
-      {"version", no_argument, &print_version, 1},
-      {"configuration", no_argument, &print_configuration, 1},
-      {"x", required_argument, 0, 'x'},
-      {"ex", required_argument, 0, 'X'},
-      {"init-command", required_argument, 0, OPT_IX},
-      {"init-eval-command", required_argument, 0, OPT_IEX},
-      {"ix", required_argument, 0, OPT_IX},
-      {"iex", required_argument, 0, OPT_IEX},
-#ifdef GDBTK
-      {"tclcommand", required_argument, 0, 'z'},
-      {"enable-external-editor", no_argument, 0, 'y'},
-      {"editor-command", required_argument, 0, 'w'},
-#endif
-      {"ui", required_argument, 0, 'i'},
-      {"interpreter", required_argument, 0, 'i'},
-      {"i", required_argument, 0, 'i'},
-      {"directory", required_argument, 0, 'd'},
-      {"d", required_argument, 0, 'd'},
-      {"data-directory", required_argument, 0, 'D'},
-      {"D", required_argument, 0, 'D'},
-      {"cd", required_argument, 0, OPT_CD},
-      {"tty", required_argument, 0, 't'},
-      {"baud", required_argument, 0, 'b'},
-      {"b", required_argument, 0, 'b'},
-      {"nw", no_argument, NULL, OPT_NOWINDOWS},
-      {"nowindows", no_argument, NULL, OPT_NOWINDOWS},
-      {"w", no_argument, NULL, OPT_WINDOWS},
-      {"windows", no_argument, NULL, OPT_WINDOWS},
-      {"statistics", no_argument, 0, OPT_STATISTICS},
-      {"write", no_argument, &write_files, 1},
-      {"args", no_argument, &set_args, 1},
-      {"l", required_argument, 0, 'l'},
-      {"return-child-result", no_argument, &return_child_result, 1},
-      {0, no_argument, 0, 0}
-    };
-
-    while (1)
+    
+    while ((c = getopt(argc, argv, "dp:")) != -1)
       {
-	int option_index;
-
-	c = getopt_long_only (argc, argv, "",
-			      long_options, &option_index);
-	if (c == EOF || set_args)
+	
+	switch (c) {
+	case 'p':
+	  portarg = optarg;
 	  break;
-
-	/* Long option that takes an argument.  */
-	if (c == 0 && long_options[option_index].flag == 0)
-	  c = long_options[option_index].val;
-
-	switch (c)
-	  {
-	  case 0:
-	    /* Long option that just sets a flag.  */
-	    break;
-	  case OPT_SE:
-	    symarg = optarg;
-	    execarg = optarg;
-	    break;
-	  case OPT_CD:
-	    cdarg = optarg;
-	    break;
-	  case OPT_ANNOTATE:
-	    /* FIXME: what if the syntax is wrong (e.g. not digits)?  */
-	    annotation_level = atoi (optarg);
-	    break;
-	  case OPT_STATISTICS:
-	    /* Enable the display of both time and space usage.  */
-	    set_per_command_time (1);
-	    set_per_command_space (1);
-	    break;
-	  case OPT_TUI:
-	    /* --tui is equivalent to -i=tui.  */
-#ifdef TUI
-	    xfree (interpreter_p);
-	    interpreter_p = xstrdup (INTERP_TUI);
-#else
-	    error (_("%s: TUI mode is not supported"), gdb_program_name);
-#endif
-	    break;
-	  case OPT_WINDOWS:
-	    /* FIXME: cagney/2003-03-01: Not sure if this option is
-               actually useful, and if it is, what it should do.  */
-#ifdef GDBTK
-	    /* --windows is equivalent to -i=insight.  */
-	    xfree (interpreter_p);
-	    interpreter_p = xstrdup (INTERP_INSIGHT);
-#endif
-	    break;
-	  case OPT_NOWINDOWS:
-	    /* -nw is equivalent to -i=console.  */
-	    xfree (interpreter_p);
-	    interpreter_p = xstrdup (INTERP_CONSOLE);
-	    break;
-	  case 'f':
-	    annotation_level = 1;
-	    break;
-	  case 's':
-	    symarg = optarg;
-	    break;
-	  case 'e':
-	    execarg = optarg;
-	    break;
-	  case 'c':
-	    corearg = optarg;
-	    break;
-	  case 'p':
-	    pidarg = optarg;
-	    break;
-	  case 'o':
-	    portarg = optarg;
-	    break;
-	  case 'x':
-	    {
-	      struct cmdarg cmdarg = { CMDARG_FILE, optarg };
-
-	      VEC_safe_push (cmdarg_s, cmdarg_vec, &cmdarg);
-	    }
-	    break;
-	  case 'X':
-	    {
-	      struct cmdarg cmdarg = { CMDARG_COMMAND, optarg };
-
-	      VEC_safe_push (cmdarg_s, cmdarg_vec, &cmdarg);
-	    }
-	    break;
-	  case OPT_IX:
-	    {
-	      struct cmdarg cmdarg = { CMDARG_INIT_FILE, optarg };
-
-	      VEC_safe_push (cmdarg_s, cmdarg_vec, &cmdarg);
-	    }
-	    break;
-	  case OPT_IEX:
-	    {
-	      struct cmdarg cmdarg = { CMDARG_INIT_COMMAND, optarg };
-
-	      VEC_safe_push (cmdarg_s, cmdarg_vec, &cmdarg);
-	    }
-	    break;
-	  case 'B':
-	    batch_flag = batch_silent = 1;
-	    gdb_stdout = ui_file_new();
-	    break;
-	  case 'D':
-	    if (optarg[0] == '\0')
-	      error (_("%s: empty path for `--data-directory'"),
-		     gdb_program_name);
-	    set_gdb_data_directory (optarg);
-	    gdb_datadir_provided = 1;
-	    break;
-#ifdef GDBTK
-	  case 'z':
-	    {
-	      extern int gdbtk_test (char *);
-
-	      if (!gdbtk_test (optarg))
-		error (_("%s: unable to load tclcommand file \"%s\""),
-		       gdb_program_name, optarg);
-	      break;
-	    }
-	  case 'y':
-	    /* Backwards compatibility only.  */
-	    break;
-	  case 'w':
-	    {
-	      /* Set the external editor commands when gdb is farming out files
-		 to be edited by another program.  */
-	      extern char *external_editor_command;
-
-	      external_editor_command = xstrdup (optarg);
-	      break;
-	    }
-#endif /* GDBTK */
-	  case 'i':
-	    xfree (interpreter_p);
-	    interpreter_p = xstrdup (optarg);
-	    break;
-	  case 'd':
-	    dirarg[ndir++] = optarg;
-	    if (ndir >= dirsize)
-	      {
-		dirsize *= 2;
-		dirarg = (char **) xrealloc ((char *) dirarg,
-					     dirsize * sizeof (*dirarg));
-	      }
-	    break;
-	  case 't':
-	    ttyarg = optarg;
-	    break;
-	  case 'q':
-	    quiet = 1;
-	    break;
-	  case 'b':
-	    {
-	      int i;
-	      char *p;
-
-	      i = strtol (optarg, &p, 0);
-	      if (i == 0 && p == optarg)
-		warning (_("could not set baud rate to `%s'."),
-			 optarg);
-	      else
-		baud_rate = i;
-	    }
-            break;
-	  case 'l':
-	    {
-	      int i;
-	      char *p;
-
-	      i = strtol (optarg, &p, 0);
-	      if (i == 0 && p == optarg)
-		warning (_("could not set timeout limit to `%s'."),
-			 optarg);
-	      else
-		remote_timeout = i;
-	    }
-	    break;
-
-	  case '?':
-	    error (_("Use `%s --help' for a complete list of options."),
-		   gdb_program_name);
-	  }
+	case 'd':
+	  debugarg = 1;
+	  break;
+	case '?':
+	  if (optopt == 'p') {
+	    fprintf(stderr, "option requires an argument -- %c\n", optopt);
+	  } else if (isprint (optopt)) {
+	    fprintf (stderr, "unknown option -- %c\n", optopt);
+	  } else {
+	    fprintf (stderr, "unknown option character `\\x%x'.\n", optopt);
+	  }	  
+	  fprintf(stderr,usage);
+	  exit(-1);
+	}
       }
-
-    if (batch_flag)
-      quiet = 1;
   }
 
   /* Try to set up an alternate signal stack for SIGSEGV handlers.  */
@@ -858,105 +606,14 @@ captured_main (void *data)
      control of the console via the deprecated_init_ui_hook ().  */
   gdb_init (gdb_program_name);
 
-  /* Now that gdb_init has created the initial inferior, we're in
-     position to set args for that inferior.  */
-  if (set_args)
-    {
-      /* The remaining options are the command-line options for the
-	 inferior.  The first one is the sym/exec file, and the rest
-	 are arguments.  */
-      if (optind >= argc)
-	error (_("%s: `--args' specified but no program specified"),
-	       gdb_program_name);
-
-      symarg = argv[optind];
-      execarg = argv[optind];
-      ++optind;
-      set_inferior_args_vector (argc - optind, &argv[optind]);
-    }
-  else
-    {
-      /* OK, that's all the options.  */
-
-      /* The first argument, if specified, is the name of the
-	 executable.  */
-      if (optind < argc)
-	{
-	  symarg = argv[optind];
-	  execarg = argv[optind];
-	  optind++;
-	}
-
-      /* If the user hasn't already specified a PID or the name of a
-	 core file, then a second optional argument is allowed.  If
-	 present, this argument should be interpreted as either a
-	 PID or a core file, whichever works.  */
-      if (pidarg == NULL && corearg == NULL && optind < argc)
-	{
-	  pid_or_core_arg = argv[optind];
-	  optind++;
-	}
-
-      /* Any argument left on the command line is unexpected and
-	 will be ignored.  Inform the user.  */
-      if (optind < argc)
-	fprintf_unfiltered (gdb_stderr,
-			    _("Excess command line "
-			      "arguments ignored. (%s%s)\n"),
-			    argv[optind],
-			    (optind == argc - 1) ? "" : " ...");
-    }
-
   /* Lookup gdbinit files.  Note that the gdbinit file name may be
      overriden during file initialization, so get_init_files should be
      called after gdb_init.  */
   get_init_files (&system_gdbinit, &home_gdbinit, &local_gdbinit);
 
-  /* Do these (and anything which might call wrap_here or *_filtered)
-     after initialize_all_files() but before the interpreter has been
-     installed.  Otherwize the help/version messages will be eaten by
-     the interpreter's output handler.  */
-
-  /*if (print_version)
-    {
-      print_gdb_version (gdb_stdout);
-      wrap_here ("");
-      printf_filtered ("\n");
-      exit (0);
-      }*/
-
-  /*if (print_help)
-    {
-      print_gdb_help (gdb_stdout);
-      fputs_unfiltered ("\n", gdb_stdout);
-      exit (0);
-    }
-
-  if (print_configuration)
-    {
-      print_gdb_configuration (gdb_stdout);
-      wrap_here ("");
-      printf_filtered ("\n");
-      exit (0);
-      }*/
-
-  /* FIXME: cagney/2003-02-03: The big hack (part 1 of 2) that lets
-     GDB retain the old MI1 interpreter startup behavior.  Output the
-     copyright message before the interpreter is installed.  That way
-     it isn't encapsulated in MI output.  */
-  /*if (!quiet && strcmp (interpreter_p, INTERP_MI1) == 0)
-    {
-      print_gdb_version (gdb_stdout);
-      if (symarg)
-	printf_filtered ("..");
-      wrap_here ("");
-      printf_filtered ("\n");
-      gdb_flush (gdb_stdout);
-   }*/
 
   /* Install the default UI.  All the interpreters should have had a
      look at things by now.  Initialize the default interpreter.  */
-
   {
     /* Find it.  */
     struct interp *interp = interp_lookup (interpreter_p);
@@ -1059,14 +716,16 @@ captured_main (void *data)
     error (_("Can't attach to process and specify "
 	     "a core file at the same time."));
 
-  if (portarg) {
-    //set the port arg
-    BE_port = atoi(portarg);
-  }
-  else {
-    printf("ERROR: No port specified for measurer!\n");
+  //set the port arg
+  BE_port = (portarg ? atoi(portarg) : 3000);
+  if (!BE_port) {
+    fprintf(stderr,"option requires integer argument -- p\n");
+    fprintf(stderr, usage);
     exit(-1);
   }
+
+  //set the debug arg
+  ME_DEBUG = debugarg;
   
   if (corearg != NULL)
     catch_command_errors (core_file_command, corearg,
@@ -1170,114 +829,4 @@ gdb_main (struct captured_main_args *args)
   /* The only way to end up here is by an error (normal exit is
      handled by quit_force()), hence always return an error status.  */
   return 1;
-}
-
-
-/* Don't use *_filtered for printing help.  We don't want to prompt
-   for continue no matter how small the screen or how much we're going
-   to print.  */
-
-static void
-print_gdb_help (struct ui_file *stream)
-{
-  const char *system_gdbinit;
-  const char *home_gdbinit;
-  const char *local_gdbinit;
-
-  get_init_files (&system_gdbinit, &home_gdbinit, &local_gdbinit);
-
-  /* Note: The options in the list below are only approximately sorted
-     in the alphabetical order, so as to group closely related options
-     together.  */
-  fputs_unfiltered (_("\
-This is the GNU debugger.  Usage:\n\n\
-    gdb [options] [executable-file [core-file or process-id]]\n\
-    gdb [options] --args executable-file [inferior-arguments ...]\n\n\
-"), stream);
-  fputs_unfiltered (_("\
-Selection of debuggee and its files:\n\n\
-  --args             Arguments after executable-file are passed to inferior\n\
-  --core=COREFILE    Analyze the core dump COREFILE.\n\
-  --exec=EXECFILE    Use EXECFILE as the executable.\n\
-  --pid=PID          Attach to running process PID.\n\
-  --directory=DIR    Search for source files in DIR.\n\
-  --se=FILE          Use FILE as symbol file and executable file.\n\
-  --symbols=SYMFILE  Read symbols from SYMFILE.\n\
-  --readnow          Fully read symbol files on first access.\n\
-  --write            Set writing into executable and core files.\n\n\
-"), stream);
-  fputs_unfiltered (_("\
-Initial commands and command files:\n\n\
-  --command=FILE, -x Execute GDB commands from FILE.\n\
-  --init-command=FILE, -ix\n\
-                     Like -x but execute commands before loading inferior.\n\
-  --eval-command=COMMAND, -ex\n\
-                     Execute a single GDB command.\n\
-                     May be used multiple times and in conjunction\n\
-                     with --command.\n\
-  --init-eval-command=COMMAND, -iex\n\
-                     Like -ex but before loading inferior.\n\
-  --nh               Do not read ~/.gdbinit.\n\
-  --nx               Do not read any .gdbinit files in any directory.\n\n\
-"), stream);
-  fputs_unfiltered (_("\
-Output and user interface control:\n\n\
-  --fullname         Output information used by emacs-GDB interface.\n\
-  --interpreter=INTERP\n\
-                     Select a specific interpreter / user interface\n\
-  --tty=TTY          Use TTY for input/output by the program being debugged.\n\
-  -w                 Use the GUI interface.\n\
-  --nw               Do not use the GUI interface.\n\
-"), stream);
-#if defined(TUI)
-  fputs_unfiltered (_("\
-  --tui              Use a terminal user interface.\n\
-"), stream);
-#endif
-  fputs_unfiltered (_("\
-  --dbx              DBX compatibility mode.\n\
-  --xdb              XDB compatibility mode.\n\
-  -q, --quiet, --silent\n\
-                     Do not print version number on startup.\n\n\
-"), stream);
-  fputs_unfiltered (_("\
-Operating modes:\n\n\
-  --batch            Exit after processing options.\n\
-  --batch-silent     Like --batch, but suppress all gdb stdout output.\n\
-  --return-child-result\n\
-                     GDB exit code will be the child's exit code.\n\
-  --configuration    Print details about GDB configuration and then exit.\n\
-  --help             Print this message and then exit.\n\
-  --version          Print version information and then exit.\n\n\
-Remote debugging options:\n\n\
-  -b BAUDRATE        Set serial port baud rate used for remote debugging.\n\
-  -l TIMEOUT         Set timeout in seconds for remote debugging.\n\n\
-Other options:\n\n\
-  --cd=DIR           Change current directory to DIR.\n\
-  --data-directory=DIR, -D\n\
-                     Set GDB's data-directory to DIR.\n\
-"), stream);
-  fputs_unfiltered (_("\n\
-At startup, GDB reads the following init files and executes their commands:\n\
-"), stream);
-  if (system_gdbinit)
-    fprintf_unfiltered (stream, _("\
-   * system-wide init file: %s\n\
-"), system_gdbinit);
-  if (home_gdbinit)
-    fprintf_unfiltered (stream, _("\
-   * user-specific init file: %s\n\
-"), home_gdbinit);
-  if (local_gdbinit)
-    fprintf_unfiltered (stream, _("\
-   * local init file (see also 'set auto-load local-gdbinit'): ./%s\n\
-"), local_gdbinit);
-  fputs_unfiltered (_("\n\
-For more information, type \"help\" from within GDB, or consult the\n\
-GDB manual (available as on-line info or a printed manual).\n\
-"), stream);
-  if (REPORT_BUGS_TO[0] && stream == gdb_stdout)
-    fprintf_unfiltered (stream, _("\
-Report bugs to \"%s\".\n\
-"), REPORT_BUGS_TO);
 }
