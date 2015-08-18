@@ -50,7 +50,7 @@ DI_init_measurer (char * ip, int port)
     exit(-1);
   }
 
-  printd("connected to server");
+  printd("connected to server\n");
   
   return sockfd;
 }

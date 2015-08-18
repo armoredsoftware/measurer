@@ -674,3 +674,50 @@ Handling (print_context) request!
 2015-08-18 22:13:10 - 16856 : ME_API_set_target(6418)
 2015-08-18 22:13:17 - 16856 : Recieved request "(measure (var "a"))". Servicing...
 2015-08-18 22:13:22 - 16856 : Recieved request "(measure (var "c"))". Servicing...
+2015-08-18 22:23:05 - 16856 : Client disconnected!
+2015-08-18 22:23:05 - 16856 : Measurer exited!
+2015-08-18 22:23:11 - 17228 : Measurer started.
+2015-08-18 22:23:11 - 17228 : Listening for client on *:3000 ...
+2015-08-18 22:23:13 - 17228 : Client connected.
+2015-08-18 22:23:21 - 17228 : Client disconnected!
+2015-08-18 22:23:21 - 17228 : Measurer exited!
+2015-08-18 23:38:14 - 19586 : Measurer started.
+2015-08-18 23:38:14 - 19586 : Listening for client on *:3000 ...
+2015-08-18 23:38:26 - 19586 : Client connected.
+2015-08-18 23:38:33 - 19586 : Client disconnected!
+2015-08-18 23:38:33 - 19586 : Measurer exited.
+2015-08-18 23:38:52 - 19589 : Measurer started.
+2015-08-18 23:38:52 - 19589 : Listening for client on *:3000 ...
+2015-08-18 23:38:53 - 19589 : Measurer exited.
+2015-08-18 23:41:15 - 19741 : Measurer started.
+2015-08-18 23:41:15 - 19741 : Listening for client on *:3000 ...
+2015-08-18 23:41:24 - 19741 : Client connected.
+2015-08-18 23:41:27 - 19741 : Client sent request "sdkl".
+2015-08-18 23:43:10 - 20630 : Measurer started.
+2015-08-18 23:43:10 - 20630 : ERROR: Could not bind server socket!
+2015-08-18 23:43:10 - 20630 : Measurer exited.
+2015-08-18 23:43:16 - 20632 : Measurer started.
+2015-08-18 23:43:16 - 20632 : ERROR: Could not bind server socket!
+2015-08-18 23:43:16 - 20632 : Measurer exited.
+2015-08-18 23:43:20 - 20634 : Measurer started.
+2015-08-18 23:43:20 - 20634 : ERROR: Could not bind server socket!
+2015-08-18 23:43:20 - 20634 : Measurer exited.
+2015-08-18 23:43:22 - 19741 : Client disconnected!
+2015-08-18 23:43:22 - 19741 : Measurer exited.
+2015-08-18 23:43:25 - 20636 : Measurer started.
+2015-08-18 23:43:25 - 20636 : Listening for client on *:3000 ...
+2015-08-18 23:43:33 - 20636 : Client connected.
+2015-08-18 23:43:39 - 20636 : Client sent request "(print_context)".
+2015-08-18 23:43:39 - 20636 : Measurer Context {PID=-1}
+2015-08-18 23:43:49 - 20636 : Client sent request "(set_target 18518)".
+2015-08-18 23:43:49 - 20636 : ME_API_set_target(18518)
+2015-08-18 23:43:49 - 20636 : Failed to attach to process 18518!
+2015-08-18 23:44:07 - 20636 : Client sent request "(measure (var "a"))".
+2015-08-18 23:44:07 - 20636 : Not attached to a process!
+2015-08-18 23:44:19 - 20636 : Client sent request "(set_target 6418))".
+2015-08-18 23:44:19 - 20636 : ME_API_set_target(6418)
+2015-08-18 23:44:22 - 20636 : Client sent request "(measure (var "a"))".
+2015-08-18 23:44:24 - 20636 : Client sent request "(measure (var "a"))".
+2015-08-18 23:44:26 - 20636 : Client sent request "(measure (var "c"))".
+2015-08-18 23:44:29 - 20636 : Client disconnected!
+2015-08-18 23:44:29 - 20636 : Measurer exited.

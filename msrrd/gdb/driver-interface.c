@@ -77,16 +77,19 @@ BE_hook * BE_hook_array_get(int i) {
   ====================================================*/
 
 void BE_main(void)
-{
+{ 
   int c = 0;
 
   struct BE_Context * bec = BE_context_create();
   BE_log("Measurer started.");
-
+  printd("Measurer started.\n");
+ 
   BE_initial_gdb();
   
   BE_start_session();
-
+  
+  printd("Main loop starting.\n");
+ 
   while(1) {
     BE_get_request();
     BE_do_continuous();
@@ -118,7 +121,7 @@ int ME_sock_server_connect(int port)
  } 
 
  BE_log("Listening for client on *:%d ...",port);
- printd("Listening for client on *:%d...",port);
+ printd("Listening for client on *:%d...\n",port);
  
  listen(listenfd, 10);
 
@@ -147,7 +150,7 @@ void BE_start_session(void)
   the_context.driverfd = ME_sock_server_connect(BE_port);
 
   BE_log("Client connected.");
-  printd("Client connected.");
+  printd("Client connected.\n");
 }
 
 BE_Context * BE_context_create(void)
@@ -180,10 +183,10 @@ int quitting = 0;
 
 void BE_exit(void)
 {
-  BE_log("Measurer exited!");
-  printd("Measurer exited!");
+  BE_log("Measurer exited.");
+  printd("Measurer exited.\n");
   close(the_context.driverfd);
-  exit(-1);
+  exit(0);
 }
 
 void BE_get_request(void)
@@ -214,7 +217,7 @@ void BE_get_request(void)
   const char * RLI_expr = json_string_value(json_array_get(params,0));
   json_t *id_copy = json_copy(json_object_get(root,"id"));
 
-  BE_log("Recieved request \"%s\". Servicing...",RLI_expr);
+  BE_log("Client sent request \"%s\".",RLI_expr);
   
   ME_RLI_IR_value value_result = BE_rhandler_dispatch(RLI_expr);
 
@@ -227,11 +230,10 @@ void BE_get_request(void)
   //if (value_result.type == ME_RLI_IR_VALUE_MEASUREMENT) {
   //json_object_set_new(root, "result", ME_measurement_toJSON(value_result.vdata.ms));
   //} else { //if (value_result.type == ME_RLI_IR_VALUE_toJSON) {
-    json_object_set_new(root, "result", ME_RLI_IR_value_toJSON(value_result));
-    //}/* else {
-    //json_object_set_new(root, "result", json_null());
-    //}*/
-
+  json_object_set_new(root, "result", ME_RLI_IR_value_toJSON(value_result));
+  //}/* else {
+  //json_object_set_new(root, "result", json_null());
+  //}*/
 
   json_object_set_new(root, "id", id_copy);
 
@@ -292,10 +294,12 @@ struct ME_RLI_IR_value BE_rhandler_dispatch(const char * request)
   
   ME_RLI_IR_value result = ME_RLI_IR_expr_eval(expr);
     
-  //printd("result = ");
-  //ME_RLI_IR_value_print(result);
-  //printf("\n");
-    
+  if (ME_DEBUG) { //TODO - move to printd
+    printd("Request result = ");
+    ME_RLI_IR_value_print(result);
+    printf("\n");
+  }
+  
   //TODO delete tokens, expr
     
   return result;
