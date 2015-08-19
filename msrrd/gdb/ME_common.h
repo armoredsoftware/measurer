@@ -9,7 +9,7 @@
 //#define DEBUG 1
 extern int ME_DEBUG;
 
-#define printd(...) { if (ME_DEBUG){ fprintf(stdout, "%s:%d:%s(): ", __FILE__, __LINE__, __func__); fprintf(stdout, __VA_ARGS__); } }
+#define printd(...) { if (ME_DEBUG){ fprintf(stdout, "\n%s:%d:%s(): ", __FILE__, __LINE__, __func__); fprintf(stdout, __VA_ARGS__);  } }
 //#else
 //#define printd
 //#endif

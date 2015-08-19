@@ -23,11 +23,6 @@
 int
 main (int argc, char **argv)
 {
-  //dup2(fileno(someopenfile), STDIN_FILENO);
-  //FILE *fp = freopen ("/tmp/logfile", "a+", stdout);//dup2(fileno(somethirdopenfile), STDERR_FILENO);
-  //fclose(STDIN_FILENO);
-  //fclose(STDOUT_FILENO);
-  //fclose(STDERR_FILENO);
 
   struct captured_main_args args;
 

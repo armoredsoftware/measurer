@@ -244,7 +244,6 @@ json_t * ME_RLI_IR_value_toJSON(ME_RLI_IR_value value) {
   } else if (value.type == ME_RLI_IR_VALUE_MEASUREMENT) {
     json_object_set_new(json_val,"type",json_string("MEASUREMENT"));
     json_object_set_new(json_val,"data",ME_measurement_toJSON(value.vdata.ms));
-    ME_measurement_print(value.vdata.ms);
   } else if (value.type == ME_RLI_IR_VALUE_EVENT) {
     json_object_set_new(json_val,"type",json_string("ERROR"));
     json_object_set_new(json_val,"data",json_string("EVENT to/from JSON not implemented")); //TODO - implement

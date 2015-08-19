@@ -137,9 +137,7 @@ void ME_sock_send(int sockfd, char * message)
   memset(sendBuff, 0 ,sizeof(sendBuff));
 
   snprintf(sendBuff, sizeof(sendBuff), "%s", message);
-  
   count = write(sockfd, sendBuff, sizeof(sendBuff)-1);
-
   printd("Sent %d bytes:\"%s\"\n",count,sendBuff);
 
 }

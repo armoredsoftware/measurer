@@ -161,7 +161,7 @@ BE_Context * BE_context_create(void)
   the_context.PID = -1;
   the_context.driverfd = -1;
 
-  strcpy(the_context.logpath, "mssrd.log"); 
+  strcpy(the_context.logpath, "msrrd.log"); 
       
   return &the_context;
   
@@ -184,7 +184,7 @@ int quitting = 0;
 void BE_exit(void)
 {
   BE_log("Measurer exited.");
-  printd("Measurer exited.\n");
+  printf("msrrd exited.\n");
   close(the_context.driverfd);
   exit(0);
 }
@@ -220,21 +220,15 @@ void BE_get_request(void)
   BE_log("Client sent request \"%s\".",RLI_expr);
   
   ME_RLI_IR_value value_result = BE_rhandler_dispatch(RLI_expr);
-
+    
   json_decref(root);
 
   //Send response
   root = json_object();
   json_object_set_new(root, "jsonrpc", json_string("2.0"));
 
-  //if (value_result.type == ME_RLI_IR_VALUE_MEASUREMENT) {
-  //json_object_set_new(root, "result", ME_measurement_toJSON(value_result.vdata.ms));
-  //} else { //if (value_result.type == ME_RLI_IR_VALUE_toJSON) {
   json_object_set_new(root, "result", ME_RLI_IR_value_toJSON(value_result));
-  //}/* else {
-  //json_object_set_new(root, "result", json_null());
-  //}*/
-
+  
   json_object_set_new(root, "id", id_copy);
 
   char * response;
@@ -293,11 +287,11 @@ struct ME_RLI_IR_value BE_rhandler_dispatch(const char * request)
   //ME_RLI_IR_expr_print(expr);
   
   ME_RLI_IR_value result = ME_RLI_IR_expr_eval(expr);
-    
+  
   if (ME_DEBUG) { //TODO - move to printd
     printd("Request result = ");
     ME_RLI_IR_value_print(result);
-    printf("\n");
+    printd("\n");
   }
   
   //TODO delete tokens, expr
@@ -495,10 +489,8 @@ ME_measurement * ME_API_measure(ME_feature * feature)
     ms->data.string_val = value;
   }
     
-  if (stopped_here) {
-    //Continue Inferior
-    continue_command_JG();
-  }
+  if (stopped_here)
+    BE_resume_inferior();
 
   return ms;
 }
