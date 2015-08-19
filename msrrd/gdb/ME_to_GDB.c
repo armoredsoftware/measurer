@@ -8,6 +8,7 @@
 #include "event-loop.h"
 
 int bak_stdout, bak_stderr;
+int bak_stdin;
 int closed=0;
 void BE_stdout_close() {
   if (ME_DEBUG) return;
@@ -155,4 +156,10 @@ char *  BE_get_variable_wrapper(const char * var_name) {
    }
   BE_stdout_open();
   return value;
+}
+
+void BE_quit() {
+
+  gdb_rl_callback_handler_remove ();
+  
 }

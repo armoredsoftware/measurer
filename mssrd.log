@@ -1016,3 +1016,6 @@ Handling (print_context) request!
 2015-08-19 20:34:46 - 29065 : Client sent request "(quit(".
 2015-08-19 20:34:53 - 29065 : Client disconnected!
 2015-08-19 20:34:53 - 29065 : Measurer exited.
+2015-08-19 20:39:53 - 29380 : Measurer started.
+2015-08-19 20:39:53 - 29380 : Listening for client on *:3000 ...
+2015-08-19 20:39:54 - 29380 : Measurer exited.

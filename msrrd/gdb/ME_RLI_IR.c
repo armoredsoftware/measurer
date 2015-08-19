@@ -428,14 +428,14 @@ void ME_RLI_IR_func_add_arg(ME_RLI_IR_func * func, ME_RLI_IR_expr * expr) {
 struct ME_RLI_IR_func * ME_RLI_IR_func_parse(struct ME_RLI_token ** curr) {
   //consume parenthesis
   if (strcmp((*curr)->value,"(")!=0) {
-    printf("Parse error: expected \"(\"");
-    exit(-1);
+    printd("Parse error: expected \"(\"");
+    return NULL;
   }
   (*curr) = (*curr)->next;
 
   //consume function name
   if (!(*curr) || strcmp((*curr)->value,")")==0) {
-    printf("Parse error: Invalid function call at \"(\"\n");
+    printd("Parse error: Invalid function call at \"(\"\n");
     return NULL;
   } 
 

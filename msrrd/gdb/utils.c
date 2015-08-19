@@ -1270,14 +1270,14 @@ defaulted_query (const char *ctlstr, const char defchar, va_list args)
 
   /* Used for calculating time spend waiting for user.  */
   gettimeofday (&prompt_started, NULL);
-
+  
   while (1)
     {
       char *response, answer;
 
       gdb_flush (gdb_stdout);
       response = gdb_readline_wrapper (prompt);
-
+      
       if (response == NULL)	/* C-d  */
 	{
 	  printf_filtered ("EOF [assumed %c]\n", def_answer);
@@ -1310,13 +1310,13 @@ defaulted_query (const char *ctlstr, const char defchar, va_list args)
       printf_filtered (_("Please answer %s or %s.\n"),
 		       y_string, n_string);
     }
-
+  
   /* Add time spend in this routine to prompt_for_continue_wait_time.  */
   gettimeofday (&prompt_ended, NULL);
   timeval_sub (&prompt_delta, &prompt_ended, &prompt_started);
   timeval_add (&prompt_for_continue_wait_time,
                &prompt_for_continue_wait_time, &prompt_delta);
-
+  
   xfree (prompt);
   if (annotation_level > 1)
     printf_filtered (("\n\032\032post-query\n"));

@@ -316,7 +316,7 @@ setup_alternate_signal_stack (void)
 
 static int
 captured_command_loop (void *data)
-{
+{ 
   /* Top-level execution commands can be run in the background from
      here on.  */
   interpreter_async = 1;
@@ -429,7 +429,7 @@ typedef struct cmdarg {
 DEF_VEC_O (cmdarg_s);
 
 static int
-captured_main (void *data)
+captured_main(void *data)
 {
   struct captured_main_args *context = data;
   int argc = context->argc;
@@ -476,7 +476,7 @@ captured_main (void *data)
   struct objfile *objfile;
 
   struct cleanup *pre_stat_chain;
-
+  
 #ifdef HAVE_SBRK
   /* Set this before calling make_command_stats_cleanup.  */
   lim_at_start = (char *) sbrk (0);
@@ -515,11 +515,11 @@ captured_main (void *data)
   gdb_stdout = stdio_fileopen (stdout);
   gdb_stderr = stderr_fileopen ();
 
-  gdb_stdlog = gdb_stderr;	/* for moment */
-  gdb_stdtarg = gdb_stderr;	/* for moment */
+  gdb_stdlog = gdb_stderr;
+  gdb_stdtarg = gdb_stderr;
   gdb_stdin = stdio_fileopen (stdin);
-  gdb_stdtargerr = gdb_stderr;	/* for moment */
-  gdb_stdtargin = gdb_stdin;	/* for moment */
+  gdb_stdtargerr = gdb_stderr;
+  gdb_stdtargin = gdb_stdin; 
 
 #ifdef __MINGW32__
   /* On Windows, argv[0] is not necessarily set to absolute form when
@@ -815,6 +815,7 @@ captured_main (void *data)
      moving this loop and the code found in captured_command_loop()
      into the command_loop() proper.  The main thing holding back that
      change - SET_TOP_LEVEL() - has been eliminated.  */
+
   while (1)
     {
       catch_errors (captured_command_loop, 0, "", RETURN_MASK_ALL);

@@ -752,11 +752,11 @@ static void (*saved_after_char_processing_hook) (void);
 
 static void
 gdb_readline_wrapper_line (char *line)
-{
+{ 
   gdb_assert (!gdb_readline_wrapper_done);
   gdb_readline_wrapper_result = line;
   gdb_readline_wrapper_done = 1;
-
+  
   /* Prevent operate-and-get-next from acting too early.  */
   saved_after_char_processing_hook = after_char_processing_hook;
   after_char_processing_hook = NULL;
@@ -830,7 +830,7 @@ gdb_readline_wrapper (const char *prompt)
 
   if (cleanup->target_is_async_orig)
     target_async (NULL, NULL);
-
+  
   /* Display our prompt and prevent double prompt display.  */
   display_gdb_prompt (prompt);
   rl_already_prompted = 1;
@@ -843,6 +843,8 @@ gdb_readline_wrapper (const char *prompt)
     if (gdb_readline_wrapper_done)
       break;
 
+  exit(1);
+    
   retval = gdb_readline_wrapper_result;
   do_cleanups (back_to);
   return retval;
@@ -1452,8 +1454,9 @@ quit_confirm (void)
 
   str = ui_file_xstrdup (stb, NULL);
   make_cleanup (xfree, str);
-
+  
   qr = query ("%s", str);
+  
   do_cleanups (old_chain);
   return qr;
 }
@@ -1515,7 +1518,7 @@ quit_force (char *args, int from_tty)
 	gdb_safe_append_history ();
     }
   DO_PRINT_EX;
-
+  
   /* Do any final cleanups before exiting.  */
   DO_TRY
     {

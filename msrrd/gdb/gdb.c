@@ -20,10 +20,13 @@
 #include "main.h"
 #include "interps.h"
 
+//#include "ME_to_GDB.h"
+
 int
 main (int argc, char **argv)
 {
-
+  //bak_stdin = dup(fileno(stdin));
+  
   struct captured_main_args args;
 
   memset (&args, 0, sizeof args);

@@ -186,6 +186,7 @@ void BE_exit(void)
   BE_log("Measurer exited.");
   printf("msrrd exited.\n");
   close(the_context.driverfd);
+  BE_quit();
   exit(0);
 }
 

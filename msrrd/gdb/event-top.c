@@ -181,7 +181,7 @@ void
 cli_command_loop (void *data)
 {
   display_gdb_prompt (0);
-
+  
   /* Now it's time to start the event loop.  */
   start_event_loop ();
 }
@@ -290,6 +290,7 @@ gdb_rl_callback_handler_reinstall (void)
 void
 display_gdb_prompt (const char *new_prompt)
 {
+  
   char *actual_gdb_prompt = NULL;
   struct cleanup *old_chain;
 
@@ -335,7 +336,7 @@ display_gdb_prompt (const char *new_prompt)
     }
   else
     actual_gdb_prompt = xstrdup (new_prompt);
-
+    
   if (async_command_editing_p)
     {
       gdb_rl_callback_handler_remove ();
@@ -351,7 +352,7 @@ display_gdb_prompt (const char *new_prompt)
       fputs_unfiltered (actual_gdb_prompt, gdb_stdout);
       gdb_flush (gdb_stdout);
     }
-
+  
   do_cleanups (old_chain);
 }
 

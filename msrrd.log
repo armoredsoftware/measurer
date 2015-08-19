@@ -1,0 +1,279 @@
+
+2015-08-19 20:46:12 - 31803 : Measurer started.
+2015-08-19 20:46:12 - 31803 : Listening for client on *:3000 ...
+2015-08-19 20:46:17 - 31803 : Client connected.
+2015-08-19 20:46:21 - 31803 : Client disconnected!
+2015-08-19 20:46:21 - 31803 : Measurer exited.
+2015-08-19 21:05:40 - 598 : Measurer started.
+2015-08-19 21:05:40 - 598 : Listening for client on *:3000 ...
+2015-08-19 21:05:45 - 598 : Client connected.
+2015-08-19 21:05:52 - 598 : Client sent request "(set_target 19761)".
+2015-08-19 21:05:52 - 598 : ME_API_set_target(19761)
+2015-08-19 21:05:56 - 598 : Client disconnected!
+2015-08-19 21:05:56 - 598 : Measurer exited.
+2015-08-19 21:06:22 - 605 : Measurer started.
+2015-08-19 21:06:22 - 605 : Listening for client on *:3000 ...
+2015-08-19 21:06:24 - 605 : Client connected.
+2015-08-19 21:06:26 - 605 : Client disconnected!
+2015-08-19 21:06:26 - 605 : Measurer exited.
+2015-08-19 21:06:29 - 611 : Measurer started.
+2015-08-19 21:06:29 - 611 : Listening for client on *:3000 ...
+2015-08-19 21:06:34 - 611 : Client connected.
+2015-08-19 21:06:42 - 611 : Client sent request "(set_target 19761)".
+2015-08-19 21:06:42 - 611 : ME_API_set_target(19761)
+2015-08-19 21:06:47 - 611 : Client disconnected!
+2015-08-19 21:06:47 - 611 : Measurer exited.
+2015-08-19 21:06:56 - 618 : Measurer started.
+2015-08-19 21:06:56 - 618 : Listening for client on *:3000 ...
+2015-08-19 21:06:58 - 618 : Client connected.
+2015-08-19 21:07:00 - 618 : Client disconnected!
+2015-08-19 21:07:00 - 618 : Measurer exited.
+2015-08-19 21:08:05 - 638 : Measurer started.
+2015-08-19 21:08:05 - 638 : Listening for client on *:3000 ...
+2015-08-19 21:08:11 - 638 : Client connected.
+2015-08-19 21:08:15 - 638 : Client sent request "(set_target 19761)".
+2015-08-19 21:08:15 - 638 : ME_API_set_target(19761)
+2015-08-19 21:08:22 - 638 : Client disconnected!
+2015-08-19 21:08:22 - 638 : Measurer exited.
+2015-08-19 21:11:18 - 866 : Measurer started.
+2015-08-19 21:11:18 - 866 : Listening for client on *:3000 ...
+2015-08-19 21:11:19 - 866 : Client connected.
+2015-08-19 21:11:21 - 866 : Client disconnected!
+2015-08-19 21:11:21 - 866 : Measurer exited.
+2015-08-19 21:19:51 - 2086 : Measurer started.
+2015-08-19 21:19:51 - 2086 : Listening for client on *:3000 ...
+2015-08-19 21:19:54 - 2086 : Client connected.
+2015-08-19 21:20:02 - 2086 : Client sent request "(set_target 19761)".
+2015-08-19 21:20:02 - 2086 : ME_API_set_target(19761)
+2015-08-19 21:20:09 - 2086 : Client disconnected!
+2015-08-19 21:20:09 - 2086 : Measurer exited.
+2015-08-19 21:21:17 - 2853 : Measurer started.
+2015-08-19 21:21:17 - 2853 : Listening for client on *:3000 ...
+2015-08-19 21:21:21 - 2853 : Client connected.
+2015-08-19 21:21:29 - 2853 : Client sent request "(set_target 19761)".
+2015-08-19 21:21:29 - 2853 : ME_API_set_target(19761)
+2015-08-19 21:21:31 - 2853 : Client disconnected!
+2015-08-19 21:21:31 - 2853 : Measurer exited.
+2015-08-19 21:21:56 - 3585 : Measurer started.
+2015-08-19 21:21:56 - 3585 : Listening for client on *:3000 ...
+2015-08-19 21:21:57 - 3585 : Client connected.
+2015-08-19 21:22:02 - 3585 : Client sent request "(set_target 19761)".
+2015-08-19 21:22:02 - 3585 : ME_API_set_target(19761)
+2015-08-19 21:22:04 - 3585 : Client disconnected!
+2015-08-19 21:22:04 - 3585 : Measurer exited.
+2015-08-19 21:22:36 - 4316 : Measurer started.
+2015-08-19 21:22:36 - 4316 : Listening for client on *:3000 ...
+2015-08-19 21:22:37 - 4316 : Client connected.
+2015-08-19 21:22:49 - 4316 : Client sent request "(set_target 19761)".
+2015-08-19 21:22:49 - 4316 : ME_API_set_target(19761)
+2015-08-19 21:22:51 - 4316 : Client disconnected!
+2015-08-19 21:22:51 - 4316 : Measurer exited.
+2015-08-19 21:27:22 - 5203 : Measurer started.
+2015-08-19 21:27:22 - 5203 : Listening for client on *:3000 ...
+2015-08-19 21:27:36 - 5203 : Client connected.
+2015-08-19 21:27:41 - 5203 : Client sent request "(set_target 19761)".
+2015-08-19 21:27:41 - 5203 : ME_API_set_target(19761)
+2015-08-19 21:27:55 - 5203 : Client disconnected!
+2015-08-19 21:27:55 - 5203 : Measurer exited.
+2015-08-19 21:28:41 - 5976 : Measurer started.
+2015-08-19 21:28:41 - 5976 : Listening for client on *:3000 ...
+2015-08-19 21:28:44 - 5976 : Client connected.
+2015-08-19 21:28:50 - 5976 : Client sent request "(set_target 19761)".
+2015-08-19 21:28:50 - 5976 : ME_API_set_target(19761)
+2015-08-19 21:28:56 - 5976 : Client disconnected!
+2015-08-19 21:28:56 - 5976 : Measurer exited.
+2015-08-19 21:30:56 - 6818 : Measurer started.
+2015-08-19 21:30:56 - 6818 : Listening for client on *:3000 ...
+2015-08-19 21:30:57 - 6818 : Client connected.
+2015-08-19 21:31:02 - 6818 : Client sent request "(set_target 19761)".
+2015-08-19 21:31:02 - 6818 : ME_API_set_target(19761)
+2015-08-19 21:31:06 - 6818 : Client disconnected!
+2015-08-19 21:31:06 - 6818 : Measurer exited.
+2015-08-19 21:32:57 - 7608 : Measurer started.
+2015-08-19 21:32:57 - 7608 : Listening for client on *:3000 ...
+2015-08-19 21:32:58 - 7608 : Client connected.
+2015-08-19 21:33:04 - 7608 : Client sent request "(set_target 19761)\".
+2015-08-19 21:33:04 - 7608 : ME_API_set_target(19761)
+2015-08-19 21:33:08 - 7608 : Client sent request "(set_target 19761)".
+2015-08-19 21:33:08 - 7608 : ME_API_set_target(19761)
+2015-08-19 21:33:12 - 7608 : Client disconnected!
+2015-08-19 21:33:12 - 7608 : Measurer exited.
+2015-08-19 21:33:30 - 7623 : Measurer started.
+2015-08-19 21:33:30 - 7623 : Listening for client on *:3000 ...
+2015-08-19 21:33:32 - 7623 : Client connected.
+2015-08-19 21:33:37 - 7623 : Client sent request "(set_target 19761)".
+2015-08-19 21:33:37 - 7623 : ME_API_set_target(19761)
+2015-08-19 21:34:17 - 7623 : Client disconnected!
+2015-08-19 21:34:17 - 7623 : Measurer exited.
+2015-08-19 21:35:48 - 8695 : Measurer started.
+2015-08-19 21:35:48 - 8695 : Listening for client on *:3000 ...
+2015-08-19 21:35:51 - 8695 : Client connected.
+2015-08-19 21:35:56 - 8695 : Client sent request "(set_target 19761)".
+2015-08-19 21:35:56 - 8695 : ME_API_set_target(19761)
+2015-08-19 21:35:58 - 8695 : Client disconnected!
+2015-08-19 21:35:58 - 8695 : Measurer exited.
+2015-08-19 21:36:47 - 9425 : Measurer started.
+2015-08-19 21:36:47 - 9425 : Listening for client on *:3000 ...
+2015-08-19 21:36:48 - 9425 : Client connected.
+2015-08-19 21:36:54 - 9425 : Client sent request "(set_target 19761)".
+2015-08-19 21:36:54 - 9425 : ME_API_set_target(19761)
+2015-08-19 21:37:06 - 9425 : Client disconnected!
+2015-08-19 21:37:06 - 9425 : Measurer exited.
+2015-08-19 21:37:38 - 10172 : Measurer started.
+2015-08-19 21:37:38 - 10172 : Listening for client on *:3000 ...
+2015-08-19 21:37:39 - 10172 : Client connected.
+2015-08-19 21:37:45 - 10172 : Client sent request "(set_target 19761) ".
+2015-08-19 21:37:45 - 10172 : ME_API_set_target(19761)
+2015-08-19 21:37:47 - 10172 : Client disconnected!
+2015-08-19 21:37:47 - 10172 : Measurer exited.
+2015-08-19 21:38:31 - 10958 : Measurer started.
+2015-08-19 21:38:31 - 10958 : Listening for client on *:3000 ...
+2015-08-19 21:38:33 - 10958 : Client connected.
+2015-08-19 21:38:35 - 10958 : Client disconnected!
+2015-08-19 21:38:35 - 10958 : Measurer exited.
+2015-08-19 21:40:06 - 12345 : Measurer started.
+2015-08-19 21:40:06 - 12345 : Listening for client on *:3000 ...
+2015-08-19 21:40:07 - 12345 : Client connected.
+2015-08-19 21:40:11 - 12345 : Client sent request "(set_target 19761)".
+2015-08-19 21:40:11 - 12345 : ME_API_set_target(19761)
+2015-08-19 21:40:15 - 12345 : Client disconnected!
+2015-08-19 21:40:15 - 12345 : Measurer exited.
+2015-08-19 21:42:07 - 13145 : Measurer started.
+2015-08-19 21:42:07 - 13145 : Listening for client on *:3000 ...
+2015-08-19 21:42:08 - 13145 : Client connected.
+2015-08-19 21:42:13 - 13145 : Client sent request "(set_target 19761)".
+2015-08-19 21:42:13 - 13145 : ME_API_set_target(19761)
+2015-08-19 21:42:15 - 13145 : Client disconnected!
+2015-08-19 21:42:15 - 13145 : Measurer exited.
+2015-08-19 21:42:59 - 13888 : Measurer started.
+2015-08-19 21:42:59 - 13888 : Listening for client on *:3000 ...
+2015-08-19 21:43:00 - 13888 : Client connected.
+2015-08-19 21:43:08 - 13888 : Client sent request "(set_target 19761)".
+2015-08-19 21:43:08 - 13888 : ME_API_set_target(19761)
+2015-08-19 21:43:10 - 13888 : Client disconnected!
+2015-08-19 21:43:10 - 13888 : Measurer exited.
+2015-08-19 21:44:13 - 14644 : Measurer started.
+2015-08-19 21:44:13 - 14644 : Listening for client on *:3000 ...
+2015-08-19 21:44:14 - 14644 : Client connected.
+2015-08-19 21:44:22 - 14644 : Client sent request "(set_target 19761)".
+2015-08-19 21:44:22 - 14644 : ME_API_set_target(19761)
+2015-08-19 21:44:25 - 14644 : Client disconnected!
+2015-08-19 21:44:25 - 14644 : Measurer exited.
+2015-08-19 21:49:40 - 16036 : Measurer started.
+2015-08-19 21:49:40 - 16036 : Listening for client on *:3000 ...
+2015-08-19 21:49:42 - 16036 : Client connected.
+2015-08-19 21:49:50 - 16036 : Client sent request "(set_target 19761)".
+2015-08-19 21:49:50 - 16036 : ME_API_set_target(19761)
+2015-08-19 21:49:55 - 16036 : Client disconnected!
+2015-08-19 21:49:55 - 16036 : Measurer exited.
+2015-08-19 21:50:29 - 16767 : Measurer started.
+2015-08-19 21:50:29 - 16767 : Listening for client on *:3000 ...
+2015-08-19 21:50:33 - 16767 : Client connected.
+2015-08-19 21:50:40 - 16767 : Client sent request "(set_target 19761)".
+2015-08-19 21:50:40 - 16767 : ME_API_set_target(19761)
+2015-08-19 21:50:42 - 16767 : Client disconnected!
+2015-08-19 21:50:42 - 16767 : Measurer exited.
+2015-08-19 22:04:44 - 18110 : Measurer started.
+2015-08-19 22:04:44 - 18110 : Listening for client on *:3000 ...
+2015-08-19 22:04:51 - 18110 : Client connected.
+2015-08-19 22:05:02 - 18110 : Client sent request "(set_target 19761)".
+2015-08-19 22:05:02 - 18110 : ME_API_set_target(19761)
+2015-08-19 22:05:02 - 18110 : Failed to attach to process 19761!
+2015-08-19 22:05:06 - 18110 : Client disconnected!
+2015-08-19 22:05:06 - 18110 : Measurer exited.
+2015-08-19 22:06:46 - 18892 : Measurer started.
+2015-08-19 22:06:46 - 18892 : Listening for client on *:3000 ...
+2015-08-19 22:06:47 - 18892 : Client connected.
+2015-08-19 22:06:52 - 18892 : Client sent request "(set_target 19761)".
+2015-08-19 22:06:52 - 18892 : ME_API_set_target(19761)
+2015-08-19 22:06:52 - 18892 : Failed to attach to process 19761!
+2015-08-19 22:06:54 - 18892 : Client disconnected!
+2015-08-19 22:06:54 - 18892 : Measurer exited.
+2015-08-19 22:11:01 - 21242 : Measurer started.
+2015-08-19 22:11:01 - 21242 : Listening for client on *:3000 ...
+2015-08-19 22:11:03 - 21242 : Client connected.
+2015-08-19 22:11:12 - 21242 : Client sent request "(set_target 19761)".
+2015-08-19 22:11:12 - 21242 : ME_API_set_target(19761)
+2015-08-19 22:11:12 - 21242 : Failed to attach to process 19761!
+2015-08-19 22:11:16 - 21242 : Client disconnected!
+2015-08-19 22:11:16 - 21242 : Measurer exited.
+2015-08-19 22:12:15 - 22014 : Measurer started.
+2015-08-19 22:12:15 - 22014 : Listening for client on *:3000 ...
+2015-08-19 22:12:17 - 22014 : Client connected.
+2015-08-19 22:12:22 - 22014 : Client sent request "(set_target 19761)".
+2015-08-19 22:12:22 - 22014 : ME_API_set_target(19761)
+2015-08-19 22:12:22 - 22014 : Failed to attach to process 19761!
+2015-08-19 22:12:24 - 22014 : Client disconnected!
+2015-08-19 22:12:24 - 22014 : Measurer exited.
+2015-08-19 22:20:46 - 24176 : Measurer started.
+2015-08-19 22:20:46 - 24176 : Listening for client on *:3000 ...
+2015-08-19 22:20:48 - 24176 : Client connected.
+2015-08-19 22:20:56 - 24176 : Client sent request "(set_target 19761)".
+2015-08-19 22:20:56 - 24176 : ME_API_set_target(19761)
+2015-08-19 22:20:56 - 24176 : Failed to attach to process 19761!
+2015-08-19 22:20:59 - 24176 : Client disconnected!
+2015-08-19 22:20:59 - 24176 : Measurer exited.
+2015-08-19 22:26:06 - 25610 : Measurer started.
+2015-08-19 22:26:06 - 25610 : Listening for client on *:3000 ...
+2015-08-19 22:26:08 - 25610 : Client connected.
+2015-08-19 22:26:15 - 25610 : Client sent request "(set_target 19761)".
+2015-08-19 22:26:15 - 25610 : ME_API_set_target(19761)
+2015-08-19 22:26:15 - 25610 : Failed to attach to process 19761!
+2015-08-19 22:26:18 - 25610 : Client disconnected!
+2015-08-19 22:26:18 - 25610 : Measurer exited.
+2015-08-19 22:31:40 - 27317 : Measurer started.
+2015-08-19 22:31:40 - 27317 : Listening for client on *:3000 ...
+2015-08-19 22:31:41 - 27317 : Client connected.
+2015-08-19 22:31:48 - 27317 : Client sent request "(set_target 19761)".
+2015-08-19 22:31:48 - 27317 : ME_API_set_target(19761)
+2015-08-19 22:31:48 - 27317 : Failed to attach to process 19761!
+2015-08-19 22:31:51 - 27317 : Client disconnected!
+2015-08-19 22:31:51 - 27317 : Measurer exited.
+2015-08-19 22:35:11 - 28890 : Measurer started.
+2015-08-19 22:35:11 - 28890 : Listening for client on *:3000 ...
+2015-08-19 22:35:13 - 28890 : Client connected.
+2015-08-19 22:35:15 - 28890 : Client disconnected!
+2015-08-19 22:35:15 - 28890 : Measurer exited.
+2015-08-19 22:38:51 - 31905 : Measurer started.
+2015-08-19 22:48:12 - 3265 : Measurer started.
+2015-08-19 22:48:12 - 3265 : Listening for client on *:3000 ...
+2015-08-19 22:48:13 - 3265 : Client connected.
+2015-08-19 22:48:17 - 3265 : Client disconnected!
+2015-08-19 22:48:17 - 3265 : Measurer exited.
+2015-08-19 22:48:19 - 3268 : Measurer started.
+2015-08-19 22:48:19 - 3268 : Listening for client on *:3000 ...
+2015-08-19 22:48:21 - 3268 : Client connected.
+2015-08-19 22:48:28 - 3268 : Client sent request "(set_target 19761)".
+2015-08-19 22:48:28 - 3268 : ME_API_set_target(19761)
+2015-08-19 22:48:32 - 3268 : Client disconnected!
+2015-08-19 22:48:32 - 3268 : Measurer exited.
+2015-08-19 22:49:39 - 4028 : Measurer started.
+2015-08-19 22:49:39 - 4028 : Listening for client on *:3000 ...
+2015-08-19 22:49:41 - 4028 : Client connected.
+2015-08-19 22:49:43 - 4028 : Client disconnected!
+2015-08-19 22:49:44 - 4028 : Measurer exited.
+2015-08-19 22:49:45 - 4031 : Measurer started.
+2015-08-19 22:49:45 - 4031 : Listening for client on *:3000 ...
+2015-08-19 22:49:48 - 4031 : Client connected.
+2015-08-19 22:49:57 - 4031 : Client sent request "(set_target 19761)".
+2015-08-19 22:49:57 - 4031 : ME_API_set_target(19761)
+2015-08-19 22:50:00 - 4031 : Client disconnected!
+2015-08-19 22:50:00 - 4031 : Measurer exited.
+2015-08-19 23:22:12 - 9997 : Measurer started.
+2015-08-19 23:22:12 - 9997 : Listening for client on *:3000 ...
+2015-08-19 23:22:14 - 9997 : Client connected.
+2015-08-19 23:22:22 - 9997 : Client sent request "(set_target 19761)".
+2015-08-19 23:22:22 - 9997 : ME_API_set_target(19761)
+2015-08-19 23:22:28 - 9997 : Client sent request "(measure (var "a"))".
+2015-08-19 23:22:32 - 9997 : Client sent request "(ASDKL S".
+2015-08-19 23:22:38 - 9997 : Client sent request "(measure (var "c"))".
+2015-08-19 23:22:41 - 9997 : Client disconnected!
+2015-08-19 23:22:41 - 9997 : Measurer exited.
+2015-08-19 23:23:38 - 10784 : Measurer started.
+2015-08-19 23:23:38 - 10784 : Listening for client on *:3000 ...
+2015-08-19 23:23:46 - 10784 : Client connected.
+2015-08-19 23:23:55 - 10784 : Client sent request "(set_target 19761)".
+2015-08-19 23:23:55 - 10784 : ME_API_set_target(19761)
+2015-08-19 23:24:04 - 10784 : Client sent request "(measure (var "a"))".
+2015-08-19 23:24:06 - 10784 : Client disconnected!
+2015-08-19 23:24:06 - 10784 : Measurer exited.

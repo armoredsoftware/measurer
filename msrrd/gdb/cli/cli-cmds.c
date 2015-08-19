@@ -323,8 +323,8 @@ quit_command (char *args, int from_tty)
   if (!quit_confirm ())
     error (_("Not confirmed."));
 
-  query_if_trace_running (from_tty);
-
+   query_if_trace_running (from_tty);
+  
   quit_force (args, from_tty);
 }
 
