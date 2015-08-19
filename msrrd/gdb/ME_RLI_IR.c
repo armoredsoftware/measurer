@@ -56,7 +56,7 @@ ME_RLI_token * ME_RLI_tokenize(char * in) {
       token[token_curr++] = in[curr++]; 
       while (in[curr] != '"') {
 	if (in[curr] == 0) { 
-	  printf("Lexer error: mismatched quotes\n");
+	  printd("Lexer error: mismatched quotes\n");
 	  return NULL;
 	}
 	token[token_curr++] = in[curr++]; 
@@ -455,7 +455,7 @@ struct ME_RLI_IR_func * ME_RLI_IR_func_parse(struct ME_RLI_token ** curr) {
 
   //consume parenthesis
   if (!(*curr) || strcmp((*curr)->value,")")!=0) {
-    printf("Parse error: Mismatched parenthesis \")\"\n");
+    printd("Parse error: Mismatched parenthesis \")\"\n");
     return NULL;
   }  
   (*curr) = (*curr)->next;

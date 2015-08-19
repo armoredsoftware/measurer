@@ -277,3 +277,41 @@
 2015-08-19 23:24:04 - 10784 : Client sent request "(measure (var "a"))".
 2015-08-19 23:24:06 - 10784 : Client disconnected!
 2015-08-19 23:24:06 - 10784 : Measurer exited.
+2015-08-19 23:25:08 - 10886 : Measurer started.
+2015-08-19 23:25:08 - 10886 : Listening for client on *:3000 ...
+2015-08-19 23:25:09 - 10886 : Client connected.
+2015-08-19 23:25:16 - 10886 : Client sent request "(set_target 1)".
+2015-08-19 23:25:16 - 10886 : ME_API_set_target(1)
+2015-08-19 23:25:16 - 10886 : Failed to attach to process 1!
+2015-08-19 23:25:22 - 10886 : Client sent request "(set_target 19761)".
+2015-08-19 23:25:22 - 10886 : ME_API_set_target(19761)
+2015-08-19 23:25:29 - 10886 : Client sent request "(measue (var "a"))".
+2015-08-19 23:25:35 - 10886 : Client sent request "(measure (var "a"))".
+2015-08-19 23:26:52 - 10886 : Client sent request "(measure (var "d"))".
+2015-08-19 23:26:53 - 10886 : Client disconnected!
+2015-08-19 23:26:53 - 10886 : Measurer exited.
+2015-08-19 23:27:52 - 10913 : Measurer started.
+2015-08-19 23:27:52 - 10913 : Listening for client on *:3000 ...
+2015-08-19 23:28:01 - 10913 : Client connected.
+2015-08-19 23:28:08 - 10913 : Client sent request "(measure (var "a"))".
+2015-08-19 23:28:08 - 10913 : Not attached to a process!
+2015-08-19 23:28:15 - 10913 : Client sent request "(measure (callstack))".
+2015-08-19 23:28:15 - 10913 : Not attached to a process!
+2015-08-19 23:28:17 - 10913 : Client sent request "(callstack)".
+2015-08-19 23:28:25 - 10913 : Client sent request "(measure (callstack))".
+2015-08-19 23:28:25 - 10913 : Not attached to a process!
+2015-08-19 23:28:32 - 10913 : Client sent request "(set_target 19761)".
+2015-08-19 23:28:32 - 10913 : ME_API_set_target(19761)
+2015-08-19 23:28:38 - 10913 : Client sent request "(measure (var "a"))".
+2015-08-19 23:28:44 - 10913 : Client sent request "(measure (var "c"))".
+2015-08-19 23:30:38 - 10913 : Client sent request "(asa a".
+2015-08-19 23:31:51 - 10913 : Client sent request "".
+2015-08-19 23:31:52 - 10913 : Client disconnected!
+2015-08-19 23:31:52 - 10913 : Measurer exited.
+2015-08-19 23:31:54 - 11726 : Measurer started.
+2015-08-19 23:31:54 - 11726 : Listening for client on *:3000 ...
+2015-08-19 23:31:56 - 11726 : Client connected.
+2015-08-19 23:32:08 - 11726 : Client sent request "(set_target 19761)".
+2015-08-19 23:32:08 - 11726 : ME_API_set_target(19761)
+2015-08-19 23:32:09 - 11726 : Client sent request "(asjda ".
+2015-08-19 23:32:12 - 11726 : Client sent request "(asjda  asa".
