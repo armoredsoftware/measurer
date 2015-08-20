@@ -98,6 +98,11 @@ struct ME_RLI_IR_value ME_RLI_IR_API_measure(struct ME_RLI_IR_value * args_vals,
 
   ME_feature * feature = args_vals[0].vdata.feature;
   ME_measurement * ms = ME_API_measure(feature);
+
+  if (!ms) {
+    return ME_RLI_IR_value_create_error("Could not measure specified feature!");
+  }
+  
   return ME_RLI_IR_value_create_measurement(ms);
 }
 

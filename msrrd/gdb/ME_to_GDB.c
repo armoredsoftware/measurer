@@ -6,11 +6,13 @@
 #include "breakpoint.h"
 #include "inferior.h"
 #include "event-loop.h"
+#include "driver-interface.h"
+#include "event-top.h"
 
 int bak_stdout, bak_stderr;
 int bak_stdin;
 int closed=0;
-void BE_stdout_close() {
+void BE_stdout_close(void) {
   if (ME_DEBUG) return;
   if (closed) {
     BE_stdout_open();
@@ -29,7 +31,7 @@ void BE_stdout_close() {
   closed = 1;
 }
 
-void BE_stdout_open() {
+void BE_stdout_open(void) {
   if (ME_DEBUG) return;
   if (!closed) {
     printf("Error: tried to open already opened output!\n");
@@ -144,13 +146,12 @@ char *  BE_get_variable_wrapper(const char * var_name) {
    while (value==NULL) {
     value = BE_get_variable(var_name, 0);
     if (value==NULL) {
-
       volatile struct gdb_exception ex;
       TRY_CATCH (ex, RETURN_MASK_ERROR ) {
 	execute_command("up",0);
       }
       if (ex.reason < 0) {
-	value = (char*)malloc(sizeof(char) * 64); //max length?...
+	break;
       }
     }
    }
@@ -158,7 +159,11 @@ char *  BE_get_variable_wrapper(const char * var_name) {
   return value;
 }
 
-void BE_quit() {
+char * BE_get_memory_wrapper(char * exp, char * format) {
+  return BE_get_memory(exp,format);
+}
+
+void BE_quit(void) {
 
   gdb_rl_callback_handler_remove ();
   

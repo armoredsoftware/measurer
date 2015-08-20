@@ -151,6 +151,7 @@ extern void attach_command (char *, int);
 
 extern void continue_command_JG(void);
 extern char * BE_get_variable(const char *, int);
+extern char * BE_get_memory(char *, char *);
 extern void BE_get_call_stack_as_CG(char *, int, int, int, struct ME_CG **, struct ME_FT *);
 extern int fetch_inferior_event_JG(char **, int *, int *);
 

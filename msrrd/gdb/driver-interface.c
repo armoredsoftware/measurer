@@ -480,12 +480,14 @@ ME_measurement * ME_API_measure(ME_feature * feature)
     ms->data.cgft.ft = ft;
   } else if (feature->type == ME_FEATURE_VARIABLE) {
     char * value = BE_get_variable_wrapper(feature->fdata.var_name);
-    
-    ms = ME_measurement_create(ME_MEASUREMENT_STRING);
-    ms->data.string_val = value;
+
+    if (value) {
+      ms = ME_measurement_create(ME_MEASUREMENT_STRING);
+      ms->data.string_val = value;
+    }
   } else if (feature->type == ME_FEATURE_MEMORY) {
-    char * value = BE_get_memory(feature->fdata.m.address, feature->fdata.m.format);
-    
+    char * value = BE_get_memory_wrapper(feature->fdata.m.address, feature->fdata.m.format);
+
     ms = ME_measurement_create(ME_MEASUREMENT_STRING);
     ms->data.string_val = value;
   }

@@ -797,7 +797,7 @@ print_address_demangle (const struct value_print_options *opts,
 
 
 char *
-BE_get_memory (char * exp, char * format)
+BE_get_memory (char * exp,  char * format)
 {
   printf("Enter BE_get_memory\n");
   
