@@ -661,7 +661,6 @@ ME_measurement * ME_measurement_create(ME_measurement_type type)
   else if (type == ME_MEASUREMENT_STRING) {
     ms->data.string_val = NULL;
   }
-  ms->measured = 0;
   ms->type = type;
   ms->next = NULL;
   return ms;
@@ -702,8 +701,7 @@ void ME_measurement_print(struct ME_measurement * ms)
   
   printf("M{");
   printf("type=%d",ms->type);
-  printf(", measured=%d", ms->measured);
-
+  
   if (ms->type == ME_MEASUREMENT_CALLSTACK) {
     printf(", cg=");
     ME_CG_print(ms->data.cgft.cg, ms->data.cgft.ft);

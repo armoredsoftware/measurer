@@ -315,3 +315,38 @@
 2015-08-19 23:32:08 - 11726 : ME_API_set_target(19761)
 2015-08-19 23:32:09 - 11726 : Client sent request "(asjda ".
 2015-08-19 23:32:12 - 11726 : Client sent request "(asjda  asa".
+2015-08-20 18:59:49 - 11726 : Client sent request "(measure (var "b"))".
+2015-08-20 19:01:42 - 11726 : Client disconnected!
+2015-08-20 19:01:42 - 11726 : Measurer exited.
+2015-08-20 19:03:49 - 30311 : Measurer started.
+2015-08-20 19:03:49 - 30311 : Listening for client on *:3000 ...
+2015-08-20 19:03:50 - 30311 : Client connected.
+2015-08-20 19:03:54 - 30311 : Client sent request "(set_Target 19761)".
+2015-08-20 19:04:03 - 30311 : Client sent request "(set_target 19761)".
+2015-08-20 19:04:03 - 30311 : ME_API_set_target(19761)
+2015-08-20 19:04:09 - 30311 : Client sent request "(measure (var "a")".
+2015-08-20 19:04:12 - 30311 : Client sent request "(measure (var "a"))".
+2015-08-20 19:04:18 - 30311 : Client disconnected!
+2015-08-20 19:04:18 - 30311 : Measurer exited.
+2015-08-20 19:04:25 - 30330 : Measurer started.
+2015-08-20 19:04:25 - 30330 : Listening for client on *:3000 ...
+2015-08-20 19:04:27 - 30330 : Client connected.
+2015-08-20 19:04:49 - 30330 : Client sent request "(set_target 19761)".
+2015-08-20 19:04:49 - 30330 : ME_API_set_target(19761)
+2015-08-20 19:05:01 - 30330 : Client sent request "(measure (va "a"))".
+2015-08-20 19:05:07 - 30330 : Client sent request "(measure (var "a"))".
+2015-08-20 19:05:10 - 30330 : Client sent request "(measure (var "b"))".
+2015-08-20 19:05:17 - 30330 : Client sent request "(measure (callstack))".
+2015-08-20 19:05:25 - 30330 : Client sent request "(measure (callstack))".
+2015-08-20 19:05:26 - 30330 : Client sent request "(measure (callstack))".
+2015-08-20 19:05:26 - 30330 : Client sent request "(measure (callstack))".
+2015-08-20 19:05:26 - 30330 : Client sent request "(measure (callstack))".
+2015-08-20 19:05:26 - 30330 : Client sent request "(measure (callstack))".
+2015-08-20 19:05:27 - 30330 : Client sent request "(measure (callstack))".
+2015-08-20 19:05:27 - 30330 : Client sent request "(measure (callstack))".
+2015-08-20 19:05:27 - 30330 : Client sent request "(measure (callstack))".
+2015-08-20 19:05:27 - 30330 : Client sent request "(measure (callstack))".
+2015-08-20 19:05:27 - 30330 : Client sent request "(measure (callstack))".
+2015-08-20 19:05:28 - 30330 : Client sent request "(measure (callstack))".
+2015-08-20 19:05:51 - 30330 : Client disconnected!
+2015-08-20 19:05:51 - 30330 : Measurer exited.

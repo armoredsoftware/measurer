@@ -97,12 +97,8 @@ typedef union ME_measurement_data {
 
 typedef struct ME_measurement
 {
-  //reference to command???
-  //when
-  int measured; //measurement taken?
   ME_measurement_type type;
   ME_measurement_data data;
-
   struct ME_measurement * next;
 }
   ME_measurement;
