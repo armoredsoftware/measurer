@@ -11,34 +11,40 @@
 int main() {
   char password[10];
   int session = 0;
-  
-  while (!session) {
-    printf("\nEnter password: ");
-    scanf("%s",password);
-
-    if (strcmp(password,"12345")==0) {
-      session = 1;
-      printf("\nCorrect password! Initiating session...\n\n");
-    } else {
-      printf("\nIncorrect password! Try again.\n");
-    }
+  while (1){
+     while (!session) {
+       printf("\nEnter password: ");
+       scanf("%s",password);
+   
+       if (strcmp(password,"12345")==0) {
+         session = 1;
+         printf("\nCorrect password! Initiating session...\n\n");
+       } else {
+         printf("\nIncorrect password! Try again.\n");
+       }
+     }
+   
+     char * buffer_input = NULL;
+     size_t nbytes;
+   
+     printf("\n==========================================================\n");
+     printf("Session started with priveleged_user.\n");
+     printf("==========================================================\n"); 
+   
+     getline(&buffer_input,&nbytes,stdin);
+     
+     while (session) {
+       printf("[priveleged_user@precious_machine]$ ");
+       getline(&buffer_input,&nbytes,stdin);
+       buffer_input[strlen(buffer_input)-1] = 0;
+       printf("strcmp: %d\n", strcmp(buffer_input,"exit"));
+       if ( strcmp(buffer_input,"exit")== 0){
+         printf("Logging Out!\n");
+         session=0;
+         break;
+       }
+       printf("Executing dangerously powerful command '%s'...\n\n", buffer_input);
+     }
+   
   }
-
-  char * buffer_input = NULL;
-  size_t nbytes;
-
-  printf("\n==========================================================\n");
-  printf("Session started with priveleged_user.\n");
-  printf("==========================================================\n"); 
-
-  getline(&buffer_input,&nbytes,stdin);
-  
-  while (session) {
-    printf("[priveleged_user@precious_machine]$ ");
-    getline(&buffer_input,&nbytes,stdin);
-    buffer_input[strlen(buffer_input)-1] = 0;
-    printf("Executing dangerously powerful command '%s'...\n\n", buffer_input);
-  }
-
-  
 }

@@ -9,7 +9,7 @@ int main() {
   while (1) {
     printf("a=%d b=%d c=%d *c=%d=%08x\n",a,b,c,&c,&c);
     c++;
-    sleep(3);    
+    sleep(1);    
   }
 
 }
