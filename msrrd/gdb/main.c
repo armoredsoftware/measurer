@@ -47,6 +47,7 @@
 
 #include "driver-interface.h"
 int BE_port;
+char * BE_binary;
 
 /* The selected interpreter.  This will be used as a set command
    variable, so it should always be malloc'ed - since
@@ -723,6 +724,7 @@ captured_main(void *data)
     fprintf(stderr, usage);
     exit(-1);
   }
+  BE_binary = gdb_program_name;
 
   //set the debug arg
   ME_DEBUG = debugarg;

@@ -57,7 +57,7 @@ int main(int argc, char **argv)  {
 
   ME_DEBUG = dflag;
   
-  int sockfd = DI_init_measurer(address,port);
+  int sockfd = ME_sock_connect(address,port);//DI_init_measurer(address,port);
 
   DI_interactive_mode(sockfd); 
   

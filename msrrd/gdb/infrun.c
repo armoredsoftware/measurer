@@ -404,6 +404,12 @@ show_follow_fork_mode_string (struct ui_file *file, int from_tty,
    the fork parent.  At return inferior_ptid is the ptid of the
    followed inferior.  */
 
+int follow_fork_inferior_JG (int follow_child, int detach_fork) {
+  return follow_fork_inferior(follow_child,detach_fork);
+}
+
+int BE_child_pid;
+
 static int
 follow_fork_inferior (int follow_child, int detach_fork)
 {
@@ -418,6 +424,8 @@ follow_fork_inferior (int follow_child, int detach_fork)
   child_pid
     = ptid_get_pid (inferior_thread ()->pending_follow.value.related_pid);
 
+  BE_child_pid = child_pid;
+  
   if (has_vforked
       && !non_stop /* Non-stop always resumes both branches.  */
       && (!target_is_async_p () || sync_execution)

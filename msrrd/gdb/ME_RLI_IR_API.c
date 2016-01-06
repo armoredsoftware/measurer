@@ -1,6 +1,6 @@
 #include "ME_RLI_IR_API.h"
 #include "ME_RLI_IR.h"
-
+#include "driver-interface.h"
 
 ME_RLI_IR_value ME_RLI_IR_API_print(ME_RLI_IR_value * arg_vals, int arg_count) {
   if (arg_count != 1)
@@ -59,9 +59,9 @@ struct ME_RLI_IR_value ME_RLI_IR_API_set_target(struct ME_RLI_IR_value * args_va
   ME_RLI_IR_value result = ME_RLI_IR_API_check_args(expected_types,sizeof(expected_types)/sizeof(ME_RLI_IR_value_type),args_vals,arg_count);
   if (result.type == ME_RLI_IR_VALUE_ERROR) return result;
   
-  ME_API_set_target(args_vals[0].vdata.int_val);
+  int success = ME_API_set_target(args_vals[0].vdata.int_val);
     
-  return ME_RLI_IR_value_create_void();
+  return ME_RLI_IR_value_create_int(success);
 }
 
 struct ME_RLI_IR_value ME_RLI_IR_API_detach(struct ME_RLI_IR_value * args_vals, int arg_count) {
@@ -254,6 +254,25 @@ struct ME_RLI_IR_value ME_RLI_IR_API_gdb(struct ME_RLI_IR_value * args_vals, int
   return ME_RLI_IR_value_create_void();
 }
 
+struct ME_RLI_IR_value ME_RLI_IR_API_snap(struct ME_RLI_IR_value * args_vals, int arg_count) {
+  ME_RLI_IR_value_type expected_types[] = {};
+  ME_RLI_IR_value result = ME_RLI_IR_API_check_args(expected_types,sizeof(expected_types)/sizeof(ME_RLI_IR_value_type),args_vals,arg_count);
+  if (result.type == ME_RLI_IR_VALUE_ERROR) return result;
+
+  int i = ME_API_snap();
+  return ME_RLI_IR_value_create_int(i);
+}
+
+struct ME_RLI_IR_value ME_RLI_IR_API_to_snap(struct ME_RLI_IR_value * args_vals, int arg_count) {
+  ME_RLI_IR_value_type expected_types[] = {ME_RLI_IR_VALUE_INT, ME_RLI_IR_VALUE_STRING};
+  ME_RLI_IR_value result = ME_RLI_IR_API_check_args(expected_types,sizeof(expected_types)/sizeof(ME_RLI_IR_value_type),args_vals,arg_count);
+  if (result.type == ME_RLI_IR_VALUE_ERROR) return result;
+
+  int snap_i = args_vals[0].vdata.int_val;
+  char * command = args_vals[1].vdata.string_val;
+  return ME_API_to_snap(snap_i, command);
+}
+
 /*struct ME_RLI_IR_value ME_RLI_IR_API_get_arg(struct ME_RLI_IR_value * args_vals, int arg_count) {
   }*/
   
@@ -295,6 +314,8 @@ ME_RLI_API_func ME_RLI_API_func_look_up(char * func_name) {
   else if (strcmp(func_name,"enable")==0) return &ME_RLI_IR_API_enable;
   else if (strcmp(func_name,"disable")==0) return &ME_RLI_IR_API_disable;
   else if (strcmp(func_name,"gdb")==0) return &ME_RLI_IR_API_gdb;
+  else if (strcmp(func_name,"snap")==0) return &ME_RLI_IR_API_snap;
+  else if (strcmp(func_name,"to_snap")==0) return &ME_RLI_IR_API_to_snap;
   else {
     return NULL;
   }

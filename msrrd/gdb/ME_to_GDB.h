@@ -19,3 +19,4 @@ extern void BE_get_call_stack_wrapper(ME_CG **, ME_FT *);
 extern char *  BE_get_variable_wrapper(const char *);  
 extern char *  BE_get_memory_wrapper(char *, char *); 
 extern void BE_quit(void);
+extern void BE_send_signal(void);

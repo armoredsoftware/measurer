@@ -18,89 +18,7 @@
 
 #include "../msrrd/gdb/ME_RLI_IR.h"
 
-int
-DI_init_measurer (char * ip, int port)
-{  
-  printd("connecting to server...\n");
-  int sockfd = 0, n = 0;
-  char recvBuff[1024];
-  struct sockaddr_in serv_addr;
-
-  memset(recvBuff, '0',sizeof(recvBuff));
-  if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
-    {
-      fprintf(stderr,"could not create socket\n");
-      exit(-1);
-    }
-
-  memset(&serv_addr, '0', sizeof(serv_addr));
-
-  serv_addr.sin_family = AF_INET;
-  serv_addr.sin_port = htons(port);
-  
-  if(inet_pton(AF_INET, ip, &serv_addr.sin_addr)<=0)
-  {
-    fprintf(stderr,"inet_pton error occured\n");
-    exit(-1);
-  }
-
-  if( connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
-  {
-    fprintf(stderr,"could not connect to %s:%d\n",ip,port);
-    exit(-1);
-  }
-
-  printd("connected to server\n");
-  
-  return sockfd;
-}
-
 int request_id = 1;
-ME_RLI_IR_value DI_send_request(int sockfd, char * request)
-{
-  if (strcmp(request,"(quit)")==0) {
-    close(sockfd);
-    exit(0);
-  }
-
-  //build JSON and send
-  json_t *root, *result;
-  json_error_t error;
-  root = json_object();
-  json_object_set_new(root, "jsonrpc", json_string("2.0"));
-  json_object_set_new(root, "method", json_string("eval"));
-  json_t *param_array = json_array();
-  json_array_append(param_array,json_string(request));
-  json_object_set_new(root, "params", param_array);   
-  json_object_set_new(root, "id", json_integer(request_id));
-  request_id++;
-  
-  char * send = json_dumps(root, 0);
-  
-  ME_sock_send(sockfd, send);
-
-  json_decref(root);
-
-
-  //get response
-  char response[1024];
-  int n = ME_sock_recv(sockfd, response);
-  
-  printd("Received:%s\n",response);
-
-  root = json_loads(response, 0, &error);
-  result = json_object_get(root,"result"); 
-
-  //printf("Result = %s\n",json_string_value(result));
-
-  ME_RLI_IR_value value = ME_RLI_IR_value_fromJSON(result);
-  ME_RLI_IR_value_print(value);
-//ME_measurement_print(result);
-    
-
-return value;
- 
-}
 
 int sockfd_copy;
 void intHandler(int dummy) {
@@ -134,7 +52,7 @@ void DI_interactive_mode(int sockfd)
     line = readline("\nmsrr> ");
     //curr_line_len=getline(&line, &line_buf_len, stdin);
 
-    DI_send_request(sockfd, line);
+    ME_sock_send_request(sockfd, line, request_id++);
     
     //fflush(stdout);
     if (line[0]!=0)

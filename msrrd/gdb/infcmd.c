@@ -1252,6 +1252,10 @@ go_command (char *line_no, int from_tty)
 
 /* Continue program giving it specified signal.  */
 
+void BE_signal_command(char *signum_exp) {
+  signal_command(signum_exp,0);
+}
+
 static void
 signal_command (char *signum_exp, int from_tty)
 {

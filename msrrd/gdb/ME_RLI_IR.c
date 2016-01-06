@@ -54,12 +54,15 @@ ME_RLI_token * ME_RLI_tokenize(char * in) {
       token[token_curr++] = in[curr++];
     } else if (in[curr] == '"') {
       token[token_curr++] = in[curr++]; 
-      while (in[curr] != '"') {
+      while (!(in[curr] == '"' && in[curr-1] != '\\')) {
 	if (in[curr] == 0) { 
 	  printd("Lexer error: mismatched quotes\n");
 	  return NULL;
 	}
-	token[token_curr++] = in[curr++]; 
+	if (in[curr] != '\\')
+	  token[token_curr++] = in[curr++]; 
+	else
+	  curr++;
       }
       token[token_curr++] = in[curr++]; 
     } else {

@@ -99,6 +99,95 @@ void free_str_split(char **tokens) {
 SOCKET STUFF
 ======================================================*/
 
+int ME_sock_connect(char * ip, int port) {
+  printd("connecting to server...\n");
+  int sockfd = 0, n = 0;
+  char recvBuff[1024];
+  struct sockaddr_in serv_addr;
+
+  memset(recvBuff, '0',sizeof(recvBuff));
+  if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+    {
+      if (errno == EACCES) {
+	printf("error! EACCES\n");
+      } else if (errno == EAFNOSUPPORT) {
+	printf("error! EAFNOSUPPORT\n");
+      } else if (errno == EINVAL) {
+	printf("error! EINVAL\n");
+      } else if (errno == EMFILE) {
+	printf("error! EMFILE\n");
+      } else {
+	printf("error! ???\n");
+      }
+      fprintf(stderr,"could not create socket\n");
+      return -2;
+    }
+
+  memset(&serv_addr, '0', sizeof(serv_addr));
+
+  serv_addr.sin_family = AF_INET;
+  serv_addr.sin_port = htons(port);
+
+  if(inet_pton(AF_INET, ip, &serv_addr.sin_addr)<=0)
+    {
+      fprintf(stderr,"inet_pton error occured\n");
+      return -1;
+    }
+
+  if( connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
+    {
+      fprintf(stderr,"could not connect to %s:%d\n",ip,port);
+      close(sockfd);
+      return -1;
+    }
+
+  printd("connected to server\n");
+
+  return sockfd;
+}
+
+ME_RLI_IR_value ME_sock_send_request(int sockfd, char * request, int request_id) {
+  if (strcmp(request,"(quit)")==0) {
+    close(sockfd);
+    exit(0);
+  }
+
+  //build JSON and send
+  json_t *root, *result;
+  json_error_t error;
+  root = json_object();
+  json_object_set_new(root, "jsonrpc", json_string("2.0"));
+  json_object_set_new(root, "method", json_string("eval"));
+  json_t *param_array = json_array();
+  json_array_append(param_array,json_string(request));
+  json_object_set_new(root, "params", param_array);
+  json_object_set_new(root, "id", json_integer(request_id));
+ 
+  char * send = json_dumps(root, 0);
+
+  ME_sock_send(sockfd, send);
+
+  json_decref(root);
+
+  //get response
+  char response[1024];
+  int n = ME_sock_recv(sockfd, response);
+
+  printd("Received:%s\n",response);
+
+  root = json_loads(response, 0, &error);
+  result = json_object_get(root,"result");
+
+  //printf("Result = %s\n",json_string_value(result));
+
+  ME_RLI_IR_value value = ME_RLI_IR_value_fromJSON(result);
+  ME_RLI_IR_value_print(value);
+  //ME_measurement_print(result);
+
+  return value;
+  
+}
+
 int ME_sock_recv(int sockfd, char * message)
 {
   char recvBuff[1024];

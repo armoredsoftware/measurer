@@ -63,7 +63,8 @@ void BE_execute_command(const char * command) {
 
 void BE_stop_inferior(void) {
   BE_stdout_close();
-  execute_command("interrupt",0);
+  //execute_command("interrupt",0);
+  kill(the_context.PID, SIGINT);
   wait_for_inferior();
   normal_stop();
   BE_stdout_open();
@@ -167,4 +168,19 @@ void BE_quit(void) {
 
   gdb_rl_callback_handler_remove ();
   
+}
+
+void BE_send_signal(void) {
+  //BE_stdout_close();
+  
+  //execute_command("signal SIGUSR1",0);
+  BE_signal_command("SIGUSR1");
+  //continue_command_JG();
+  //while(1) {
+  sleep(10);
+  printf("Calling gdb_do_one_event 1\n");
+  gdb_do_one_event ();
+  //}
+  //follow_fork_inferior_JG (0, 1); 
+  //BE_stdout_open();
 }

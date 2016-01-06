@@ -29,6 +29,8 @@ extern struct ME_RLI_IR_value ME_RLI_IR_API_kill(struct ME_RLI_IR_value *, int);
 extern struct ME_RLI_IR_value ME_RLI_IR_API_enable(struct ME_RLI_IR_value *, int);
 extern struct ME_RLI_IR_value ME_RLI_IR_API_disable(struct ME_RLI_IR_value *, int);
 extern struct ME_RLI_IR_value ME_RLI_IR_API_gdb(struct ME_RLI_IR_value *, int);
+extern struct ME_RLI_IR_value ME_RLI_IR_API_snap(struct ME_RLI_IR_value *, int);
+extern struct ME_RLI_IR_value ME_RLI_IR_API_to_snap(struct ME_RLI_IR_value *, int);
 
 extern struct ME_RLI_IR_value ME_RLI_IR_API_check_args(enum ME_RLI_IR_value_type *, int, struct ME_RLI_IR_value *, int);
 extern ME_RLI_API_func ME_RLI_API_func_look_up(char *);

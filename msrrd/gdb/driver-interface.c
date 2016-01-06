@@ -32,6 +32,8 @@
 
 #include <jansson.h>
 
+#include <signal.h>
+
 BE_Context the_context;  
 
 void BE_hook_disable(BE_hook * hook) {
@@ -71,6 +73,36 @@ int BE_hook_array_add(BE_hook * hook) {
 BE_hook * BE_hook_array_get(int i) {
   return the_context.hook_array.hooks[i];
 }
+
+/*====================================================
+  SNAPSHOT STUFF
+  ====================================================*/
+
+BE_snapshot * BE_snapshot_create(int port, int pid, int sockfd) {
+  BE_snapshot * snapshot = (BE_snapshot*)malloc(sizeof(BE_snapshot));
+  snapshot->msrrd_port = port;
+  snapshot->app_pid = pid;
+  snapshot->sockfd = sockfd;
+  return snapshot;
+}
+
+void BE_snap_array_init(void)
+{
+  the_context.snap_array.count = 0;
+  the_context.snap_array.next_port = 5000;
+}
+
+int BE_snap_array_add(BE_snapshot * snap) {
+  //TODO check for bounds
+  int i = the_context.snap_array.count++;
+  the_context.snap_array.snap_records[i] = snap;
+  return i;
+}
+
+BE_snapshot * BE_snap_array_get(int i) {
+  return the_context.snap_array.snap_records[i];
+}
+
 
 /*====================================================
   CONTEXT STUFF
@@ -162,7 +194,9 @@ BE_Context * BE_context_create(void)
   the_context.driverfd = -1;
 
   strcpy(the_context.logpath, "msrrd.log"); 
-      
+
+  BE_snap_array_init();
+  
   return &the_context;
   
 }
@@ -402,7 +436,7 @@ void BE_log(const char *fmt, ...) {
   API STUFF
   ====================================================*/
 
-void ME_API_set_target(int target_PID)
+int ME_API_set_target(int target_PID)
 {
 
   char le[1024];
@@ -418,11 +452,12 @@ void ME_API_set_target(int target_PID)
   //Attach to process
   if (BE_attach(target_PID)) {
     BE_log("Failed to attach to process %d!",target_PID);
-    return;
+    return 1;
   }
 
   the_context.attached = true;
 
+  return 0;
 }
 
 void ME_API_detach(void)
@@ -452,6 +487,10 @@ void ME_API_print_context(void)
 
 ME_measurement * ME_API_measure(ME_feature * feature)
 {
+  printf("In ME_API_measure() - Measuring... ");
+  ME_feature_print(feature);
+  printf("\n");
+
   ME_measurement * ms = NULL;
   
   if (!the_context.attached) {
@@ -613,4 +652,118 @@ void ME_API_gdb(char * command) {
     BE_resume_inferior();
   }
 
+}
+
+int ME_API_snap(void) {
+  printf("ME_API_snap : entry\n");
+  
+  if (!the_context.attached) {
+    BE_log("Not attached to a process!");
+    return NULL;
+  } else if (the_context.exited) {
+    BE_log("Process has exited!");
+    return NULL;
+  }
+
+  bool stopped_here = false;
+  if (!the_context.stopped) {
+    BE_stop_inferior();
+    stopped_here = true;
+  }
+
+  printf("Sending inferior signal to fork\n");
+  printf("calling kill ( %d , SIGUSR1 ) \n", the_context.PID);
+  BE_send_signal();
+  if (stopped_here) {
+  }
+  printf("done.\n");
+
+
+  printf("Launching new measurer...\n");
+
+  int child_pid;
+  int port;
+  int pid;
+  int sockfd = -1;
+  if (sockfd < 0) {
+    //launch new measurer
+    port = the_context.snap_array.next_port++;
+    char bin[] = "./msrrd/gdb/msrrd"; //TODO - dynamic path??
+    printf("%s -p %d", BE_binary, port);
+    pid = fork ();
+    if (!pid) {
+      printf("\nexecl of new measurer...\n");
+      char port_str[15];
+      sprintf(port_str, "%d", port);    
+      execl (bin, bin, "-p", port_str, NULL);
+      printf("Could not launch new measurer!\n");
+      _exit (EXIT_FAILURE);
+    }
+    printf("done.\n");
+	 
+    printf("Getting child PID...\n");
+    //GET PID OF CHILD
+    child_pid = BE_child_pid;
+    printf("\nChild pid = %d\n",BE_child_pid);
+    printf("done.\n");
+	 
+    printf("Connecting to new measurer...\n");
+    //connect socket
+    while(sockfd == -1) {
+      sockfd = ME_sock_connect("127.0.0.1",port);
+    }
+  }
+  printf("done.\n");
+
+  
+  //int attach_success = 0;
+  //printf("Attaching new measurer to new inferior.\n");
+  //while (!attach_success) {
+
+  //attach to pid
+  //sleep(10);
+  char attach_request[64];
+  sprintf(attach_request,"(set_target %d)",child_pid);
+  printf("Sending request : \"%s\"\n", attach_request);
+  ME_RLI_IR_value attach_value = ME_sock_send_request(sockfd,attach_request,1);
+  
+  printf("Attach value = ");
+  ME_RLI_IR_value_print(attach_value);
+  //ME_RLI_IR_value_get_int(attach_value, &attach_success);
+  printf("\n");
+      
+  printf("done.\n");
+
+  printf("Initiating test measurement...\n");
+  //test measurement
+    ME_RLI_IR_value value = ME_sock_send_request(sockfd, "(measure (var \"pid\"))",2);
+  //  ME_RLI_IR_value value = ME_sock_send_request(sockfd, "(measure (callstack))",2);
+  printf("\nChild measurement value = ");
+  ME_RLI_IR_value_print(value);
+  printf("\n");
+  printf("done.\n");
+
+  printf("Creating snapshot...\n");
+  //save snapshot record
+  BE_snapshot * snapshot = BE_snapshot_create(port,child_pid,sockfd);
+  int i = BE_snap_array_add(snapshot);
+  printf("done.\n");
+  
+  printf("Socket for snap is %d\n",sockfd);
+  
+  printf("ME_API_snap : exit\n");
+  return i;
+}
+
+ME_RLI_IR_value ME_API_to_snap(int snap_i, char * command) {
+
+  printf("Sending request to snap %d : \"%s\"\n", snap_i, command);
+  BE_snapshot * snapshot = BE_snap_array_get(snap_i);  
+
+  
+  printf("Socket for snap is %d\n",snapshot->sockfd);
+  
+  ME_RLI_IR_value result_value = ME_sock_send_request(snapshot->sockfd,command,1);
+
+  return result_value;
 }

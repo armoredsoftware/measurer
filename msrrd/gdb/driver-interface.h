@@ -8,6 +8,16 @@
 #include "ME_common.h"
 
 extern int BE_port;
+extern int BE_child_pid;
+extern char * BE_binary;
+
+struct BE_snap_array;
+typedef struct BE_snap_array {
+  struct BE_snapshot * snap_records[64]; //MAX hook array size???
+  int count;
+  int next_port;
+}
+BE_snap_array;
 
 struct BE_hook_array;
 typedef struct BE_hook_array {
@@ -16,7 +26,14 @@ typedef struct BE_hook_array {
 }
 BE_hook_array;
 
-
+struct BE_snapshot;
+typedef struct BE_snapshot {
+  int msrrd_port;
+  int app_pid;
+  int sockfd;
+}
+BE_snapshot;
+  
 struct BE_Context;
 typedef struct BE_Context
 {
@@ -28,6 +45,7 @@ typedef struct BE_Context
   char logpath[64]; //TODO - static length
   
   struct BE_hook_array hook_array;
+  struct BE_snap_array snap_array;
 
   //measurement store
   struct ME_measurement * store[ME_STORE_SIZE]; 
@@ -35,12 +53,16 @@ typedef struct BE_Context
 }
 BE_Context;
 
-//BE_Context the_context;
+extern BE_Context the_context;
 
 extern void BE_hook_array_init(void);
 extern int BE_hook_array_add(struct BE_hook *);
 extern struct BE_hook * BE_hook_array_get(int);
 extern void BE_hook_array_handle(int, char *, int, int);
+
+extern struct BE_snapshot * BE_snapshot_create(int, int, int);
+extern int BE_snap_array_add(struct BE_snapshot *);
+extern struct BE_snapshot * BE_snap_array_get(int);
 
 extern void BE_main(void);
 extern void BE_start_session(void);
@@ -60,7 +82,7 @@ extern struct ME_RLI_IR_value BE_rhandler_dispatch(const char *);
 extern void BE_hook_handle(struct BE_hook *);
 extern void BE_hook_table_handle(struct BE_hook *, int, char *, int);
 
-extern void ME_API_set_target(int);
+extern int ME_API_set_target(int);
 extern void ME_API_detach(void);
 extern void ME_API_quit(void);
 extern void ME_API_print_context(void);
@@ -80,5 +102,7 @@ extern struct ME_feature * ME_API_callstack(void);
 extern struct ME_feature * ME_API_var(char *);
 extern struct ME_feature * ME_API_mem(char *,char *);
 extern void ME_API_gdb(char *);
+extern int ME_API_snap(void);
+extern struct ME_RLI_IR_value ME_API_to_snap(int, char *);
 
 #endif
