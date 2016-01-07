@@ -100,6 +100,9 @@ int BE_snap_array_add(BE_snapshot * snap) {
 }
 
 BE_snapshot * BE_snap_array_get(int i) {
+  printf("snap array_get enrty. i = %d, count = %d\n",i,the_context.snap_array.count);
+  if (i >= the_context.snap_array.count) return NULL;
+  printf("array_get not null\n");
   return the_context.snap_array.snap_records[i];
 }
 
@@ -654,15 +657,15 @@ void ME_API_gdb(char * command) {
 
 }
 
-int ME_API_snap(void) {
+ME_RLI_IR_value ME_API_snap(void) {
   printf("ME_API_snap : entry\n");
   
   if (!the_context.attached) {
     BE_log("Not attached to a process!");
-    return NULL;
+    return ME_RLI_IR_value_create_error("No target application.");
   } else if (the_context.exited) {
     BE_log("Process has exited!");
-    return NULL;
+    return ME_RLI_IR_value_create_error("Target application has exited.");
   }
 
   bool stopped_here = false;
@@ -752,7 +755,7 @@ int ME_API_snap(void) {
   printf("Socket for snap is %d\n",sockfd);
   
   printf("ME_API_snap : exit\n");
-  return i;
+  return ME_RLI_IR_value_create_int(i);
 }
 
 ME_RLI_IR_value ME_API_to_snap(int snap_i, char * command) {
@@ -760,6 +763,9 @@ ME_RLI_IR_value ME_API_to_snap(int snap_i, char * command) {
   printf("Sending request to snap %d : \"%s\"\n", snap_i, command);
   BE_snapshot * snapshot = BE_snap_array_get(snap_i);  
 
+  if (!snapshot) {
+    return ME_RLI_IR_value_create_error("There is no snapshot of at index.");
+  }  
   
   printf("Socket for snap is %d\n",snapshot->sockfd);
   

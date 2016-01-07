@@ -259,8 +259,7 @@ struct ME_RLI_IR_value ME_RLI_IR_API_snap(struct ME_RLI_IR_value * args_vals, in
   ME_RLI_IR_value result = ME_RLI_IR_API_check_args(expected_types,sizeof(expected_types)/sizeof(ME_RLI_IR_value_type),args_vals,arg_count);
   if (result.type == ME_RLI_IR_VALUE_ERROR) return result;
 
-  int i = ME_API_snap();
-  return ME_RLI_IR_value_create_int(i);
+  return ME_API_snap();
 }
 
 struct ME_RLI_IR_value ME_RLI_IR_API_to_snap(struct ME_RLI_IR_value * args_vals, int arg_count) {

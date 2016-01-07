@@ -9728,3 +9728,240 @@
 2016-01-06 21:15:26 - 6110 : Measurer exited.
 2016-01-06 21:15:26 - 6103 : Client disconnected!
 2016-01-06 21:15:26 - 6103 : Measurer exited.
+2016-01-07 18:34:50 - 26284 : Measurer started.
+2016-01-07 18:34:50 - 26284 : Listening for client on *:3005 ...
+2016-01-07 18:34:50 - 26284 : Client connected.
+2016-01-07 18:35:04 - 26284 : Client sent request "".
+2016-01-07 18:35:06 - 26284 : Client sent request "".
+2016-01-07 18:35:19 - 26284 : Client sent request "(set_target 26289)".
+2016-01-07 18:35:19 - 26284 : ME_API_set_target(26289)
+2016-01-07 18:35:38 - 26284 : Client sent request "(snap)".
+2016-01-07 18:35:38 - 26304 : Measurer started.
+2016-01-07 18:35:38 - 26304 : Listening for client on *:5000 ...
+2016-01-07 18:35:38 - 26304 : Client connected.
+2016-01-07 18:35:38 - 26304 : Client sent request "(set_target 26303)".
+2016-01-07 18:35:38 - 26304 : ME_API_set_target(26303)
+2016-01-07 18:35:38 - 26304 : Client sent request "(measure (var "pid"))".
+2016-01-07 18:36:42 - 26284 : Client sent request "(snap)".
+2016-01-07 18:36:43 - 26317 : Measurer started.
+2016-01-07 18:36:43 - 26317 : Listening for client on *:5001 ...
+2016-01-07 18:36:43 - 26317 : Client connected.
+2016-01-07 18:36:43 - 26317 : Client sent request "(set_target 26316)".
+2016-01-07 18:36:43 - 26317 : ME_API_set_target(26316)
+2016-01-07 18:36:43 - 26317 : Client sent request "(measure (var "pid"))".
+2016-01-07 18:38:08 - 26284 : Client sent request "(snap)".
+2016-01-07 18:38:08 - 26335 : Measurer started.
+2016-01-07 18:38:08 - 26335 : Listening for client on *:5002 ...
+2016-01-07 18:38:08 - 26335 : Client connected.
+2016-01-07 18:38:08 - 26335 : Client sent request "(set_target 26334)".
+2016-01-07 18:38:08 - 26335 : ME_API_set_target(26334)
+2016-01-07 18:38:08 - 26335 : Client sent request "(measure (var "pid"))".
+2016-01-07 18:38:32 - 26284 : Client sent request "(to_snap 0 "623")".
+2016-01-07 18:38:32 - 26304 : Client sent request "623".
+2016-01-07 18:38:36 - 26284 : Client sent request "(to_snap 1 "623")".
+2016-01-07 18:38:36 - 26317 : Client sent request "623".
+2016-01-07 18:38:40 - 26284 : Client sent request "(to_snap 2 "623")".
+2016-01-07 18:38:40 - 26335 : Client sent request "623".
+2016-01-07 18:38:47 - 26284 : Client sent request "(snap)".
+2016-01-07 18:38:47 - 26342 : Measurer started.
+2016-01-07 18:38:47 - 26342 : Listening for client on *:5003 ...
+2016-01-07 18:38:47 - 26342 : Client connected.
+2016-01-07 18:38:47 - 26342 : Client sent request "(set_target 26341)".
+2016-01-07 18:38:47 - 26342 : ME_API_set_target(26341)
+2016-01-07 18:38:47 - 26342 : Client sent request "(measure (var "pid"))".
+2016-01-07 18:38:52 - 26284 : Client sent request "".
+2016-01-07 18:38:56 - 26284 : Client sent request "(to_snap 4 "623")".
+2016-01-07 18:39:00 - 26342 : Client disconnected!
+2016-01-07 18:39:00 - 26342 : Measurer exited.
+2016-01-07 18:39:00 - 26335 : Client disconnected!
+2016-01-07 18:39:00 - 26335 : Measurer exited.
+2016-01-07 18:39:00 - 26317 : Client disconnected!
+2016-01-07 18:39:00 - 26317 : Measurer exited.
+2016-01-07 18:39:00 - 26304 : Client disconnected!
+2016-01-07 18:39:00 - 26304 : Measurer exited.
+2016-01-07 18:45:34 - 27521 : Measurer started.
+2016-01-07 18:45:34 - 27521 : Listening for client on *:3005 ...
+2016-01-07 18:45:35 - 27521 : Client connected.
+2016-01-07 18:46:31 - 27521 : Client sent request "(set_target 27526)".
+2016-01-07 18:46:31 - 27521 : ME_API_set_target(27526)
+2016-01-07 18:46:34 - 27521 : Client sent request "(snap)".
+2016-01-07 18:46:34 - 27537 : Measurer started.
+2016-01-07 18:46:34 - 27537 : Listening for client on *:5000 ...
+2016-01-07 18:46:34 - 27537 : Client connected.
+2016-01-07 18:46:34 - 27537 : Client sent request "(set_target 27536)".
+2016-01-07 18:46:34 - 27537 : ME_API_set_target(27536)
+2016-01-07 18:46:34 - 27537 : Client sent request "(measure (var "pid"))".
+2016-01-07 18:46:41 - 27521 : Client sent request "(to_snap 0 "55")".
+2016-01-07 18:46:41 - 27537 : Client sent request "55".
+2016-01-07 18:46:43 - 27521 : Client sent request "(to_snap 1 "55")".
+2016-01-07 18:46:47 - 27537 : Client disconnected!
+2016-01-07 18:46:47 - 27537 : Measurer exited.
+2016-01-07 18:47:05 - 27862 : Measurer started.
+2016-01-07 18:47:05 - 27862 : ERROR: Could not bind server socket!
+2016-01-07 18:47:05 - 27862 : Measurer exited.
+2016-01-07 18:47:09 - 27864 : Measurer started.
+2016-01-07 18:47:09 - 27864 : Listening for client on *:3006 ...
+2016-01-07 18:47:12 - 27864 : Client connected.
+2016-01-07 18:47:22 - 27864 : Client sent request "(to_snap 1 "55")".
+2016-01-07 18:48:13 - 28596 : Measurer started.
+2016-01-07 18:48:13 - 28596 : Listening for client on *:3007 ...
+2016-01-07 18:48:15 - 28596 : Client connected.
+2016-01-07 18:48:27 - 28596 : Client sent request "(to_snap 0 55)".
+2016-01-07 18:48:32 - 28596 : Client sent request "(to_snap 0 "55")".
+2016-01-07 18:48:43 - 28596 : Client sent request "(snap)".
+2016-01-07 18:48:43 - 28596 : Not attached to a process!
+2016-01-07 18:48:49 - 28596 : Client sent request "(to_snap 0 "55")".
+2016-01-07 18:48:57 - 28596 : Client sent request "(to_snap 0 "55")".
+2016-01-07 18:48:59 - 28596 : Client sent request "(snap)".
+2016-01-07 18:48:59 - 28596 : Not attached to a process!
+2016-01-07 18:49:00 - 28596 : Client sent request "(to_snap 0 "55")".
+2016-01-07 18:49:02 - 28596 : Client sent request "(to_snap 0 "55")".
+2016-01-07 18:49:03 - 28596 : Client sent request "(to_snap 0 "55")".
+2016-01-07 18:52:30 - 28596 : Client disconnected!
+2016-01-07 18:52:30 - 28596 : Measurer exited.
+2016-01-07 18:53:23 - 29379 : Measurer started.
+2016-01-07 18:53:23 - 29379 : Listening for client on *:3000 ...
+2016-01-07 18:53:25 - 29379 : Client connected.
+2016-01-07 18:53:32 - 29379 : Client sent request "(to_snap 0 "55")".
+2016-01-07 18:53:36 - 29379 : Client sent request "(snap)".
+2016-01-07 18:53:36 - 29379 : Not attached to a process!
+2016-01-07 18:53:41 - 29379 : Client sent request "(to_snap 0 "55")".
+2016-01-07 18:53:43 - 29379 : Client sent request "(snap)".
+2016-01-07 18:53:43 - 29379 : Not attached to a process!
+2016-01-07 18:53:46 - 29379 : Client sent request "(snap)".
+2016-01-07 18:53:46 - 29379 : Not attached to a process!
+2016-01-07 18:53:47 - 29379 : Client sent request "(to_snap 0 "55")".
+2016-01-07 18:56:20 - 29379 : Client disconnected!
+2016-01-07 18:56:20 - 29379 : Measurer exited.
+2016-01-07 18:56:25 - 30168 : Measurer started.
+2016-01-07 18:56:25 - 30168 : Listening for client on *:3000 ...
+2016-01-07 18:56:27 - 30168 : Client connected.
+2016-01-07 18:56:34 - 30168 : Client sent request "(to_snap 0 "55")".
+2016-01-07 18:56:40 - 30168 : Client sent request "(to_snap 1 "55")".
+2016-01-07 18:56:45 - 30168 : Client sent request "(snap)".
+2016-01-07 18:56:45 - 30168 : Not attached to a process!
+2016-01-07 18:56:47 - 30168 : Client sent request "(to_snap 0 "55")".
+2016-01-07 18:56:54 - 30168 : Client sent request "(to_snap 1 "55")".
+2016-01-07 18:56:57 - 30168 : Client sent request "(snap)".
+2016-01-07 18:56:57 - 30168 : Not attached to a process!
+2016-01-07 18:56:58 - 30168 : Client sent request "(snap)".
+2016-01-07 18:56:58 - 30168 : Not attached to a process!
+2016-01-07 18:56:59 - 30168 : Client sent request "(to_snap 1 "55")".
+2016-01-07 18:57:04 - 30168 : Client sent request "(to_snap 0 "55")".
+2016-01-07 18:57:55 - 30168 : Client disconnected!
+2016-01-07 18:57:55 - 30168 : Measurer exited.
+2016-01-07 19:03:41 - 31362 : Measurer started.
+2016-01-07 19:03:41 - 31362 : Listening for client on *:3000 ...
+2016-01-07 19:03:42 - 31362 : Client connected.
+2016-01-07 19:03:49 - 31362 : Client sent request "(to_snap 1 "hey")".
+2016-01-07 19:03:55 - 31362 : Client sent request "(to_snap 0 "hey")".
+2016-01-07 19:04:00 - 31362 : Client sent request "(snap)".
+2016-01-07 19:04:00 - 31362 : Not attached to a process!
+2016-01-07 19:04:04 - 31362 : Client sent request "(to_snap 0 "hey")".
+2016-01-07 19:04:09 - 31362 : Client sent request "(to_snap 1 "hey")".
+2016-01-07 19:04:10 - 31362 : Client sent request "(to_snap 0 "hey")".
+2016-01-07 19:04:12 - 31362 : Client sent request "(to_snap 0 "hey")".
+2016-01-07 19:04:17 - 31362 : Client sent request "(to_snap 2 "hey")".
+2016-01-07 19:04:22 - 31362 : Client sent request "(snap)".
+2016-01-07 19:04:22 - 31362 : Not attached to a process!
+2016-01-07 19:04:23 - 31362 : Client sent request "(snap)".
+2016-01-07 19:04:23 - 31362 : Not attached to a process!
+2016-01-07 19:04:38 - 31362 : Client sent request "(to_snap 0 "hey")".
+2016-01-07 19:04:40 - 31362 : Client sent request "(to_snap 0 "hey")".
+2016-01-07 19:10:56 - 31362 : Client sent request "".
+2016-01-07 19:10:58 - 31362 : Client disconnected!
+2016-01-07 19:10:58 - 31362 : Measurer exited.
+2016-01-07 19:11:00 - 32174 : Measurer started.
+2016-01-07 19:11:00 - 32174 : Listening for client on *:3000 ...
+2016-01-07 19:11:02 - 32174 : Client connected.
+2016-01-07 19:11:06 - 32174 : Client sent request "(snap)".
+2016-01-07 19:11:06 - 32174 : Not attached to a process!
+2016-01-07 19:11:11 - 32174 : Client sent request "(snap)".
+2016-01-07 19:11:11 - 32174 : Not attached to a process!
+2016-01-07 19:11:17 - 32174 : Client sent request "(snap)".
+2016-01-07 19:11:17 - 32174 : Not attached to a process!
+2016-01-07 19:11:33 - 32174 : Client disconnected!
+2016-01-07 19:11:33 - 32174 : Measurer exited.
+2016-01-07 19:12:39 - 32506 : Measurer started.
+2016-01-07 19:12:39 - 32506 : Listening for client on *:3000 ...
+2016-01-07 19:12:46 - 32506 : Client connected.
+2016-01-07 19:12:48 - 32506 : Client sent request "(snap)".
+2016-01-07 19:12:48 - 32506 : Not attached to a process!
+2016-01-07 19:12:54 - 32506 : Client sent request "(snap)".
+2016-01-07 19:12:54 - 32506 : Not attached to a process!
+2016-01-07 19:12:58 - 32506 : Client sent request "(snap)".
+2016-01-07 19:12:58 - 32506 : Not attached to a process!
+2016-01-07 19:18:41 - 32506 : Client disconnected!
+2016-01-07 19:18:41 - 32506 : Measurer exited.
+2016-01-07 19:19:00 - 1260 : Measurer started.
+2016-01-07 19:19:00 - 1260 : Listening for client on *:3000 ...
+2016-01-07 19:19:02 - 1260 : Client connected.
+2016-01-07 19:19:06 - 1260 : Client sent request "(snap)".
+2016-01-07 19:19:06 - 1260 : Not attached to a process!
+2016-01-07 19:19:40 - 1260 : Client sent request "(to_snap 0 "55")".
+2016-01-07 19:21:40 - 1260 : Client disconnected!
+2016-01-07 19:21:40 - 1260 : Measurer exited.
+2016-01-07 19:23:40 - 1732 : Measurer started.
+2016-01-07 19:23:40 - 1732 : Listening for client on *:3000 ...
+2016-01-07 19:23:41 - 1732 : Client connected.
+2016-01-07 19:23:43 - 1732 : Client sent request "(snap)".
+2016-01-07 19:23:43 - 1732 : Not attached to a process!
+2016-01-07 19:23:51 - 1732 : Client sent request "(to_snap 0 "55")".
+2016-01-07 19:24:31 - 1732 : Client disconnected!
+2016-01-07 19:24:31 - 1732 : Measurer exited.
+2016-01-07 19:24:34 - 2527 : Measurer started.
+2016-01-07 19:24:34 - 2527 : Listening for client on *:3000 ...
+2016-01-07 19:24:35 - 2527 : Client connected.
+2016-01-07 19:24:38 - 2527 : Client sent request "(snap)".
+2016-01-07 19:24:38 - 2527 : Not attached to a process!
+2016-01-07 19:24:43 - 2527 : Client sent request "(to_snap 0 "55")".
+2016-01-07 19:24:46 - 2527 : Client disconnected!
+2016-01-07 19:24:46 - 2527 : Measurer exited.
+2016-01-07 19:28:00 - 3274 : Measurer started.
+2016-01-07 19:28:00 - 3274 : Listening for client on *:3000 ...
+2016-01-07 19:28:01 - 3274 : Client connected.
+2016-01-07 19:29:27 - 3274 : Client sent request "(set_target 4065)".
+2016-01-07 19:29:27 - 3274 : ME_API_set_target(4065)
+2016-01-07 19:29:35 - 3274 : Client sent request "(to_snap 1 "65")".
+2016-01-07 19:29:38 - 3274 : Client sent request "(to_snap 0 "65")".
+2016-01-07 19:29:41 - 3274 : Client sent request "(snap)".
+2016-01-07 19:29:41 - 4071 : Measurer started.
+2016-01-07 19:29:41 - 4071 : Listening for client on *:5000 ...
+2016-01-07 19:29:41 - 4071 : Client connected.
+2016-01-07 19:29:41 - 4071 : Client sent request "(set_target 4070)".
+2016-01-07 19:29:41 - 4071 : ME_API_set_target(4070)
+2016-01-07 19:29:41 - 4071 : Client sent request "(measure (var "pid"))".
+2016-01-07 19:29:44 - 3274 : Client sent request "(to_snap 0 "65")".
+2016-01-07 19:29:44 - 4071 : Client sent request "65".
+2016-01-07 19:29:47 - 3274 : Client sent request "(to_snap 1 "65")".
+2016-01-07 19:29:49 - 3274 : Client sent request "(snap)".
+2016-01-07 19:29:49 - 4077 : Measurer started.
+2016-01-07 19:29:49 - 4077 : Listening for client on *:5001 ...
+2016-01-07 19:29:49 - 4077 : Client connected.
+2016-01-07 19:29:49 - 4077 : Client sent request "(set_target 4076)".
+2016-01-07 19:29:49 - 4077 : ME_API_set_target(4076)
+2016-01-07 19:29:49 - 4077 : Client sent request "(measure (var "pid"))".
+2016-01-07 19:38:24 - 3274 : Client disconnected!
+2016-01-07 19:38:24 - 3274 : Measurer exited.
+2016-01-07 19:38:24 - 4077 : Client disconnected!
+2016-01-07 19:38:24 - 4077 : Measurer exited.
+2016-01-07 19:38:24 - 4071 : Client disconnected!
+2016-01-07 19:38:24 - 4071 : Measurer exited.
+2016-01-07 19:38:38 - 5272 : Measurer started.
+2016-01-07 19:38:38 - 5272 : Listening for client on *:3000 ...
+2016-01-07 19:38:39 - 5272 : Client connected.
+2016-01-07 19:39:10 - 5272 : Client sent request "(snap)".
+2016-01-07 19:39:10 - 5272 : Not attached to a process!
+2016-01-07 19:39:19 - 5272 : Client sent request "(set_target 5270)".
+2016-01-07 19:39:19 - 5272 : ME_API_set_target(5270)
+2016-01-07 19:39:20 - 5272 : Client sent request "(snap)".
+2016-01-07 19:39:20 - 5282 : Measurer started.
+2016-01-07 19:39:20 - 5282 : Listening for client on *:5000 ...
+2016-01-07 19:39:20 - 5282 : Client connected.
+2016-01-07 19:39:20 - 5282 : Client sent request "(set_target 5281)".
+2016-01-07 19:39:20 - 5282 : ME_API_set_target(5281)
+2016-01-07 19:39:20 - 5282 : Client sent request "(measure (var "pid"))".
+2016-01-07 19:39:27 - 5272 : Client sent request "(to_snap 1 "55"0".
+2016-01-07 19:39:29 - 5272 : Client sent request "(to_snap 1 "55")".
+2016-01-07 19:39:32 - 5272 : Client sent request "(to_snap 0 "55")".
+2016-01-07 19:39:32 - 5282 : Client sent request "55".

@@ -102,7 +102,7 @@ extern struct ME_feature * ME_API_callstack(void);
 extern struct ME_feature * ME_API_var(char *);
 extern struct ME_feature * ME_API_mem(char *,char *);
 extern void ME_API_gdb(char *);
-extern int ME_API_snap(void);
+extern struct ME_RLI_IR_value ME_API_snap(void);
 extern struct ME_RLI_IR_value ME_API_to_snap(int, char *);
 
 #endif
